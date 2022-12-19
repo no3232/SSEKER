@@ -44,7 +44,6 @@ def project_detail(request):
         project.location.add(location)
 
         for par in request.data['selectedParticipant']:
-            print(par)
             sel_skill = par['selectedSkill']
             skill = Skill.objects.get(title=sel_skill)
             manager_count = par['selectedCount']
