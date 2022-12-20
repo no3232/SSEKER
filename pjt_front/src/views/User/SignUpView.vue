@@ -43,8 +43,10 @@ export default {
                 password2
             }
             this.$store.dispatch('signUp', payload)
-        }
-    }
+        },
+    },
+    
+
 }
 </script>
 

@@ -83,7 +83,7 @@ export default new Vuex.Store({
     })
     .then(res => {
       context.commit('SAVE_TOKEN', res.data.key)
-      router.push({ name: 'main' })
+      router.push( { name: 'setinfo', params: { 'username': username }})
     })
     .catch(err => {
       console.log(err)

@@ -33,13 +33,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+        read_only_fields = ('username', 'password',)
 
 
 class UserListSerializer(serializers.ModelSerializer):
     skill = SkillSerializer(many=True)
-    location = LocationSerializer(many=True)
-    manager = ParticipantProjectSerializer(many=True)
+    location = LocationSerializer()
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'skill', 'location', 'email', 'introduce', 'github', 'blog',)

@@ -8,7 +8,9 @@ import PeopleItemView from '@/views/People/PeopleView'
 import CreateProjectView from '@/views/Project/CreateProjectView'
 import ParticipantView from '@/views/Project/ParticipantView'
 import SignUpview from '@/views/User/SignUpView'
+import SetInfoView from '@/views/User/SetInfoView'
 import LoginView from '@/views/User/LoginView'
+import UpdateUserView from '@/views/User/UpdateUserView'
 
 
 Vue.use(VueRouter)
@@ -56,10 +58,20 @@ const routes = [
     component: SignUpview
   },
   {
+    path: '/user/:username/setinfo',
+    name: 'setinfo',
+    component: SetInfoView
+  },
+  {
     path: '/user/login',
     name: 'login',
     component: LoginView
   },
+  {
+    path: '/user/:username/update',
+    name: 'updateuser',
+    component: UpdateUserView
+  }
 ]
 
 const router = new VueRouter({
