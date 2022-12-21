@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
 
-class Location(models.Model):
-    campus = models.CharField(max_length=255)
+class Campus(models.Model):
+    title = models.CharField(max_length=255)
 
 
 class SkillCategory(models.Model):
@@ -11,14 +11,19 @@ class SkillCategory(models.Model):
 
 class Skill(models.Model):
     title = models.CharField(max_length=255)
-    category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='skill')
+
+
+class Status(models.Model):
+    status = models.CharField(max_length=255, default="마감")
 
 
 class Project(models.Model):
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
     founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='founder')
     title = models.CharField(max_length=100)
     content = models.CharField(max_length=5000)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
 
 
 class Participant(models.Model):
