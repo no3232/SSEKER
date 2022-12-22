@@ -32,18 +32,27 @@ def people(request, username):
     return Response(serialzer.data ,status=status.HTTP_200_OK)
 
 
-@api_view(['GET',])
-def peoples(request, skill_category=None):
-    if skill_category:
-        temp_people = []
-        skill_category = SkillCategory.objects.filter(category=skill_category)
-        for category in skill_category:
-            skills = category.skill.all()
-            for skill in skills:
-                user_list = User.objects.filter(skill=skill.id)
-                temp_people += user_list
-        people = set(temp_people)
-    else:
-        people = User.objects.filter(is_staff=False)
-    serialzer = UserListSerializer(people, many=True)
+@api_view(['GET'])
+def peoples(request):
+    campus = request.GET.get('campus')
+    part = request.GET.get('part')
+    skills = request.GET.get('skills')
+    peoples = User.objects.filter(is_staff=False)
+
+    if campus:
+        peoples = peoples.filter(campus=campus)
+    
+    if part:
+        peoples = peoples.filter(part=part)
+
+    temp_peoples = []
+    if skills:
+        skills = list(map(int, skills.split(',')))
+        for skill in skills:
+            for people in peoples:
+                if people.skill.all().filter(id=skill):
+                    temp_peoples.append(people)
+        peoples = temp_peoples
+
+    serialzer = UserListSerializer(peoples, many=True)
     return Response(serialzer.data)

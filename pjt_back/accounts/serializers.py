@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Part, BaekJoonLevel, Track
 from projects.models import Skill as Skill
 from projects.models import Project as Project
 from projects.models import Campus as Campus
@@ -30,6 +30,20 @@ class ParticipantProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class BaekJoonLevelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = BaekJoonLevel
+        fields = '__all__'
+
+
+class TrackSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Track
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
     skill = serializers.PrimaryKeyRelatedField(queryset=Skill.objects.all(),many=True)
 
@@ -42,9 +56,11 @@ class UserSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
     skill = SkillSerializer(many=True)
     campus = CampusSerializer()
+    level = BaekJoonLevelSerializer()
+    track = TrackSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'campus', 'part', 'skill', 'email', 'introduce', 'github', 'blog',)
+        fields = ('id', 'username', 'campus', 'part', 'skill', 'email', 'introduce', 'github', 'blog', 'level', 'track',)
         read_only_fields = ('username', 'password',)
     
