@@ -1,13 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import GmarketSansLight from "../../asset/fonts/GmarketSansTTFLight.ttf";
+// import GmarketSansLight from "../../asset/fonts/GmarketSansTTFLight.ttf";
 
-const GmarketBold = createGlobalStyle`
+const GmarketLight = createGlobalStyle`
       @font-face {
-          font-family: 'GmarketSansBold';
-          src: url(${GmarketSansLight}) format('woff');
+          font-family: 'GmarketSansLight';
+          src: url('/fonts/GmarketSansLight.ttf');
           font-weight: normal;
           font-style: normal;
       }
   `;
 
-export default GmarketBold;
+export default GmarketLight;

@@ -11,7 +11,7 @@ const ExpandedMenu = styled.div`
   z-index: 0;
 `;
 
-export default function MenuList(props) {
+export default function MenuList(props: any) {
   return (
     <ExpandedMenu>
       <i className='bx bx-x' onClick={props.onCloseMenu}></i>

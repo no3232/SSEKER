@@ -1,13 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import NanumSquareNeoBold from "../../asset/fonts/NanumSquareNeoTTF-cBd.woff2";
+// import NanumSquareNeoBold from "../../asset/fonts/NanumSquareNeoTTF-cBd.woff2";
 
-const NanumSquareNeoBold = createGlobalStyle`
+const NanumSquareBold = createGlobalStyle`
       @font-face {
           font-family: 'NanumSquareNeoBold';
-          src: url(${NanumSquareNeoBold}) format('woff2');
+          src: url('/fonts/NanumSquareNeoTTF-cBd.woff2');
           font-weight: normal;
           font-style: normal;
       }
   `;
 
-export default NanumSquareNeoBold;
+export default NanumSquareBold;
