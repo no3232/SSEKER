@@ -1,11 +1,11 @@
-from .models import Project, Skill, Location, Participant
-from .serializers import ProjectListSerializer
+from .models import Project
+from .serializers import ProjectSerializer ,ProjectListSerializer
 
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
 @api_view(['GET'])
@@ -18,32 +18,26 @@ def projects(request):
             serializer = ProjectListSerializer(projects, many=True)
         return Response(serializer.data)
 
-# POST 수정해야함
-@api_view(['POST', 'GET'])
+
+@api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def project_detail(request, project_id=None):
-    if request.method == 'POST':
-        location = Location.objects.get(id=request.data['selectedLocation'])
-
-        project = Project.objects.create(
-            founder = request.user,
-            title = request.data['title'],
-            content = request.data['content'],
-        )
-        project.save()
-        project.location.add(location)
-
-        for par in request.data['selectedParticipant']:
-            sel_skill = par['selectedSkill']
-            skill = Skill.objects.get(title=sel_skill)
-            manager_count = par['selectedCount']
-            for _ in range(manager_count):
-                participant = Participant.objects.create(project=project)
-                participant.save()
-                participant.skill.add(skill)
-        return Response(status=status.HTTP_201_CREATED)
-
     if project_id:
         project = get_object_or_404(Project, id=project_id)
         if request.method == 'GET':
             serializer = ProjectListSerializer(project)
-        return Response(serializer.data)
+        elif request.method == 'PUT':
+            serializer = ProjectSerializer(project, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+        elif request.method == 'DELETE':
+            project.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        if request.method == 'POST':
+            serializer = ProjectSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(founder=request.user)
+            else:
+                print(serializer.errors)
+            return Response(status=status.HTTP_201_CREATED)

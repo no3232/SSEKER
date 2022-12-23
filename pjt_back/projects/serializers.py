@@ -1,4 +1,4 @@
-from .models import Project, Skill, Location, Participant, SkillCategory, Applicant
+from .models import Project, Skill, Campus, Participant, SkillCategory, Applicant
 from rest_framework import serializers
 from accounts.models import User
 
@@ -17,20 +17,20 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 
-class LocationSerializer(serializers.ModelSerializer):
+class CampusSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Location
+        model = Campus
         fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):
-    skill = SkillSerializer(many=True)
-    location = LocationSerializer()
+    campus = CampusSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'introduce', 'location', 'skill', )
+        fields = ('id', 'username', 'campus', 'part', 'skill', )
+
 
 class ApplicantListSerializer(serializers.ModelSerializer):
 
@@ -46,20 +46,21 @@ class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
         fields = '__all__'
-        read_only_fields = ('manager', 'skillcategory')
 
 
-class ProjectListSerializer(serializers.ModelSerializer):
-    location = LocationSerializer()
-    founder = UserSerializer()
-    participant = ParticipantSerializer(many=True)
+class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
         fields = '__all__'
+        read_only_fields = ('founder', 'participant')
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectListSerializer(serializers.ModelSerializer):
+    campus = CampusSerializer()
+    founder = UserSerializer()
+    participant = ParticipantSerializer(many=True)
+    participant_count = serializers.IntegerField(source="participant.count", read_only=True)
 
     class Meta:
         model = Project
