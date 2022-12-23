@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 import Head from "next/head";
 import Router from 'next/router';
 
@@ -6,7 +8,7 @@ import MainButton from '../common/MainButton';
 import ClassSelect from '../common/ClassSelect';
 import Menu from "../common/Menu";
 import MenuBox from "../component/MenuBox";
-import {useState} from "react";
+import StackIcon from "../common/StackIcon"
 
 export default function Home() {
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -35,6 +37,8 @@ export default function Home() {
             <ClassSelect></ClassSelect> 
             <Menu menuOpen = {menuOpen} setMenuOpen = {setMenuOpen} />
             <MenuBox menuOpen = {menuOpen} />
+            <StackIcon stack={"django"} />
+            <StackIcon stack={"fastapi"} />
           </main>
         </>
     );
