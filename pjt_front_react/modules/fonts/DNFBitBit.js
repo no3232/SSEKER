@@ -1,13 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import DNFBitBit from "../../asset/fonts/DNFBitBitTTF.ttf";
+// import DNFBitBit from '../../public/fonts/DNFBitBitTTF.ttf'
 
-const DNFBitBit = createGlobalStyle`
-      @font-face {
-          font-family: 'DNFBitBit';
-          src: url(${DNFBitBit}) format('woff');
-          font-weight: normal;
-          font-style: normal;
-      }
-  `;
+const DNFBit = createGlobalStyle`
+@font-face{
+    font-family:'bitbit';
+    src:url('/fonts/DNFBitBitTTF.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
 
-export default DNFBitBit;
+export default DNFBit;

@@ -1,13 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import GmarketSansMedium from "../../asset/fonts/GmarketSansTTFMedium.ttf";
+// import GmarketSansMedium from "../../asset/fonts/GmarketSansTTFMedium.ttf";
 
-const GmarketBold = createGlobalStyle`
+const GmarketMedium = createGlobalStyle`
       @font-face {
           font-family: 'GmarketSansMedium';
-          src: url(${GmarketSansMedium}) format('woff');
+          src: url('/fonts/GmarketSansTTFMedium.ttf');
           font-weight: normal;
           font-style: normal;
       }
   `;
 
-export default GmarketBold;
+export default GmarketMedium;

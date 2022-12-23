@@ -4,7 +4,7 @@ import PretendardThin from "../../asset/fonts/Pretendard-Thin.woff2";
 const PretendardThin = createGlobalStyle`
       @font-face {
           font-family: 'PretendardThin';
-          src: url(${PretendardThin}) format('woff2');
+          src: url('/fonts/Pretendard-Thin.woff2') format('woff2');
           font-weight: normal;
           font-style: normal;
       }
