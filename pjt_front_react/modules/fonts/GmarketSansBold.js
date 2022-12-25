@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+// import GmarketSansBold from '../../asset/fonts/GmarketSansTTFBold.ttf'
 
 const GmarketBold = createGlobalStyle`
     @font-face {

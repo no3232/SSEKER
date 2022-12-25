@@ -14,6 +14,6 @@ const TitleText = (props: any) => {
 export default TitleText;
 
 const TitleTextStyle = styled.div`
-  font-size: 25px;
+  font-size: 24px;
   font-family: "bitbit";
 `;
