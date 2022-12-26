@@ -3,11 +3,13 @@ import styled, { css } from "styled-components";
 
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
+import ClassButtonTypes from '../modules/types/classSelectButton'
+
 const ClassSelect = () => {
   const [selectedClass, setSelectedClass] = useState("");
 
   const clickClass = (event: any) => {
-    console.log(event.target.value);
+    
     if (selectedClass === event.target.value) {
       setSelectedClass("");
       return;
@@ -89,20 +91,23 @@ const ClassUl = styled.ul`
 `;
 const ClassLi = styled.li`
   display: flex;
-  margin: 2px;
+  
 `;
 
-const ClassButton = styled.button`
+const ClassButton = styled.button<ClassButtonTypes>`
   border: solid 1px #0062ff;
   background-color: white;
   border-radius: 5px;
   color: #0062ff;
+  font-family: 'NanumSquareNeoRegular';
+  padding : 10px;
+  margin: 2px;
   &:hover {
     border: solid 1px white;
       background-color: blue;
       color: white;
   }
-  ${(props: boolean[]) =>
+  ${(props) =>
     props.selected &&
     css`
       border: solid 1px white;

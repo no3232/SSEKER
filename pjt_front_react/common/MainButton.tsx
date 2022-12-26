@@ -9,14 +9,17 @@ const MainButtonStyled = styled.button`
   font-family: NanumSquareNeoRegular;
   padding: 10px;
   margin: 10px;
+  border: none;
+  border-radius: 5px;
+  height: 54px;
+  width: 100%;
 `;
 
 const MainButton = (props: any) => {
-  
   return (
     <>
       <NanumSquareRegular />
-      <MainButtonStyled onClick={props.onButtonClick}>{props.children}</MainButtonStyled>
+      <MainButtonStyled onClick={props.onButtonClick} type={props.type}>{props.children}</MainButtonStyled>
     </>
   );
 };
