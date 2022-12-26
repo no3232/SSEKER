@@ -4,7 +4,7 @@ import ListCard from "./ListCard";
 
 const DUMMY_LIST = [
   {
-    stack: ["django", "python", "react", "vuejs"],
+    stack: ["dart", "flask", "react", "vuejs"],
     title: "1카드 제목입니다.",
     status: "3/6",
     id: 1,

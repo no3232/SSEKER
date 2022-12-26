@@ -6,7 +6,12 @@ import { list } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const Icon = ({stack}:Stack) => {
-    return <IconBody color={list[stack].color}>
+
+    const StyleHandler = (event: any) => {
+        event.target.classList.toggle('notClick');
+    }
+
+    return <IconBody className='notClick' onClick={StyleHandler} color={list[stack].color}>
         <NanumSquareRegular />
         {list[stack].icon}
         <IconName>{list[stack].name}</IconName>
