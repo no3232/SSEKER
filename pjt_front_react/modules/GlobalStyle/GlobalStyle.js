@@ -29,9 +29,13 @@ const GlobalStyle = createGlobalStyle`
       }
 
       .notClick {
-        filter: grayscale(100%);
+        background-color: #B1B8C0;
         opacity: 0.5;
         transition: var(--trans-02);
+      }
+
+      .filter-open{
+        display: block;
       }
   
   `;

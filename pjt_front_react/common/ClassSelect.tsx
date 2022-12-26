@@ -2,14 +2,15 @@ import { useState } from "react";
 import styled, { css } from "styled-components";
 
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
+import SubtitleText from "../common/SubtitleText";
 
-import ClassButtonTypes from '../modules/types/classSelectButton'
+import ClassButtonTypes from "../modules/types/classSelectButton";
 
 const ClassSelect = () => {
   const [selectedClass, setSelectedClass] = useState("");
 
   const clickClass = (event: any) => {
-    
+    event.preventDefault();
     if (selectedClass === event.target.value) {
       setSelectedClass("");
       return;
@@ -21,6 +22,7 @@ const ClassSelect = () => {
   return (
     <ClassSelectStyle>
       <NanumSquareRegular />
+      <ClassLabelText><SubtitleText>지역</SubtitleText></ClassLabelText>
       <ClassUl>
         <ClassLi>
           <ClassButton
@@ -68,11 +70,16 @@ const ClassSelect = () => {
           </ClassButton>
         </ClassLi>
       </ClassUl>
-      {selectedClass && (<ClassSelectOption name='' id=''>
-        <ClassOption value='1'>1반</ClassOption>
-        <ClassOption value='2'>2반</ClassOption>
-        {selectedClass === "서울" && seoulClass}
-      </ClassSelectOption>)}
+      {selectedClass && (
+        <>
+          <SubtitleText>반</SubtitleText>
+          <ClassSelectOption name='' id=''>
+            <ClassOption value='1'>1반</ClassOption>
+            <ClassOption value='2'>2반</ClassOption>
+            {selectedClass === "서울" && seoulClass}
+          </ClassSelectOption>
+        </>
+      )}
     </ClassSelectStyle>
   );
 };
@@ -84,14 +91,18 @@ const ClassSelectStyle = styled.div`
   font-family: NanumSquareNeoRegular;
 `;
 
+const ClassLabelText = styled.div`
+`;
+
 const ClassUl = styled.ul`
   display: flex;
   align-content: space-between;
   list-style: none;
+  margin-top: 10px;
+  margin-bottom: 24px;
 `;
 const ClassLi = styled.li`
   display: flex;
-  
 `;
 
 const ClassButton = styled.button<ClassButtonTypes>`
@@ -126,6 +137,8 @@ const ClassButton = styled.button<ClassButtonTypes>`
 
 const ClassSelectOption = styled.select`
   display: flex;
+  margin-top: 10px;
+  margin-bottom: 24px;
 `;
 const ClassOption = styled.option``;
 const seoulClass = (

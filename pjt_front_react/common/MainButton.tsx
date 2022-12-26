@@ -1,27 +1,25 @@
 import styled from "styled-components";
 
-import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
-
-const MainButtonStyled = styled.button`
-  background-color: #0062ff;
-  color: white;
-  font-size: 12px;
-  font-family: NanumSquareNeoRegular;
-  padding: 10px;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  height: 54px;
-  width: 100%;
-`;
+import SubtitleText from "./SubtitleText";
 
 const MainButton = (props: any) => {
   return (
     <>
-      <NanumSquareRegular />
-      <MainButtonStyled onClick={props.onButtonClick} type={props.type}>{props.children}</MainButtonStyled>
+      <MainButtonStyled onClick={props.onButtonClick} type={props.type}>
+        <SubtitleText>{props.children}</SubtitleText>
+      </MainButtonStyled>
     </>
   );
 };
 
 export default MainButton;
+
+const MainButtonStyled = styled.button`
+  background-color: #0062ff;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  height: 54px;
+  width: 100%;
+`;
