@@ -18,6 +18,7 @@ export default class MyDocument extends Document {
         ...initialProps,
         styles: (
           <>
+            <link href = 'https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel = 'stylesheet' />
             {initialProps.styles}
             {sheet.getStyleElement()}
           </>
