@@ -4,7 +4,7 @@ import { createGlobalStyle } from "styled-components";
 const GmarketLight = createGlobalStyle`
       @font-face {
           font-family: 'GmarketSansLight';
-          src: url('/fonts/GmarketSansLight.ttf');
+          src: url('/fonts/GmarketSansTTFLight.ttf');
           font-weight: normal;
           font-style: normal;
       }
