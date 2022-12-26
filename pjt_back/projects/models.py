@@ -1,17 +1,7 @@
+from objects.models import Part, Campus, Skill, SkillCategory
+
 from django.db import models
 from django.conf import settings
-
-class Campus(models.Model):
-    title = models.CharField(max_length=255)
-
-
-class SkillCategory(models.Model):
-    category = models.CharField(max_length=255)
-
-
-class Skill(models.Model):
-    title = models.CharField(max_length=255)
-    category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='skill')
 
 
 class Status(models.Model):
@@ -19,11 +9,13 @@ class Status(models.Model):
 
 
 class Project(models.Model):
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.OneToOneField(Status, on_delete=models.CASCADE)
     founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='founder')
+    campus = models.OneToOneField(Campus, on_delete=models.CASCADE)
+    part = models.OneToOneField(Part, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    content = models.CharField(max_length=5000)
-    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
+    content = models.TextField()
+    skill = models.ManyToManyField(Skill)
 
 
 class Participant(models.Model):

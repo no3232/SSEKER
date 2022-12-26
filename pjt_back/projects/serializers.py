@@ -1,27 +1,8 @@
-from .models import Project, Skill, Campus, Participant, SkillCategory, Applicant
-from rest_framework import serializers
+from .models import Project, Participant, Applicant
 from accounts.models import User
+from objects.serializers import CampusSerializer, SkillCategorySerializer
 
-
-class SkillCategorySerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = SkillCategory
-        fields = '__all__'
-
-
-class SkillSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Skill
-        fields = ('__all__')
-
-
-class CampusSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Campus
-        fields = '__all__'
+from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
