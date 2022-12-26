@@ -17,7 +17,7 @@ const LoginMainPage = () => {
     <div>
       <TitleText>Login Page</TitleText>
       <form action="">
-      <InputStyle
+        <InputStyle
           name='email'
           type='email'
           placeholder='example@ssafy.com'

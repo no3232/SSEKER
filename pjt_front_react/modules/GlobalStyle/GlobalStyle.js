@@ -27,6 +27,12 @@ const GlobalStyle = createGlobalStyle`
           height : 100vh;
           background : var(--body-color);
       }
+
+      .notClick {
+        filter: grayscale(100%);
+        opacity: 0.5;
+        transition: var(--trans-02);
+      }
   
   `;
 
