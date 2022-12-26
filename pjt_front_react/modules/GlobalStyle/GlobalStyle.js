@@ -9,10 +9,12 @@ const GlobalStyle = createGlobalStyle`
   
       :root {
           /* ===== Colors ===== */
-          --body-color : #ffffff;
-          --primary-color : #3373f6;
-          --primary-color-light : #dae8fd;
-          --text-color : #434e60;
+          --body-color : #E4E9F7;
+          --sidebar-color : #FFF;
+          --primary-color : #695CFE;
+          --primary-color-light : #F6F5FF;
+          --toggle-color : #DDD;
+          --text-color : #707070;
   
           /* ===== Transition ===== */
           --trans-02 : all 0.2s ease;
@@ -25,14 +27,13 @@ const GlobalStyle = createGlobalStyle`
           height : 100vh;
           background : var(--body-color);
       }
-  
-      body.dark {
-        /* ===== Colors ===== */
-        --body-color : #232830;
-        --primary-color : #3a3e45;
-        --primary-color-light : #3a3e45;
-        --text-color : #ffffff;
+
+      .notClick {
+        filter: grayscale(100%);
+        opacity: 0.5;
+        transition: var(--trans-02);
       }
+  
   `;
 
 export default GlobalStyle;
