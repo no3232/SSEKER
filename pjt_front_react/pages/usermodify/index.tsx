@@ -4,12 +4,13 @@ import styled from "styled-components";
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
 import StackIcon from "../../common/StackIcon";
+import ClassSelect from "../../common/ClassSelect";
+import Select from "../../component/Select";
+import StackSelect from "../../layout/StackSelect";
 
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
-import ClassSelect from "../../common/ClassSelect";
-import Select from "../../component/Select";
 
 const index = () => {
     const [selectRank, setSelectRank] = useState(Boolean);
@@ -67,35 +68,35 @@ const index = () => {
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    aa
+                    <StackSelect />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    aa
+                    <StackSelect />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    aa
+                    <StackSelect />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    aa
+                    <StackSelect />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>참고</SubtitleText>
 
                 <Icons>
-                    aa
+                    <StackSelect />
                 </Icons>
             </SubBox>
         </DetailBox>
@@ -150,10 +151,6 @@ const IntroBox = styled.textarea `
 
 const Icons = styled.div `
     width: 100%;
-    margin: 15px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
 `
 
 const SubBox = styled.div `

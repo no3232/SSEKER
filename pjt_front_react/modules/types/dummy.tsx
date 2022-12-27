@@ -28,3 +28,20 @@ export interface Selection {
     options: any[],
     handler: any
 }
+
+export interface testElem {
+    id: number,
+    title: string,
+    selected: boolean
+}
+
+export interface StackAll {
+    stack: testElem,
+    UpdateStackState: any
+}
+
+export interface StackList {
+    stack: testElem,
+    removeItem: any,
+    UpdateStackState: any
+}
