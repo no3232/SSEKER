@@ -2,8 +2,17 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
-const Select = () => {
+import {Selection} from "../modules/types/dummy";
+
+const Select = ({title, options} : Selection) => {
     const [active, setActive] = useState(false);
+
+    const opt: JSX.Element[] = options.map(
+        (item) => <Elem isActive={active}>
+            <SubElem></SubElem>
+            {item}
+        </Elem>
+    )
 
     const dropDownHandler = () => {
         setActive(!active);
@@ -12,19 +21,12 @@ const Select = () => {
     return <Box>
         <GlobalStyle/>
         <DropDown onClick={dropDownHandler}>
-            HELP ME
+            {title}
             <LeftIcon className="arrow" isActive={active}/>
             <RightIcon className="arrow" isActive={active}/>
 
             <Items isActive={active}>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
+                {opt}
             </Items>
         </DropDown>
     </Box>
@@ -79,7 +81,9 @@ const Items = styled.div < {
     height: fit-content;
     margin-top: 43px;
     overflow: hidden;
-    visibility: ${props=> props.isActive? "visible":"hidden"};
+    visibility: ${props => props.isActive
+    ? "visible"
+    : "hidden"};
     transition: var(--trans-03);
 `
 

@@ -22,3 +22,8 @@ export interface iconList {
     color: string,
     icon: JSX.Element
 }
+
+export interface Selection {
+    title: string,
+    options: any[]
+}

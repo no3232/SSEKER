@@ -11,40 +11,8 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import ClassSelect from "../../common/ClassSelect";
 import Select from "../../component/Select";
 
-interface StackElement {
-    "id" : number,
-    "title" : string,
-    "category" : number
-}
-
-const test: StackElement[] = [
-    {
-        "id": 1,
-        "title": "vuejs",
-        "category": 1
-    }, {
-        "id": 2,
-        "title": "react",
-        "category": 1
-    }, {
-        "id": 3,
-        "title": "reactnative",
-        "category": 1
-    }, {
-        "id": 4,
-        "title": "rust",
-        "category": 1
-    }, {
-        "id": 5,
-        "title": "spring",
-        "category": 1
-    }
-]
-
 const index = () => {
-    const skills: JSX.Element[] = test.map(
-        (item : StackElement) => <StackIcon stack={item.title} key={item.id} clickable={false}/>
-    )
+    const test = [1,2,3,4,5];
 
     return <Container>
         <GlobalStyle/>
@@ -65,35 +33,35 @@ const index = () => {
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    {skills}
+                    aa
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                {skills}
+                    aa
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                {skills}
+                    aa
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                {skills}
+                    aa
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>참고</SubtitleText>
 
                 <Icons>
-                {skills}
+                    aa
                 </Icons>
             </SubBox>
         </DetailBox>
@@ -101,7 +69,7 @@ const index = () => {
         <DetailBox className="rank">
             <SubtitleText>백준 랭크</SubtitleText>
 
-            <Select />
+            <Select title="랭크 선택" options={test}/>
         </DetailBox>
 
         <DetailBox>
