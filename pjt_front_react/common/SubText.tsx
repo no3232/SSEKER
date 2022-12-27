@@ -2,18 +2,18 @@ import styled from "styled-components";
 
 import GmarketLight from '../modules/fonts/GmarketSansLight'
 
-const SubtitleText = (props: any) => {
+const SubText = (props: any) => {
   return (
     <>
       <GmarketLight />
-      <TitleTextStyle>{props.children}</TitleTextStyle>
+      <SubTextStyle>{props.children}</SubTextStyle>
     </>
   );
 };
 
-export default SubtitleText;
+export default SubText;
 
-const TitleTextStyle = styled.div`
-  font-size: 16px;
+const SubTextStyle = styled.div`
+  font-size: 13px;
   font-family: 'GmarketSansLight';
 `;
