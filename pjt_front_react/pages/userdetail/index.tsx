@@ -18,7 +18,7 @@ interface StackElement {
 const test: StackElement[] = [
     {
         "id": 1,
-        "title": "vue",
+        "title": "vuejs",
         "category": 1
     }, {
         "id": 2,
@@ -56,65 +56,40 @@ const index = () => {
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
-            {/* {skills} */}
+            
             <SubBox>
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    {skills}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    {skills}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    {skills}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="typescript"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    {skills}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>참고</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="javascript"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    {skills}
                 </Icons>
             </SubBox>
         </DetailBox>

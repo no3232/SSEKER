@@ -61,7 +61,6 @@ const index = () => {
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
-            {/* {skills} */}
             <SubBox>
                 <SubtitleText>프론트엔드</SubtitleText>
 
@@ -78,48 +77,48 @@ const index = () => {
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
+                    {/* <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react"/> */}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
+                    {/* <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react"/> */}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
+                    {/* <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="typescript"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react"/> */}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>참고</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
+                    {/* <StackIcon stack="react"/>
                     <StackIcon stack="javascript"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
                     <StackIcon stack="react"/>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react"/> */}
                 </Icons>
             </SubBox>
         </DetailBox>

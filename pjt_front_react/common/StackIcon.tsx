@@ -5,12 +5,9 @@ import { Stack } from "../modules/types/dummy";
 import { list } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
-const Icon = ({stack}:{stack:string}) => {
+const Icon = ({stack}:Stack) => {
     const stackType = list[stack];
-
-    // console.log(stackType)  //{name: 'react, color: '61AFB', icon: svg코드} 정상적으로 출력
-    // console.log(stackType.color)  //TypeError: Cannot read properties of unefined(reading 'color');
-
+    
     const StyleHandler = (event: any) => {
         event.target.classList.toggle('notClick');
     }
