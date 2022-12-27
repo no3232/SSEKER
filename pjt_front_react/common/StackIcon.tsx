@@ -39,27 +39,30 @@ const IconName = styled.div`
   pointer-events: none;
 `;
 
-const IconBody = styled.div`
-  background: ${(props) => props.color};
-  height: 35px;
-  min-width: 90px;
-  width: fit-content;
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-family: "NanumSquareNeoRegular";
-  font-size: 12px;
-  border-radius: 10px;
-  margin: 4px;
+const IconBody = styled.span`
+    background: ${props => props.color};
+    height: 35px;
+    min-width: 90px;
+    width: fit-content;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'NanumSquareNeoRegular';
+    font-size: 12px;
+    cursor:pointer;
 
-  & * {
-    color: white;
-  }
+    & * {
+        color: white;
+    }
 
-  & svg {
-    height: 15px;
-    fill: white;
-  }
-`;
+    & svg {
+        height: 15px;
+        fill: white;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+`
