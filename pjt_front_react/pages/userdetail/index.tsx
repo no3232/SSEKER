@@ -41,7 +41,7 @@ const test: StackElement[] = [
 
 const index = () => {
     const skills: JSX.Element[] = test.map(
-        (item : StackElement) => <StackIcon stack={item.title} key={item.id}/>
+        (item : StackElement) => <StackIcon stack={item.title} key={item.id} clickable={false}/>
     )
 
     return <Container>
