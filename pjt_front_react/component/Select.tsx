@@ -6,9 +6,14 @@ import {Selection} from "../modules/types/dummy";
 
 const Select = ({title, options} : Selection) => {
     const [active, setActive] = useState(false);
+    const [main, setMain] = useState(title);
+
+    const mainHandler = (item: any) => {
+        setMain(item)
+    }
 
     const opt: JSX.Element[] = options.map(
-        (item) => <Elem isActive={active}>
+        (item) => <Elem isActive={active} onClick={() => {mainHandler(item)}} key={item}>
             <SubElem></SubElem>
             {item}
         </Elem>
@@ -21,7 +26,7 @@ const Select = ({title, options} : Selection) => {
     return <Box>
         <GlobalStyle/>
         <DropDown onClick={dropDownHandler}>
-            {title}
+            {main}
             <LeftIcon className="arrow" isActive={active}/>
             <RightIcon className="arrow" isActive={active}/>
 
