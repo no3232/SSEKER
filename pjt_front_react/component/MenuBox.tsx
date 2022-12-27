@@ -5,6 +5,7 @@ import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import GmarketBold from "../modules/fonts/GmarketSansBold";
 import GmarketLight from "../modules/fonts/GmarketSansLight";
 import { MenuActive } from "../modules/types/dummy";
+import Link from "next/link";
 
 const MenuBox = ({ menuOpen }: MenuActive) => {
   return (
@@ -23,7 +24,7 @@ const MenuBox = ({ menuOpen }: MenuActive) => {
           <a href='#'>팀 만들기</a>
         </MenuLi>
         <MenuLi>
-          <a href='#'>마이페이지</a>
+          <Link href={"/userdetail"}>마이페이지</Link>
         </MenuLi>
       </MenuUl>
     </Container>
@@ -87,7 +88,7 @@ const Container = styled.div`
 
   border-bottom-left-radius: 100%;
   transition: var(--trans-05);
-  z-index: 1;
+  z-index: 100;
 
   &.open-menu {
     width: 100%;

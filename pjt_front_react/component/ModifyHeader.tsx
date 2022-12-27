@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -5,13 +7,17 @@ import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 const ModifyHeader = () => {
+    const router = useRouter().pathname;
+
     return <TitleBox>
         <GmarketMedium/>
         <NanumSquareBold/>
         <ContentBox>
             <InputBox placeholder="이름을 입력하세요"/>
 
-            <Edit className="bx bx-check"/>
+            <Link href={(router === "/usermodify")?"/userdetail":"/teamdetail"}>
+                <Edit className="bx bx-check"/>
+            </Link>
         </ContentBox>
     </TitleBox>
 }
@@ -37,6 +43,11 @@ const ContentBox = styled.div `
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    & a {
+        text-decoration: none;
+        color: black;
+    }
 `
 
 const TitleBox = styled.div `
