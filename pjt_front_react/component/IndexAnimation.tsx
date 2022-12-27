@@ -44,7 +44,6 @@ const AnimationOutside = styled.div`
 const AnimationLoopBox = styled.div`
   height: 40px;
   overflow: hidden;
-  position: relative;
 `;
 
 const AnimationLoopList = styled.ul`
@@ -81,4 +80,5 @@ const AnimationLoopText = styled.li`
   height: 30px;
   padding: 10px;
   list-style: none;
+  display: flex;
 `;

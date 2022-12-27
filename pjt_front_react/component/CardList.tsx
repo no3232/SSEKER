@@ -83,5 +83,6 @@ export default CardList;
 const ListStyle = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90vw;
+  width: auto;
+  margin: 0px 15px
 `;

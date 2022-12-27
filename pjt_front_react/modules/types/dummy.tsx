@@ -8,7 +8,8 @@ export interface MenuActive {
 }
 
 export interface Stack {
-    stack: string
+    stack: string,
+    clickable: boolean,
 }
 
 export interface DetailHeaderType {
