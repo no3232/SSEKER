@@ -4,12 +4,13 @@ import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
 import {Selection} from "../modules/types/dummy";
 
-const Select = ({title, options} : Selection) => {
+const Select = ({title, options, handler} : Selection) => {
     const [active, setActive] = useState(false);
     const [main, setMain] = useState(title);
 
     const mainHandler = (item: any) => {
         setMain(item)
+        handler()
     }
 
     const opt: JSX.Element[] = options.map(
@@ -47,7 +48,7 @@ const SubElem = styled.span `
     height: 100%;
     background: var(--primary-color-light);
     z-index: -1;
-    transform: rotate(160deg);
+    transform: rotate(180deg);
     transform-origin: right;
     transition: var(--trans-03);
 `
@@ -68,8 +69,7 @@ const Elem = styled.span < {
     background: var(--body-color);
     overflow: hidden;
     transition: var(--trans-03);
-
-    &:hover {}
+    cursor: pointer;
 
     &:hover span {
         transform: rotate(0deg);

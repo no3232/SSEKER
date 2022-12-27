@@ -25,5 +25,6 @@ export interface iconList {
 
 export interface Selection {
     title: string,
-    options: any[]
+    options: any[],
+    handler: any
 }

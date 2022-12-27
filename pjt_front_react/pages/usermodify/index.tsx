@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 
 import ModifyHeader from "../../component/ModifyHeader";
@@ -12,20 +12,54 @@ import ClassSelect from "../../common/ClassSelect";
 import Select from "../../component/Select";
 
 const index = () => {
-    const test = [1,2,3,4,5];
+    const [selectRank, setSelectRank] = useState(Boolean);
+    const test = ["I", "II", "III", "IV", "V"];
+    const rank = [
+        [
+            "Unrated", "#222222"
+        ],
+        [
+            "Bronze", "#a94e00"
+        ],
+        [
+            "Silver", "#365471"
+        ],
+        [
+            "Gold", "#f4c46a"
+        ],
+        [
+            "Platinum", "#22e1a2"
+        ],
+        [
+            "Diamond", "#05b6fc"
+        ],
+        [
+            "Ruby", "#ff0766"
+        ]
+    ]
+
+    const rankoptions: JSX.Element[] = rank.map((item : string[]) => {
+        return <RankBox key={item[0]}>
+            <Rank className="bx bxs-crown" color={item[1]}/> {item[0]}
+        </RankBox>
+    })
+
+    const backjoonHandler = () => {
+        setSelectRank(true);
+    }
 
     return <Container>
         <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <ModifyHeader />
+        <ModifyHeader/>
         <CampusBox>
             <SubtitleText className="title">매터모스트 아이디</SubtitleText>
             <InputBox placeholder="@sseeker"/>
         </CampusBox>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
-            <ClassSelect />
+            <ClassSelect/>
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
@@ -69,25 +103,43 @@ const index = () => {
         <DetailBox className="rank">
             <SubtitleText>백준 랭크</SubtitleText>
 
-            <Select title="랭크 선택" options={test}/>
+            <Select title="티어 선택" options={rankoptions} handler={backjoonHandler}/>
+            {
+                selectRank
+                    ? <Select title="랭크 선택" options={test} handler={null}/>
+                    : null
+            }
         </DetailBox>
 
         <DetailBox>
             <SubtitleText>소개</SubtitleText>
-            <IntroBox>타입스크립트...너무 내 인생을 힘들게 한다 뭐 이런 고난과 시련이 다 있냐 개씹스레기새끼...개쓰레기 언어...</IntroBox>
+            <IntroBox placeholder={"뭘 넣어야할까요"}></IntroBox>
         </DetailBox>
     </Container>
 }
 
 export default index;
 
-const InputBox = styled.input`
+const Rank = styled.i < {
+    color: string
+} > `
+    color: ${props => props.color};
+    font-size: 25px;
+`
+
+const RankBox = styled.div `
+    display: flex;
+    align-items: center;
+    gap: 1em;
+`
+
+const InputBox = styled.input `
     border: solid 2px var(--primary-color-light);
     padding: 0.5em 1em;
     border-radius: 1em;
 `
 
-const IntroBox = styled.textarea`
+const IntroBox = styled.textarea `
     width: 100%;
     height: 50vh;
     margin-top: 1em;

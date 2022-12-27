@@ -5,6 +5,7 @@ import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 import SubtitleText from "../common/SubtitleText";
 
 import ClassButtonTypes from "../modules/types/classSelectButton";
+import Select from "../component/Select";
 
 const ClassSelect = () => {
   const [selectedClass, setSelectedClass] = useState("");
@@ -72,7 +73,7 @@ const ClassSelect = () => {
       </ClassUl>
       {selectedClass && (
         <>
-          <SubtitleText>반</SubtitleText>
+          {/* <Select title={"반 선택"} options={} /> */}
           <ClassSelectOption name='' id=''>
             <ClassOption value='1'>1반</ClassOption>
             <ClassOption value='2'>2반</ClassOption>
