@@ -10,11 +10,12 @@ const Select = ({title, options, handler} : Selection) => {
 
     const mainHandler = (item: any) => {
         setMain(item)
-        handler()
+        if (typeof(handler) === "function")
+            handler()
     }
 
     const opt: JSX.Element[] = options.map(
-        (item) => <Elem isActive={active} onClick={() => {mainHandler(item)}} key={item}>
+        (item, index) => <Elem isActive={active} onClick={() => {mainHandler(item)}} key={index}>
             <SubElem></SubElem>
             {item}
         </Elem>

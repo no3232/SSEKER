@@ -38,9 +38,9 @@ const index = () => {
         ]
     ]
 
-    const rankoptions: JSX.Element[] = rank.map((item : string[]) => {
-        return <RankBox key={item[0]}>
-            <Rank className="bx bxs-crown" color={item[1]}/> {item[0]}
+    const rankoptions: JSX.Element[] = rank.map((item : string[], index:number) => {
+        return <RankBox key={index}>
+            <Rank className="bx bxs-crown" color={item[1]} /> {item[0]}
         </RankBox>
     })
 
