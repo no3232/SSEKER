@@ -42,7 +42,7 @@ const test: StackElement[] = [
 
 const index = () => {
     const skills: JSX.Element[] = test.map(
-        (item : StackElement) => <StackIcon stack={item.title} key={item.id}/>
+        (item : StackElement) => <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
     )
 
     return <Container>
@@ -62,35 +62,35 @@ const index = () => {
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react" clickable={false} textShow={true}/>
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react" clickable={false} textShow={true}/>
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="react"/>
+                    <StackIcon stack="react" clickable={false} textShow={true}/>
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="typescript"/>
+                    <StackIcon stack="typescript" clickable={false} textShow={true}/>
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>참고</SubtitleText>
 
                 <Icons>
-                    <StackIcon stack="javascript"/>
+                    <StackIcon stack="javascript" clickable={false} textShow={true}/>
                 </Icons>
             </SubBox>
         </DetailBox>

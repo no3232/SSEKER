@@ -38,7 +38,7 @@ const stack = [
 const StackFilterCheckboxs = stack.map((skill) => {
   return (
     <>
-      <StackIcon key={skill} stack={skill} clickable={true} />
+      <StackIcon key={skill} stack={skill} clickable={true} textShow={false} />
     </>
   );
 });

@@ -8,7 +8,7 @@ import ClassButtonTypes from "../modules/types/classSelectButton";
 import Select from "../component/Select";
 
 const ClassSelect = () => {
-  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedClass, setSelectedClass] = useState("서울");
 
   const clickClass = (event: any) => {
     event.preventDefault();

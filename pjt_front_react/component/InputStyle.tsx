@@ -1,9 +1,14 @@
 import styled from "styled-components";
+import React, { SyntheticEvent } from 'react';
 
 import inputFormTypes from "../modules/types/inputFormTypes";
 import SubtitleText from "../common/SubtitleText";
 
 const InputForm = (props: inputFormTypes) => {
+  const valueToParent= (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.getInputValue(event.target.value)
+  }
+
   return (
     <>
       <InputFormLabel htmlFor={props.name}>
@@ -13,6 +18,7 @@ const InputForm = (props: inputFormTypes) => {
         type={props.type}
         name={props.name}
         placeholder={props.placeholder}
+        onChange={valueToParent}
       />
     </>
   );

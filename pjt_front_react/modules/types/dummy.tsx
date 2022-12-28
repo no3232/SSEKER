@@ -10,6 +10,7 @@ export interface MenuActive {
 export interface Stack {
     stack: string,
     clickable: boolean,
+    textShow: boolean,
 }
 
 export interface DetailHeaderType {

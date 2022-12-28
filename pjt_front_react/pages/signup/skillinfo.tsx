@@ -1,17 +1,35 @@
 import styled from "styled-components";
 import Router from "next/router";
-import { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useState } from "react";
 
 import TitleText from "../../common/TitleText";
 import SubtitleText from "../../common/SubtitleText";
 import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
+import { ListFormat } from 'typescript';
 
 const SkillInfo = () => {
   const route = Router;
+  const [signupSkills, setSignupSkills] = useState<string[]>([]);
+
+  const getSkill = (event: SyntheticEvent): void => {
+    const eventTarget = event.target as HTMLElement;
+    if (signupSkills.includes(eventTarget.innerText)) {
+      const newSkillset = signupSkills.filter((skill) => {
+        if (skill === eventTarget.innerText) {
+          return false;
+        }
+        return true;
+      });
+      setSignupSkills(newSkillset);
+    } else {
+      setSignupSkills([...signupSkills, eventTarget.innerText]);
+    }
+  };
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
+    console.log(signupSkills)
     route.push("/signup/after");
   };
 
@@ -25,29 +43,45 @@ const SkillInfo = () => {
           <SubtitleText>프론트엔드</SubtitleText>
         </SkillLabelText>
         <IconBox>
-          <StackIcon stack='vuejs' clickable={true}/>
-          <StackIcon stack='react' clickable={true} />
+          <div onClick={getSkill}>
+            <StackIcon stack='vuejs' clickable={true} textShow={true} />
+          </div>
+          <div onClick={getSkill}>
+            <StackIcon stack='react' clickable={true} textShow={true} />
+          </div>
         </IconBox>
         <SkillLabelText>
           <SubtitleText>백엔드</SubtitleText>
         </SkillLabelText>
         <IconBox>
-          <StackIcon stack='django' clickable={true} />
-          <StackIcon stack='spring' clickable={true} />
+          <div onClick={getSkill}>
+            <StackIcon stack='django' clickable={true} textShow={true} />
+          </div>
+          <div onClick={getSkill}>
+            <StackIcon stack='spring' clickable={true} textShow={true} />
+          </div>
         </IconBox>
         <SkillLabelText>
           <SubtitleText>DebOps</SubtitleText>
         </SkillLabelText>
         <IconBox>
-          <StackIcon stack='linux' clickable={true} />
-          <StackIcon stack='linux' clickable={true} />
+          <div onClick={getSkill}>
+            <StackIcon stack='linux' clickable={true} textShow={true} />
+          </div>
+          <div onClick={getSkill}>
+            <StackIcon stack='linux' clickable={true} textShow={true} />
+          </div>
         </IconBox>
         <SkillLabelText>
           <SubtitleText>UI/UX</SubtitleText>
         </SkillLabelText>
         <IconBox>
-          <StackIcon stack='figma' clickable={true} />
-          <StackIcon stack='linux' clickable={true} />
+          <div onClick={getSkill}>
+            <StackIcon stack='figma' clickable={true} textShow={true} />
+          </div>
+          <div onClick={getSkill}>
+            <StackIcon stack='linux' clickable={true} textShow={true} />
+          </div>
         </IconBox>
         <MainButton type='submit'>작성 완료</MainButton>
       </FormBox>
