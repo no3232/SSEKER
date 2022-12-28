@@ -12,6 +12,11 @@ import ClassButtonTypes from "../../modules/types/classSelectButton"
 const SsafyInfo = () => {
   const route = Router;
   const [trackSelect, setTrackSelect] = useState("");
+  const [signupName, setSignupName] = useState("");
+
+  const getSignupName = (name: string) => {
+    setSignupName(name);
+  }
 
   const clickTrack = (event: any) => {
     event.preventDefault();
@@ -25,6 +30,7 @@ const SsafyInfo = () => {
 
   const moveToSkillInfo = (event: SyntheticEvent) => {
     event.preventDefault();
+    console.log({signupName, trackSelect})
     route.push("/signup/skillinfo");
   };
 
@@ -39,6 +45,7 @@ const SsafyInfo = () => {
           type='text'
           placeholder='본명을 적어주세요'
           labelText='이름'
+          getInputValue={getSignupName}
         />
         <ClassSelect />
         <TrackLabelText>

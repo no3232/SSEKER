@@ -3,6 +3,7 @@ interface inputFormTypes {
   labelText: string;
   type: string;
   placeholder: string;
+  getInputValue: Function;
 }
 
 export default inputFormTypes;

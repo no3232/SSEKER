@@ -7,7 +7,7 @@ import SubtitleText from "../common/SubtitleText";
 import ClassButtonTypes from "../modules/types/classSelectButton";
 
 const ClassSelect = () => {
-  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedClass, setSelectedClass] = useState("서울");
 
   const clickClass = (event: any) => {
     event.preventDefault();

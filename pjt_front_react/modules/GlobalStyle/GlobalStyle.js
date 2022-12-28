@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
       }
 
       .notClick {
-        background-color: #B1B8C0;
+        background-color: #B1B8C0 !important;
         opacity: 0.5;
         transition: var(--trans-02);
       }

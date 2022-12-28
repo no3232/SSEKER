@@ -7,7 +7,7 @@ const ListCard = (props: listCardTypes) => {
   const CardStack = (
     <>
       {props.stack.map((stack) => (
-        <StackIcon key={stack} stack={stack} clickable={false} />
+        <StackIcon key={stack} stack={stack} clickable={false} textShow={false} />
       ))}
     </>
   );
@@ -22,7 +22,7 @@ const ListCard = (props: listCardTypes) => {
         <CardStackside>{CardStack}</CardStackside>
       </CardMainside>
       <CardButtonside>
-        <i className='bx bx-chevron-right'></i>
+        <CardButton className='bx bx-chevron-right'/>
       </CardButtonside>
     </CardOutside>
   );
@@ -43,9 +43,12 @@ const CardOutside = styled.div`
 
 const CardButtonside = styled.div`
   display: flex;
-  font-size: 40px;
   align-items: center;
 `;
+
+const CardButton = styled.i`
+  font-size: 40px;
+`
 
 const CardMainside = styled.div`
   display: flex;

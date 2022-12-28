@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useState } from "react";
 import styled from "styled-components";
 
 import TitleText from "../../common/TitleText";
@@ -9,6 +9,17 @@ import SubText from "../../common/SubText";
 
 const LoginMainPage = () => {
   const route = Router;
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const getLoginEmail = (email: string) => {
+    setLoginEmail(email);
+  }
+
+  const getLoginPassword = (password: string) => {
+    setLoginPassword(password);
+  }
+  
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
@@ -31,12 +42,14 @@ const LoginMainPage = () => {
           type='email'
           placeholder='example@ssafy.com'
           labelText='이메일'
+          getInputValue={getLoginEmail}
         />
         <InputStyle
           name='password'
           type='password'
           placeholder='대문자, 특수문자 포함, 8글자 이상'
           labelText='비밀번호'
+          getInputValue={getLoginPassword}
         />
         <MainButton type='submit'>로그인</MainButton>
         <SubText>

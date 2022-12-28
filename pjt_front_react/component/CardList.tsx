@@ -1,69 +1,13 @@
 import styled from "styled-components";
 
 import ListCard from "./ListCard";
-
-const DUMMY_LIST = [
-  {
-    stack: ["dart", "flask", "react", "vuejs"],
-    title: "1카드 제목입니다.",
-    status: "3/6",
-    id: 1,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "2카드 제목입니다.",
-    status: "6/6",
-    id: 2,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "3카드 제목입니다.",
-    status: "4/6",
-    id: 3,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "4카드 제목입니다.",
-    status: "3/6",
-    id: 4,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "5카드 제목입니다.",
-    status: "6/6",
-    id: 5,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "6카드 제목입니다.",
-    status: "4/6",
-    id: 6,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "7카드 제목입니다.",
-    status: "3/6",
-    id: 7,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "8카드 제목입니다.",
-    status: "6/6",
-    id: 8,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "9카드 제목입니다.",
-    status: "4/6",
-    id: 9,
-  },
-];
+import listCardTypes from "../modules/types/listCardTypes";
 
 
-const CardList = () => {
+const CardList = (props: listCardTypes[]) => {
   const ListCards = (
     <>
-      {DUMMY_LIST.map((item) => 
+      {Object.values(props).map((item) => 
         <ListCard
           key={item.id}
           id={item.id}

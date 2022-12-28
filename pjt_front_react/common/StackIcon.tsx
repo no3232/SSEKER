@@ -7,12 +7,13 @@ import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const Icon = (props: Stack) => {
   const StyleHandler = (event: any) => {
-    event.stopPropagation();
     event.target.classList.toggle("notClick");
   };
   const NoneHandler = () => {
     return ;
   }
+
+  const IconText = (props.textShow ? list[props.stack].name : '')
 
   return (
     <IconBody
@@ -22,7 +23,7 @@ const Icon = (props: Stack) => {
     >
       <NanumSquareRegular />
       <IconImg>{list[props.stack].icon}</IconImg>
-      <IconName>{list[props.stack].name}</IconName>
+      <IconName>{IconText}</IconName>
     </IconBody>
   );
 };
@@ -32,11 +33,13 @@ export default Icon;
 const IconImg = styled.div`
   display: flex;
   pointer-events: none;
+  user-select: none;
 `;
 
 const IconName = styled.div`
   display: flex;
   pointer-events: none;
+  user-select: none;
 `;
 
 const IconBody = styled.span`
