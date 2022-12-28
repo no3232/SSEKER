@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import GmarketBold from "../modules/fonts/GmarketSansBold";
 import GmarketLight from "../modules/fonts/GmarketSansLight";
-import { MenuActive } from "../modules/types/dummy";
+import { Props } from "../modules/types/dummy";
 import Link from "next/link";
+import Router from 'next/router';
 
-const MenuBox = ({ menuOpen }: MenuActive) => {
+const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
+
+  const closeMenuList = () => {
+    setMenuOpen(!menuOpen);
+  }
+
   return (
     <Container className={`${menuOpen ? "open-menu" : null}`}>
       <GlobalStyle />
@@ -15,16 +21,16 @@ const MenuBox = ({ menuOpen }: MenuActive) => {
       <GmarketLight />
       <MenuUl>
         <MenuLi>
-          <a href='#'>팀원 구하기</a>
+        <Link href={"/user"} onClick={closeMenuList}>팀원 구하기</Link>
         </MenuLi>
         <MenuLi>
-          <a href='#'>팀에 들어가기</a>
+        <Link href={"/team"} onClick={closeMenuList}>팀에 들어가기</Link>
         </MenuLi>
         <MenuLi>
-          <a href='#'>팀 만들기</a>
+        <Link href={"/teammodify"} onClick={closeMenuList}>팀만들기</Link>
         </MenuLi>
         <MenuLi>
-          <Link href={"/userdetail"}>마이페이지</Link>
+          <Link href={"/userdetail"} onClick={closeMenuList}>마이페이지</Link>
         </MenuLi>
       </MenuUl>
     </Container>
@@ -88,7 +94,7 @@ const Container = styled.div`
 
   border-bottom-left-radius: 100%;
   transition: var(--trans-05);
-  z-index: 100;
+  z-index: 99;
 
   &.open-menu {
     width: 100%;
