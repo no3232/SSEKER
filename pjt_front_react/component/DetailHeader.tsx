@@ -1,12 +1,16 @@
 import React from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 import {DetailHeaderType} from "../modules/types/dummy";
+import Link from "next/link";
 
 const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
+    const router = useRouter().pathname;
+
     return <TitleBox>
         <GmarketMedium/>
         <NanumSquareBold/>
@@ -20,7 +24,9 @@ const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
                 </IdBox>
             </Info>
 
-            <Edit className="bx bxs-edit-alt"/>
+            <Link href={(router === "/userdetail")? "/usermodify":"/teammodify"}>
+                <Edit className="bx bxs-edit-alt"/>
+            </Link>
         </ContentBox>
     </TitleBox>
 }
@@ -57,6 +63,11 @@ const ContentBox = styled.div `
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    & a {
+        text-decoration: none;
+        color: black;
+    }
 `
 
 const TitleBox = styled.div `

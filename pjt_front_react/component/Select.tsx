@@ -2,8 +2,24 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
-const Select = () => {
+import {Selection} from "../modules/types/dummy";
+
+const Select = ({title, options, handler} : Selection) => {
     const [active, setActive] = useState(false);
+    const [main, setMain] = useState(title);
+
+    const mainHandler = (item: any) => {
+        setMain(item)
+        if (typeof(handler) === "function")
+            handler()
+    }
+
+    const opt: JSX.Element[] = options.map(
+        (item, index) => <Elem isActive={active} onClick={() => {mainHandler(item)}} key={index}>
+            <SubElem></SubElem>
+            {item}
+        </Elem>
+    )
 
     const dropDownHandler = () => {
         setActive(!active);
@@ -12,19 +28,12 @@ const Select = () => {
     return <Box>
         <GlobalStyle/>
         <DropDown onClick={dropDownHandler}>
-            HELP ME
+            {main}
             <LeftIcon className="arrow" isActive={active}/>
             <RightIcon className="arrow" isActive={active}/>
 
             <Items isActive={active}>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
-                <Elem isActive={active}>
-                    <SubElem></SubElem>HEL_...</Elem>
+                {opt}
             </Items>
         </DropDown>
     </Box>
@@ -40,7 +49,7 @@ const SubElem = styled.span `
     height: 100%;
     background: var(--primary-color-light);
     z-index: -1;
-    transform: rotate(160deg);
+    transform: rotate(180deg);
     transform-origin: right;
     transition: var(--trans-03);
 `
@@ -61,8 +70,7 @@ const Elem = styled.span < {
     background: var(--body-color);
     overflow: hidden;
     transition: var(--trans-03);
-
-    &:hover {}
+    cursor: pointer;
 
     &:hover span {
         transform: rotate(0deg);
@@ -79,7 +87,9 @@ const Items = styled.div < {
     height: fit-content;
     margin-top: 43px;
     overflow: hidden;
-    visibility: ${props=> props.isActive? "visible":"hidden"};
+    visibility: ${props => props.isActive
+    ? "visible"
+    : "hidden"};
     transition: var(--trans-03);
 `
 
