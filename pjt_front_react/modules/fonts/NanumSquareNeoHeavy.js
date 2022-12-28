@@ -1,13 +1,13 @@
 import { createGlobalStyle } from "styled-components";
-import NanumSquareNeoHeavy from "../../asset/fonts/NanumSquareNeoTTF-eHv.woff2";
+// import NanumSquareNeoHeavy from "../../asset/fonts/NanumSquareNeoTTF-eHv.woff2";
 
-const NanumSquareNeoHeavy = createGlobalStyle`
+const NanumSquareHeavy = createGlobalStyle`
       @font-face {
           font-family: 'NanumSquareNeoHeavy';
-          src: url(${NanumSquareNeoHeavy}) format('woff2');
+          src: url('/fonts/NanumSquareNeoTTF-eHv.woff2');
           font-weight: normal;
           font-style: normal;
       }
   `;
 
-export default NanumSquareNeoHeavy;
+export default NanumSquareHeavy;
