@@ -5,16 +5,17 @@ const GlobalStyle = createGlobalStyle`
           margin: 0;
           padding: 0;
           box-sizing: border-box;
+          font-size: 15px;
       }
   
       :root {
           /* ===== Colors ===== */
-          --body-color : #E4E9F7;
-          --sidebar-color : #FFF;
-          --primary-color : #695CFE;
-          --primary-color-light : #F6F5FF;
-          --toggle-color : #DDD;
-          --text-color : #707070;
+          --body-color : #fff;
+          --sidebar-color : #ccd0d8;
+          --primary-color : #1643f3;
+          --primary-color-light : #84a4fc;
+          --text-color : #1d2023;
+          --text-color-light : #c0c0c0;
   
           /* ===== Transition ===== */
           --trans-02 : all 0.2s ease;
@@ -26,6 +27,16 @@ const GlobalStyle = createGlobalStyle`
       body {
           height : 100vh;
           background : var(--body-color);
+      }
+
+      .notClick {
+        background-color: #B1B8C0 !important;
+        opacity: 0.5;
+        transition: var(--trans-02);
+      }
+
+      .filter-open{
+        display: block;
       }
   
   `;

@@ -7,26 +7,24 @@ const ListCard = (props: listCardTypes) => {
   const CardStack = (
     <>
       {props.stack.map((stack) => (
-        <StackIcon key={stack} stack={stack} />
+        <StackIcon key={stack} stack={stack} clickable={false} textShow={false} />
       ))}
     </>
   );
 
   return (
-    <>
-      <CardOutside>
-        <CardMainside>
-          <CardTitleside>
-            <TitleText>{props.title}</TitleText>
-            <CardStatusside>{props.status}</CardStatusside>
-          </CardTitleside>
-          <CardStackside>{CardStack}</CardStackside>
-        </CardMainside>
-        <CardButtonside>
-          <i className='bx bx-chevron-right'></i>
-        </CardButtonside>
-      </CardOutside>
-    </>
+    <CardOutside>
+      <CardMainside>
+        <CardTitleside>
+          <TitleText>{props.title}</TitleText>
+          <CardStatusside>{props.status}</CardStatusside>
+        </CardTitleside>
+        <CardStackside>{CardStack}</CardStackside>
+      </CardMainside>
+      <CardButtonside>
+        <CardButton className='bx bx-chevron-right'/>
+      </CardButtonside>
+    </CardOutside>
   );
 };
 
@@ -38,18 +36,23 @@ const CardOutside = styled.div`
   justify-content: space-between;
   width: 100%;
   background-color: #f1f1f1;
-  padding: 10px;
-  margin: 8px;
+  padding 16px;
+  margin-bottom: 8px;
+  border-radius: 10px;
 `;
 
 const CardButtonside = styled.div`
   display: flex;
-  font-size: 40px;
   align-items: center;
 `;
 
+const CardButton = styled.i`
+  font-size: 40px;
+`
+
 const CardMainside = styled.div`
   display: flex;
+
   flex-direction: column;
   justify-content: center;
   width: 80%;
@@ -62,13 +65,11 @@ const CardTitleside = styled.div`
 
 const CardStatusside = styled.div`
   display: flex;
-  background-color: grey;
-  border-radius: 10px;
-  color: white;
-  padding: 6px;
+  margin-left: 16px
 `;
 
 const CardStackside = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 `;

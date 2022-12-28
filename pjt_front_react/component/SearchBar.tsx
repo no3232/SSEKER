@@ -24,6 +24,7 @@ const SearchContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 8px;
 `;
 
 const SearchInputWrapper = styled.div`

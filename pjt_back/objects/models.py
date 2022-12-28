@@ -8,6 +8,7 @@ class Part(models.Model):
 
 class Campus(models.Model):
     title = models.CharField(max_length=255)
+    partcount = models.IntegerField(default=1)
 
 
 class BaekJoonLevel(models.Model):

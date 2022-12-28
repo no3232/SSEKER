@@ -5,19 +5,44 @@ import { Stack } from "../modules/types/dummy";
 import { list } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
-const Icon = ({stack}:Stack) => {
-    return <IconBody color={list[stack].color}>
-        <NanumSquareRegular />
-        {list[stack].icon}
-        <IconName>{list[stack].name}</IconName>
+const Icon = (props: Stack) => {
+  const StyleHandler = (event: any) => {
+    event.target.classList.toggle("notClick");
+  };
+  const NoneHandler = () => {
+    return ;
+  }
+
+  const IconText = (props.textShow ? list[props.stack].name : '')
+
+  return (
+    <IconBody
+      className={props.clickable ? 'notClick' : ''}
+      onClick={props.clickable ? StyleHandler : NoneHandler}
+      color={list[props.stack].color}
+    >
+      <NanumSquareRegular />
+      <IconImg>{list[props.stack].icon}</IconImg>
+      <IconName>{IconText}</IconName>
     </IconBody>
-}
+  );
+};
 
 export default Icon;
 
-const IconName = styled.div``
+const IconImg = styled.div`
+  display: flex;
+  pointer-events: none;
+  user-select: none;
+`;
 
-const IconBody = styled.div`
+const IconName = styled.div`
+  display: flex;
+  pointer-events: none;
+  user-select: none;
+`;
+
+const IconBody = styled.span`
     background: ${props => props.color};
     height: 35px;
     min-width: 90px;
@@ -29,6 +54,7 @@ const IconBody = styled.div`
     gap: 10px;
     font-family: 'NanumSquareNeoRegular';
     font-size: 12px;
+    cursor:pointer;
 
     & * {
         color: white;
@@ -37,5 +63,9 @@ const IconBody = styled.div`
     & svg {
         height: 15px;
         fill: white;
+    }
+
+    &:hover {
+        opacity: 1;
     }
 `

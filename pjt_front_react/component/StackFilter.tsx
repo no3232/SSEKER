@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import StackIcon from '../common/StackIcon'
+import SubtitleText from '../common/SubtitleText';
+
 const stack = [
   "android",
   "angular",
@@ -35,33 +38,28 @@ const stack = [
 const StackFilterCheckboxs = stack.map((skill) => {
   return (
     <>
-      <input type='checkbox' name={skill} value={skill} />
-      <label htmlFor={skill}>{skill}</label>
+      <StackIcon key={skill} stack={skill} clickable={true} textShow={false} />
     </>
   );
 });
 
 const StackFilter = () => {
   return (
+    <>
+    <SubtitleText>스킬</SubtitleText>
     <FilterDiv>
       {StackFilterCheckboxs}
     </FilterDiv>
+    </>
   );
 };
 
 export default StackFilter;
 
 const FilterDiv = styled.div`
-  background-color: grey;
-  width: 90%;
-
-  & input[type=checkbox] {
-    width: 20px;
-    height: 20px; 
-  }
-
-  & label {
-    color: white;
-    font-size: 20px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #D6DADF;
+  border-radius: 10px;
+  width: auto;
 `
