@@ -1,19 +1,8 @@
+from .models import User
+from projects.models import Project, Participant
+from objects.serializers import CampusSerializer, BaekJoonLevelSerializer, SkillSerializer, LanguageSerializer, TrackSerializer
+
 from rest_framework import serializers
-from .models import User, Part, BaekJoonLevel, Track
-from projects.models import Skill as Skill
-from projects.models import Project as Project
-from projects.models import Campus as Campus
-from projects.models import Participant as Participant
-from projects.serializers import SkillSerializer as SkillSerializer
-from projects.serializers import ParticipantSerializer as ParticipantSerializer
-from projects.serializers import ProjectListSerializer as ProjectListSerializer
-
-
-class CampusSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Campus
-        fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -30,37 +19,57 @@ class ParticipantProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BaekJoonLevelSerializer(serializers.ModelSerializer):
-
+class UserUpdateEtcSerializer(serializers.ModelSerializer):
+    
     class Meta:
-        model = BaekJoonLevel
-        fields = '__all__'
+        model = User
+        fields = ('id', 'username', 'campus', 'part', 'email', 'introduce', 'github', 'blog', 'level', 'track',)
+        read_only_fields = ('username', 'password', )
 
 
-class TrackSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Track
-        fields = '__all__'
-
-
-class UserSerializer(serializers.ModelSerializer):
-    skill = serializers.PrimaryKeyRelatedField(queryset=Skill.objects.all(),many=True)
+class UserUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'username', 'campus', 'part', 'skill', 'email', 'introduce', 'github', 'blog', 'level', 'track', 'language')
+        read_only_fields = ('username', 'password', )
+
+
+class UserUpdateSkillSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'campus', 'part', 'skill', 'email', 'introduce', 'github', 'blog', 'level', 'track',) 
+        read_only_fields = ('username', 'password', )
+
+
+class UserUpdateLanguageSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'campus', 'part', 'email', 'introduce', 'github', 'blog', 'level', 'track', 'language')
+        read_only_fields = ('username', 'password', )
+
+
+class UserSerializer(serializers.ModelSerializer):
+    campus = CampusSerializer()
+    skill = SkillSerializer(many=True)
+    level = BaekJoonLevelSerializer()
+    track = TrackSerializer()
+    language = LanguageSerializer(many=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'campus', 'part', 'skill', 'github', 'blog', 'level', 'track', 'language', 'email', 'introduce',)
         read_only_fields = ('username', 'password', )
 
 
 class UserListSerializer(serializers.ModelSerializer):
     skill = SkillSerializer(many=True)
     campus = CampusSerializer()
-    level = BaekJoonLevelSerializer()
     track = TrackSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'campus', 'part', 'skill', 'email', 'introduce', 'github', 'blog', 'level', 'track',)
+        fields = ('id', 'username', 'campus', 'part', 'skill', 'track',)
         read_only_fields = ('username', 'password',)
-    
