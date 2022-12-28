@@ -10,7 +10,7 @@ const Menu = ({menuOpen, setMenuOpen}: Props) => {
         setMenuOpen(!menuOpen);
     }
 
-    return <MenuIcon className={`bx ${menuOpen?'bx-x':'bx-menu-alt-right'}`} onClick={changeState}>
+    return <MenuIcon className={`bx ${menuOpen? 'bx-x':'bx-menu-alt-right'}`} onClick={changeState}>
         <GlobalStyle/>
     </MenuIcon>
 }
