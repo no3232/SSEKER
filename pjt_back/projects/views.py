@@ -1,23 +1,45 @@
 from .models import Project
-from .serializers import ProjectSerializer ,ProjectListSerializer
-
+from .serializers import ProjectSerializer, ProjectListSerializer
+from objects.models import Campus
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
 @api_view(['GET'])
 def projects(request):
     if request.method == 'GET':
-        if request.GET.getlist('params'):
-            pass
-        else:
-            projects = Project.objects.all()
-            serializer = ProjectListSerializer(projects, many=True)
-        return Response(serializer.data)
+        campus   = request.GET.get('campus')
+        part     = request.GET.get('part')
+        skills   = request.GET.get('skills')
+        count    = request.GET.get('count')
+        projects = Project.objects.all()
 
+        if campus:
+            campus = int(campus)
+            nationwide = Campus.objects.get(title='전국').id
+            if campus != nationwide:
+                projects = projects.filter(campus=campus)
+    
+        if part:
+            part = int(part)
+            projects = projects.filter(part=part)
+
+        if skills:
+            skills = list(map(int, skills.split(','))) 
+            temp_projects = []
+            for skill in skills:
+                for project in projects:
+                    if project.skill.all().filter(id=skill):
+                        temp_projects.append(project)
+            projects = temp_projects
+
+        filter_count = 20
+        count = int(count)
+        projects = projects[(count-1)*filter_count:count*filter_count]
+        serializer = ProjectListSerializer(projects, many=True)
+        return Response(serializer.data)
 
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def project_detail(request, project_id=None):
