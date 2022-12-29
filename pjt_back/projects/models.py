@@ -1,4 +1,4 @@
-from objects.models import Part, Campus, Skill, SkillCategory
+from objects.models import Campus, Skill, SkillCategory
 
 from django.db import models
 from django.conf import settings
@@ -9,13 +9,14 @@ class Status(models.Model):
 
 
 class Project(models.Model):
-    status = models.OneToOneField(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
     founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='founder')
-    campus = models.OneToOneField(Campus, on_delete=models.CASCADE)
-    part = models.OneToOneField(Part, on_delete=models.CASCADE)
+    campus = models.ForeignKey(Campus, on_delete=models.CASCADE)
+    part = models.IntegerField(default=0)
     title = models.CharField(max_length=100)
     content = models.TextField()
     skill = models.ManyToManyField(Skill)
+    fixed_count = models.IntegerField(default=1)
 
 
 class Participant(models.Model):

@@ -1,4 +1,4 @@
-from .models import Part, Campus, BaekJoonLevel, Skill, SkillCategory, Language, Track
+from .models import Campus, BaekJoonLevel, Skill, SkillCategory, Language, Track
 
 from rest_framework import serializers
 
@@ -9,13 +9,6 @@ class CampusSerializer(serializers.ModelSerializer):
         model = Campus
         fields = '__all__'
 
-
-class PartSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Part
-        fields = '__all__'
-        
 
 class TrackSerializer(serializers.ModelSerializer):
 

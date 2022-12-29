@@ -66,10 +66,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserListSerializer(serializers.ModelSerializer):
     skill = SkillSerializer(many=True)
-    campus = CampusSerializer()
-    track = TrackSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'campus', 'part', 'skill', 'track',)
+        fields = ('id', 'username','skill', 'part')
         read_only_fields = ('username', 'password',)
