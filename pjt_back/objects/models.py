@@ -2,10 +2,6 @@ from django.db import models
 from django.conf import settings
 
 
-class Part(models.Model):
-    part = models.IntegerField()
-
-
 class Campus(models.Model):
     title = models.CharField(max_length=255)
     partcount = models.IntegerField(default=1)

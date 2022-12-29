@@ -3,5 +3,5 @@ from django.urls import path
 
 urlpatterns = [
     path('', views.peoples),
-    path('<str:username>', views.people),
+    path('<str:username>', views.people_detail),
 ]
