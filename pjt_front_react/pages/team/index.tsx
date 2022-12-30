@@ -1,71 +1,83 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import TitleText from "../../common/TitleText";
-import CardList from "../../component/CardList";
 import ClassSelect from "../../common/ClassSelect";
 import SearchBar from "../../component/SearchBar";
 import StackFilter from "../../component/StackFilter";
+import TeamCardList from '../../component/TeamCardList';
 
-const DUMMY_LIST = [
-  {
-    stack: ["dart", "flask", "react", "vuejs"],
-    title: "1카드 제목입니다.",
-    status: "3/6",
-    id: 1,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "2카드 제목입니다.",
-    status: "6/6",
-    id: 2,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "3카드 제목입니다.",
-    status: "4/6",
-    id: 3,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "4카드 제목입니다.",
-    status: "3/6",
-    id: 4,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "5카드 제목입니다.",
-    status: "6/6",
-    id: 5,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "6카드 제목입니다.",
-    status: "4/6",
-    id: 6,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "7카드 제목입니다.",
-    status: "3/6",
-    id: 7,
-  },
-  {
-    stack: ["spring", "react", "vuejs"],
-    title: "8카드 제목입니다.",
-    status: "6/6",
-    id: 8,
-  },
-  {
-    stack: ["django", "python", "react", "vuejs"],
-    title: "9카드 제목입니다.",
-    status: "4/6",
-    id: 9,
-  },
-];
+// const DUMMY_LIST = [
+//   {
+//     stack: ["dart", "flask", "react", "vuejs"],
+//     title: "1카드 제목입니다.",
+//     status: "3/6",
+//     id: 1,
+//   },
+//   {
+//     stack: ["spring", "react", "vuejs"],
+//     title: "2카드 제목입니다.",
+//     status: "6/6",
+//     id: 2,
+//   },
+//   {
+//     stack: ["django", "python", "react", "vuejs"],
+//     title: "3카드 제목입니다.",
+//     status: "4/6",
+//     id: 3,
+//   },
+//   {
+//     stack: ["django", "python", "react", "vuejs"],
+//     title: "4카드 제목입니다.",
+//     status: "3/6",
+//     id: 4,
+//   },
+//   {
+//     stack: ["spring", "react", "vuejs"],
+//     title: "5카드 제목입니다.",
+//     status: "6/6",
+//     id: 5,
+//   },
+//   {
+//     stack: ["django", "python", "react", "vuejs"],
+//     title: "6카드 제목입니다.",
+//     status: "4/6",
+//     id: 6,
+//   },
+//   {
+//     stack: ["django", "python", "react", "vuejs"],
+//     title: "7카드 제목입니다.",
+//     status: "3/6",
+//     id: 7,
+//   },
+//   {
+//     stack: ["spring", "react", "vuejs"],
+//     title: "8카드 제목입니다.",
+//     status: "6/6",
+//     id: 8,
+//   },
+//   {
+//     stack: ["django", "python", "react", "vuejs"],
+//     title: "9카드 제목입니다.",
+//     status: "4/6",
+//     id: 9,
+//   },
+// ];
 
 const TeamListPage = () => {
   const [filterOpen, setFilterOpen] = useState(false);
+  const [temaData, setTeamData] = useState();
+  const [pageNum, setPageNum] = useState();
+
+  // useEffect(() => {
+  //   axios({
+  //     method: "GET",
+  //     url: `https://ssekerapi.site/projects/?count${pageNum}=&campus=&part=&skills`,
+  //   }).then((response) => {
+  //     setTeamData(response.data);
+  //   });
+  // }, []);
 
   const openFilter = () => {
     setFilterOpen((prevState: boolean) => !prevState);
@@ -88,7 +100,7 @@ const TeamListPage = () => {
         <ClassSelect />
         <StackFilter />
       </FilterOption>
-      <CardList {...DUMMY_LIST} />
+      {/* <TeamCardList {...temaData} /> */}
     </TeamBox>
   );
 };

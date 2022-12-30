@@ -11,7 +11,7 @@ const Select = ({title, options, handler} : Selection) => {
     const mainHandler = (item: any) => {
         setMain(item)
         if (typeof(handler) === "function")
-            handler()
+            handler(item)
     }
 
     const opt: JSX.Element[] = options.map(

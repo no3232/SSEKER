@@ -5,17 +5,33 @@ import Router from "next/router";
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
-import ClassSelect from "../../common/ClassSelect";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
+import Select from '../../component/Select';
+import axios from 'axios';
 
 const SsafyInfo = () => {
   const route = Router;
   const [trackSelect, setTrackSelect] = useState("");
   const [signupName, setSignupName] = useState("");
+  const [signupRegion, setSignupRegion] = useState("");
+  const [signupClass, setSignupClass] = useState("");
+
+  const regionOption = ['서울', '대전', '부울경', '구미', '광주']
+  const classOption = ['1반', '2반', '3반', '4반', '5반','6반']
 
   const getSignupName = (name: string) => {
     setSignupName(name);
+  }
+
+  const getSignupRegion = (region: string) => {
+    // console.log(region)
+    setSignupRegion(region);
+  }
+
+  const getSignupClass = (classoption: string) => {
+    // console.log(classoption)
+    setSignupClass(classoption);
   }
 
   const clickTrack = (event: any) => {
@@ -30,7 +46,15 @@ const SsafyInfo = () => {
 
   const moveToSkillInfo = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log({signupName, trackSelect})
+    console.log({signupName, trackSelect, signupRegion, signupClass})
+    axios({
+      method: 'PUT',
+      url: 'https://ssekerapi.site/accounts/ssafy123@ssafy.com',
+      headers: {Authorization: "Token 46b92fa86253f5ed1c3fb5a5e94d65d8a68e8293"},
+      data: {campus: 2, part: 2, track: 2}
+    })
+      .then(response => console.log(response))
+      .catch()
     route.push("/signup/skillinfo");
   };
 
@@ -47,7 +71,11 @@ const SsafyInfo = () => {
           labelText='이름'
           getInputValue={getSignupName}
         />
-        <ClassSelect />
+        {/* <ClassSelect /> */}
+        <p>반</p>
+        <Select title="지역 선택" options={regionOption} handler={getSignupRegion} />
+        <p>지역</p>
+        <Select title="반 선택" options={classOption} handler={getSignupClass} />
         <TrackLabelText>
           <SubtitleText>수강 트랙</SubtitleText>
         </TrackLabelText>

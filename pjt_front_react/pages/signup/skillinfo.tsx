@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Router from "next/router";
 import React, { SyntheticEvent, useState } from "react";
+import axios from 'axios';
 
 import TitleText from "../../common/TitleText";
 import SubtitleText from "../../common/SubtitleText";
@@ -29,7 +30,14 @@ const SkillInfo = () => {
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log(signupSkills)
+    axios({
+      method: 'PUT',
+      url: 'https://ssekerapi.site/accounts/ssafy123@ssafy.com',
+      headers: {Authorization: "Token 46b92fa86253f5ed1c3fb5a5e94d65d8a68e8293"},
+      data: {skill: [1, 2, 3, 4]}
+    })
+      .then(response => console.log(response))
+      .catch()
     route.push("/signup/after");
   };
 

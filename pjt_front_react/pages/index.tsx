@@ -45,7 +45,9 @@ export default function Home() {
 const IndexBox = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: -webkit-fill-available;
+  height: fill-avaliable;
+  height: 80vh;
 `;
 
 const TitleBox = styled.div`

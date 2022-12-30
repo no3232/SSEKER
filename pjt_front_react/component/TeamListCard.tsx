@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
-import listCardTypes from "../modules/types/listCardTypes";
+import { EachCardTypes } from "../modules/types/dummy";
 
-const ListCard = (props: listCardTypes) => {
+const TeamListCard = (props: EachCardTypes) => {
   const CardStack = (
     <>
       {props.stack.map((stack) => (
@@ -28,7 +28,7 @@ const ListCard = (props: listCardTypes) => {
   );
 };
 
-export default ListCard;
+export default TeamListCard;
 
 const CardOutside = styled.div`
   display: flex;
