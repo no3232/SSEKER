@@ -46,7 +46,7 @@ def project_detail(request, project_id=None):
     if project_id:
         project = get_object_or_404(Project, id=project_id)
         if request.method == 'GET':
-            serializer = ProjectListSerializer(project)
+            serializer = ProjectSerializer(project)
         elif request.method == 'PUT':
             serializer = ProjectSerializer(project, data=request.data)
             if serializer.is_valid():
