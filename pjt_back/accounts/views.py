@@ -1,19 +1,22 @@
 from .models import User
-from .serializers import UserListSerializer, UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer
 from objects.models import Campus
+from objects.serializers import SkillSerializer, CampusSerializer
 
+from django.http import JsonResponse
+
+from urllib.parse import unquote
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-@api_view(['GET'])
-def peoples(request):
+def filtering_peoples(request):
     campus  = request.GET.get('campus')
     part    = request.GET.get('part')
     skills  = request.GET.get('skills')
     count   = request.GET.get('count')
     peoples = User.objects.filter(is_staff=False)
-    
+
     if campus:
         campus = int(campus)
         nationwide = Campus.objects.get(title='전국').id
@@ -36,8 +39,39 @@ def peoples(request):
     filter_count = 20
     count = int(count)
     peoples = peoples[(count-1)*filter_count:count*filter_count]
-    serializer = UserListSerializer(peoples, many=True)
-    return Response(serializer.data)
+    return peoples
+
+@api_view(['GET'])
+def peoples(request):
+    peoples = filtering_peoples(request)
+    peoples_json = []
+    for people in peoples:
+        position = people.position
+        skills = people.skill.all()
+        priority_skills = []
+        for skill in skills:
+            skill_category = skill.category
+            if skill_category == position:
+                priority_skills.insert(0, skill)
+            else:
+                priority_skills.append(skill)
+
+        id = people.id
+        name = people.name
+        part = people.part
+        campus = CampusSerializer(people.campus).data
+        skill = SkillSerializer(priority_skills, many=True).data
+        people = {
+            'id': id,
+            'name': name,
+            'part': part,
+            'campus': campus,
+            'skill': skill,
+        }
+        peoples_json.append(people)
+
+    context = {'peoples': peoples_json}
+    return JsonResponse(context)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def people_detail(request, username):
@@ -65,3 +99,10 @@ def people_detail(request, username):
     elif request.method == 'DELETE':
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def search(request):
+    name = unquote(request.GET.get('name'))
+    users = User.objects.filter(name__contains=name)
+    serializer = UserSearchSerializer(users, many=True)
+    return Response(serializer.data)
