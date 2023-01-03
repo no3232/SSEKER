@@ -9,6 +9,7 @@ class Campus(models.Model):
 
 class BaekJoonLevel(models.Model):
     level = models.CharField(max_length=255)
+    color = models.CharField(max_length=255)
 
 
 class SkillCategory(models.Model): 

@@ -1,16 +1,15 @@
-from .models import Project, Participant, Applicant
+from .models import Project, Participant, Applicant, Status
 from accounts.models import User
-from objects.serializers import CampusSerializer, SkillCategorySerializer
+from objects.serializers import CampusSerializer, SkillCategorySerializer, SkillSerializer
 
 from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
-    campus = CampusSerializer()
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'campus', 'part', 'skill', )
+        fields = ('id', 'username',)
 
 
 class ApplicantListSerializer(serializers.ModelSerializer):
@@ -26,10 +25,23 @@ class ParticipantSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Participant
+        fields = ('id', 'manager', 'skillcategory',)
+
+
+class StatusSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Status
         fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    participant = ParticipantSerializer(many=True)
+    participant_count = serializers.IntegerField(source='participant.count', read_only=True)
+    campus = CampusSerializer()
+    founder = UserSerializer()
+    status = StatusSerializer()
+    skill = SkillSerializer(many=True)
 
     class Meta:
         model = Project
