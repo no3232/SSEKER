@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState, useContext } from "react";
 import Router from "next/router";
+import axios from 'axios';
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
@@ -8,7 +9,9 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import axios from 'axios';
+import { UserInfoContext } from '../../modules/context/UserInfoContext';
+import { KeyContext } from '../../modules/context/KeyContext';
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SsafyInfo = () => {
   const route = Router;
@@ -17,11 +20,10 @@ const SsafyInfo = () => {
   const [signupRegion, setSignupRegion] = useState<number>();
   const [signupClass, setSignupClass] = useState<number>();
   const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
+  const ctxUserinfo = useContext(UserInfoContext);
 
 
   const regionOption = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
-
-  
 
   const getSignupName = (name: string) => {
     setSignupName(name);
@@ -57,10 +59,11 @@ const SsafyInfo = () => {
   const moveToSkillInfo = (event: SyntheticEvent) => {
     event.preventDefault();
     console.log({signupName, trackSelect, signupRegion, signupClass})
+    console.log(getKeyCookies("key"))
     axios({
       method: 'PUT',
-      url: 'https://ssekerapi.site/accounts/ssafy123@ssafy.com',
-      headers: {Authorization: "Token 46b92fa86253f5ed1c3fb5a5e94d65d8a68e8293"},
+      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {campus: signupRegion, part: signupClass, track: trackSelect}
     })
       .then(response => console.log(response))
