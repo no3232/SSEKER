@@ -23,7 +23,7 @@ export const UserInfoContext = React.createContext<ContextUserInfoTypes>({
   language: { id: 0, language: "" },
   email: "",
   introduce: "",
-  addUser: (userinfo) => {},
+  addUser: (userinfo: any) => {},
   removeUser: () => {},
   // addKey: (key: string) => {},
   // removeKey: () => {}
@@ -44,11 +44,11 @@ const defaultUserState = {
   introduce: "",
 };
 
-export const UserInfoProvider = (props) => {
+export const UserInfoProvider = (props: any) => {
   const [userInfoState, setUserInfoState] = useState(defaultUserState);
   // const [keyInfoState, setKeyInfoState] = useState(defaultKeyState);
 
-  const addUserHandler = (userinfo) => {
+  const addUserHandler = (userinfo: any) => {
     if (userinfo.id !== userInfoState.id) {
       setUserInfoState(userinfo);
     }
