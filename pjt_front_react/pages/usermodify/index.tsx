@@ -13,7 +13,7 @@ import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 
 const index = () => {
-    const [selectRank, setSelectRank] = useState(Boolean);
+    // const [selectRank, setSelectRank] = useState<Boolean>(false);
     const test = ["I", "II", "III", "IV", "V"];
     const rank = [
         [
@@ -45,9 +45,9 @@ const index = () => {
         </RankBox>
     })
 
-    const backjoonHandler = () => {
-        setSelectRank(true);
-    }
+    // const BackjoonHandler = () => {
+    //     setSelectRank(true);
+    // }
 
     return <Container>
         <GlobalStyle/>
@@ -102,14 +102,14 @@ const index = () => {
         </DetailBox>
 
         <DetailBox className="rank">
-            <SubtitleText>백준 랭크</SubtitleText>
+            {/* <SubtitleText>백준 랭크</SubtitleText>
 
-            <Select title="티어 선택" options={rankoptions} handler={backjoonHandler}/>
+            <Select title="티어 선택" options={rankoptions} handler={BackjoonHandler}/>
             {
                 selectRank
                     ? <Select title="랭크 선택" options={test} handler={null}/>
                     : null
-            }
+            } */}
         </DetailBox>
 
         <DetailBox>
