@@ -44,7 +44,7 @@ const SsafyInfo = () => {
     console.log(classOption)
   }
 
-  const getSignupClass = (classoption: string) => {
+  const getSignupClass = (classoption: number) => {
     // console.log(classoption)
     setSignupClass(classoption);
   }
@@ -95,7 +95,7 @@ const SsafyInfo = () => {
         <TrackUl>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "1"}
+              selected={trackSelect === 1}
               onClick={clickTrack}
               value='1'
             >
@@ -104,7 +104,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "3"}
+              selected={trackSelect === 3}
               onClick={clickTrack}
               value='3'
             >
@@ -113,7 +113,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "2"}
+              selected={trackSelect === 2}
               onClick={clickTrack}
               value='2'
             >
@@ -122,7 +122,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "5"}
+              selected={trackSelect === 5}
               onClick={clickTrack}
               value='5'
             >
@@ -131,7 +131,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "4"}
+              selected={trackSelect === 4}
               onClick={clickTrack}
               value='4'
             >
