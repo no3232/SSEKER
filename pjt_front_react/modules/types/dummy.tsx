@@ -60,6 +60,16 @@ export interface trackObject {
   track: string;
 }
 
+export interface languageObject {
+  id: number;
+  language: string;
+}
+
+export interface BJlevelObject {
+  id: number;
+  BJlevel: string;
+}
+
 export interface skillObject {
   id: number;
   title: string;
@@ -94,4 +104,21 @@ export interface EachCardTypes {
   title: string;
   stack: string[];
   status: number;
+}
+
+export interface ContextUserInfoTypes {
+  id: number;
+  username: string;
+  campus: campusObject;
+  part: number;
+  skill: skillObject;
+  github: string;
+  blog: string;
+  level: BJlevelObject;
+  track: trackObject;
+  language: languageObject;
+  email: string;
+  introduce: string;
+  addUser: Function;
+  removeUser: Function;
 }

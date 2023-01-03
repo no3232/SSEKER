@@ -1,38 +1,73 @@
 import Router from "next/router";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useContext, useState } from "react";
 import styled from "styled-components";
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import axios from "axios";
+import { UserInfoContext } from "../../modules/context/UserInfoContext";
+import { KeyContext } from "../../modules/context/KeyContext";
 
 const SignupPage = () => {
   const route = Router;
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupPasswordConfirm, setSignupPasswordConfirm] = useState("");
+  const ctxUserinfo = useContext(UserInfoContext);
+  const ctxKeyinfo = useContext(KeyContext);
 
   const moveToComplete = async (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log({ signupEmail, signupPassword, signupPasswordConfirm });
-    await axios({
+    // console.log({ signupEmail, signupPassword, signupPasswordConfirm });
+    const getKey = await axios({
       method: "POST",
-      url: "https://ssekerapi.site/dj-accounts/signup/",
+      // url: "https://ssekerapi.site/dj-accounts/signup/",
+      // data: {
+      //   username: signupEmail,
+      //   password1: signupPassword,
+      //   password2: signupPasswordConfirm,
+      // },
+      url: "https://ssekerapi.site/dj-accounts/login/",
       data: {
         username: signupEmail,
-        password1: signupPassword,
-        password2: signupPasswordConfirm,
+        password: signupPassword,
       },
-    }).then((response) => {
-      console.log(response)
-      console.log(response.data)
-      route.push("/signup/complete");
     })
-    .catch(err => {
-      console.log(err.response)
-      return 
-    });
+      .then((response) => {
+        ctxKeyinfo.addKey(response.data.key);
+        return response.data.key;
+        // route.push("/signup/complete");
+      })
+      .catch((err) => {
+        console.log(err.response);
+        return '0';
+      });
+      console.log(getKey)
+      const getUserInfo = await axios({
+        method: "GET",
+        // url: "https://https://ssekerapi.site/dj-accounts/user/",
+        // data: {
+        //   username: signupEmail,
+        //   password1: signupPassword,
+        //   password2: signupPasswordConfirm,
+        // },
+        url: `https://ssekerapi.site/accounts/${signupEmail}`,
+        // headers: {
+        //   Authorization: `Token ${getKey}`
+        // }
+      })
+        .then((response) => {
+          
+          console.log(response.data);
+          ctxUserinfo.addUser(response.data)
+          console.log(ctxUserinfo)
+          // route.push("/signup/complete");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
   };
 
   const getSignupEmail = (email: string) => {
