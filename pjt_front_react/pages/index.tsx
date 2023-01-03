@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Head from "next/head";
 import Router from "next/router";
@@ -10,6 +10,13 @@ import styled from "styled-components";
 
 export default function Home() {
   const route = Router;
+
+  let vh = 0;
+
+  useEffect(() => {
+    vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }, []);
 
   const moveToLogin = () => {
     route.push("/login");
@@ -45,9 +52,9 @@ export default function Home() {
 const IndexBox = styled.div`
   display: flex;
   flex-direction: column;
-  height: -webkit-fill-available;
-  height: fill-avaliable;
-  height: 80vh;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  
 `;
 
 const TitleBox = styled.div`

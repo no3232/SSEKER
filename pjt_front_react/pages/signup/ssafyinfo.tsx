@@ -62,9 +62,10 @@ const SsafyInfo = () => {
     console.log(getKeyCookies("key"))
     axios({
       method: 'PUT',
-      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      // url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
-      data: {campus: signupRegion, part: signupClass, track: trackSelect}
+      data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
       .then(response => console.log(response))
       .catch()
