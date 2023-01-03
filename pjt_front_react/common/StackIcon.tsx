@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Stack } from "../modules/types/dummy";
-import { list } from "../modules/StackIconDummy";
+import { language, skill } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const Icon = (props: Stack) => {
@@ -12,6 +12,8 @@ const Icon = (props: Stack) => {
   const NoneHandler = () => {
     return ;
   }
+
+  const list = (props.list==="langauge")? language:skill;
 
   const IconText = (props.textShow ? list[props.stack].name : '')
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 import DetailHeader from "../../component/DetailHeader";
@@ -8,6 +8,8 @@ import StackIcon from "../../common/StackIcon";
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
+import axios from "axios";
+import {skillObject} from "../../modules/types/dummy";
 
 interface StackElement {
     "id" : number,
@@ -40,56 +42,119 @@ const test: StackElement[] = [
 ]
 
 const index = () => {
-    const skills: JSX.Element[] = test.map(
-        (item : StackElement) => <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
-    )
+    const [userInfo, setUserInfo] = useState({
+        id: 0,
+        username: "",
+        campus: {
+            id: 0,
+            title: "",
+            partcount: 0
+        },
+        part: 0,
+        skill: [],
+        github: "",
+        blog: "",
+        level: {
+            id: 0,
+            level: "",
+            color: ""
+        },
+        track: {
+            id: 0,
+            track: ""
+        },
+        language: [],
+        email: "",
+        introduce: ""
+    })
+
+    const skills = (category : string) => {
+        const lst = userInfo
+            .skill
+            .filter((item : skillObject) => {
+                return item.category == category
+            })
+
+        return lst.map(
+            (item : StackElement) => <StackIcon
+                stack={item.title}
+                key={item.id}
+                clickable={false}
+                textShow={true}
+                list={"skill"}/>
+        )
+    }
+
+    const language: JSX.Element[] = userInfo
+        .language
+        .map(
+            (item : StackElement) => <StackIcon
+                stack={item.title}
+                key={item.id}
+                clickable={false}
+                textShow={true}
+                list={"langauge"}/>
+        )
+
+    useEffect(() => {
+        axios
+            .get('https://ssekerapi.site/accounts/jay')
+            .then((res) => {
+                const {data} = res;
+
+                setUserInfo(data);
+            })
+    }, [])
+
+    console.log(userInfo)
 
     return <Container>
         <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <DetailHeader name={"user"} mattermost={"@idididid"}/>
+        <DetailHeader name={userInfo.username} mattermost={`@${userInfo.email}`}/>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
-            <Campus>구미</Campus>
-            <Campus>2반</Campus>
+            <Campus>{userInfo.campus.title}</Campus>
+            <Campus>{`${userInfo.campus.partcount}반`}</Campus>
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
-            
+
+            <SubBox>
+                <SubtitleText>언어</SubtitleText>
+
+                <Icons>
+                    {language}
+                </Icons>
+            </SubBox>
+
             <SubBox>
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    {skills}
+                    {skills("1")}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    {skills}
+                    {skills("2")}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    {skills}
+                    {skills("3")}
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    {skills}
-                </Icons>
-            </SubBox>
-            <SubBox>
-                <SubtitleText>참고</SubtitleText>
-
-                <Icons>
-                    {skills}
+                    {skills("4")}
                 </Icons>
             </SubBox>
         </DetailBox>
@@ -98,35 +163,55 @@ const index = () => {
             <SubtitleText>백준 랭크</SubtitleText>
 
             <RankBox>
-                <Rank className="bx bxs-crown" color="#ffcc00" />
-                <RankName>골드</RankName>
+                <Rank className="bx bxs-crown" color={userInfo.level.color}/>
+                <RankName>{userInfo.level.level}</RankName>
+            </RankBox>
+        </DetailBox>
+
+        <DetailBox className="rank">
+            <SubtitleText>GitHub</SubtitleText>
+
+            <RankBox>
+                <a href={userInfo.github}>
+                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} list={"skill"}/>
+                </a>
+            </RankBox>
+        </DetailBox>
+
+        <DetailBox className="rank">
+            <SubtitleText>Blog</SubtitleText>
+
+            <RankBox>
+                <a href={userInfo.blog}>
+                    <StackIcon stack={"Blog"} clickable={false} textShow={true} list={"skill"}/>
+                </a>
             </RankBox>
         </DetailBox>
 
         <DetailBox>
             <SubtitleText>소개</SubtitleText>
-            <IntroBox>타입스크립트...너무 내 인생을 힘들게 한다 뭐 이런 고난과 시련이 다 있냐 개씹스레기새끼...개쓰레기 언어...</IntroBox>
+            <IntroBox>{userInfo.introduce}</IntroBox>
         </DetailBox>
     </Container>
 }
 
 export default index;
 
-const RankName = styled.span``
+const RankName = styled.span ``
 
-const Rank = styled.i`
+const Rank = styled.i `
     color: ${props => props.color};
     font-size: 25px;
 `
 
-const RankBox = styled.span`
+const RankBox = styled.span `
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 0.5em;
 `
 
-const IntroBox = styled.div`
+const IntroBox = styled.div `
     margin-top: 1em;
     padding: 1em;
     border-radius: 6px;
