@@ -10,7 +10,7 @@ const defaultKeyState = {
   key: ''
 };
 
-export const KeyInfoProvider = (props) => {
+export const KeyInfoProvider = (props: any) => {
   const [keyInfoState, setKeyInfoState] = useState(defaultKeyState);
 
   const addKeyHandler = (key: string) => {
