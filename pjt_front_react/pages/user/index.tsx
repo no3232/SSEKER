@@ -50,7 +50,7 @@ const UserListPage = () => {
     }).then((response) => {
       setUserList(response.data);
     });
-  }, []);
+  }, [pageNum]);
 
   const openFilter = () => {
     setFilterOpen((prevState: boolean) => !prevState);
@@ -62,7 +62,7 @@ const UserListPage = () => {
         <TitleText>팀원을 찾고 싶어요!</TitleText>
       </TitleBox>
       <SearchBar />
-      <FilterIconBox onClick={openFilter}>
+      {/* <FilterIconBox onClick={openFilter}>
         {filterOpen ? (
           <i className='bx bx-x'></i>
         ) : (
@@ -72,7 +72,7 @@ const UserListPage = () => {
       <FilterOption className={filterOpen ? "filter-open" : ""}>
         <ClassSelect />
         <StackFilter />
-      </FilterOption>
+      </FilterOption> */}
       <UserCardList {...userList} />
     </UserBox>
   );
