@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
@@ -13,6 +14,7 @@ import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 
 const index = () => {
+
     const [selectRank, setSelectRank] = useState(Boolean);
     const test = ["I", "II", "III", "IV", "V"];
     const rank = [

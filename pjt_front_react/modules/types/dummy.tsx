@@ -1,5 +1,3 @@
-import internal from "stream";
-
 export interface Props {
   menuOpen: boolean;
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +11,7 @@ export interface Stack {
   stack: string;
   clickable: boolean;
   textShow: boolean;
+  list: string;
 }
 
 export interface DetailHeaderType {
@@ -21,6 +20,13 @@ export interface DetailHeaderType {
 }
 
 export interface iconList {
+  name: string;
+  color: string;
+  icon: JSX.Element;
+  category: number
+}
+
+export interface languageList {
   name: string;
   color: string;
   icon: JSX.Element;
