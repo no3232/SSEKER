@@ -1,29 +1,65 @@
 import Router from "next/router";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState, useContext } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import SubText from "../../common/SubText";
+import { UserInfoContext } from "../../modules/context/UserInfoContext";
+import { setKeyCookies } from '../../modules/cookie/keyCookies';
+// import { KeyContext } from "../../modules/context/KeyContext";
 
 const LoginMainPage = () => {
   const route = Router;
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const ctxUserinfo = useContext(UserInfoContext);
+
+  const moveToAfter = async (event: SyntheticEvent) => {
+    event.preventDefault();
+    const getKey = await axios({
+      method: "POST",
+      url: "https://ssekerapi.site/dj-accounts/login/",
+      data: {
+        username: loginEmail,
+        password: loginPassword,
+      },
+    })
+      .then((response) => {
+        setKeyCookies("key", response.data.key)
+        console.log(response.data.key)
+        return response.data.key;
+      })
+      .catch((err) => {
+        console.log(err.response);
+        return "";
+      });
+    if (getKey !== "") {
+      const getUserInfo = await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${loginEmail}`,
+      })
+        .then((response) => {
+          console.log(response.data);
+          ctxUserinfo.addUser(response.data);
+          console.log(ctxUserinfo);
+          route.push("/login/after");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
+    }
+  };
 
   const getLoginEmail = (email: string) => {
     setLoginEmail(email);
-  }
+  };
 
   const getLoginPassword = (password: string) => {
     setLoginPassword(password);
-  }
-  
-
-  const moveToAfter = (event: SyntheticEvent) => {
-    event.preventDefault();
-    route.push("/login/after");
   };
 
   const moveToSignup = (event: SyntheticEvent) => {

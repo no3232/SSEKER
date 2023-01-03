@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState, useContext } from "react";
 import Router from "next/router";
+import axios from 'axios';
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
@@ -8,38 +9,49 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import axios from 'axios';
+import { UserInfoContext } from '../../modules/context/UserInfoContext';
+import { KeyContext } from '../../modules/context/KeyContext';
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SsafyInfo = () => {
   const route = Router;
-  const [trackSelect, setTrackSelect] = useState("");
+  const [trackSelect, setTrackSelect] = useState<number>();
   const [signupName, setSignupName] = useState("");
-  const [signupRegion, setSignupRegion] = useState("");
-  const [signupClass, setSignupClass] = useState("");
+  const [signupRegion, setSignupRegion] = useState<number>();
+  const [signupClass, setSignupClass] = useState<number>();
+  const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
+  const ctxUserinfo = useContext(UserInfoContext);
 
-  const regionOption = ['서울', '대전', '부울경', '구미', '광주']
-  const classOption = ['1반', '2반', '3반', '4반', '5반','6반']
+
+  const regionOption = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
 
   const getSignupName = (name: string) => {
     setSignupName(name);
   }
 
-  const getSignupRegion = (region: string) => {
-    // console.log(region)
+  const getSignupRegion = (region: number) => {
+    if (region == 1 || region == 2 || region == 4) {
+      console.log(21)
+      setClassOption({1: "1반", 2: "2반"})
+    } else if (region == 3) {
+      setClassOption({1: "1반", 2: "2반", 3: "3반"})
+    } else if (region == 5) {
+      setClassOption ({1: "1반", 2: "2반", 3: "3반", 4: "4반", 5: "5반", 6: "6반"})
+    } else if (region == 6) {
+      setClassOption ({1: "전국"})
+    }
     setSignupRegion(region);
+    console.log(classOption)
   }
 
-  const getSignupClass = (classoption: string) => {
+  const getSignupClass = (classoption: number) => {
     // console.log(classoption)
     setSignupClass(classoption);
   }
 
   const clickTrack = (event: any) => {
     event.preventDefault();
-    if (trackSelect === event.target.value) {
-      setTrackSelect("");
-      return;
-    }
+    
     setTrackSelect(event.target.value);
     return;
   };
@@ -47,11 +59,13 @@ const SsafyInfo = () => {
   const moveToSkillInfo = (event: SyntheticEvent) => {
     event.preventDefault();
     console.log({signupName, trackSelect, signupRegion, signupClass})
+    console.log(getKeyCookies("key"))
     axios({
       method: 'PUT',
-      url: 'https://ssekerapi.site/accounts/ssafy123@ssafy.com',
-      headers: {Authorization: "Token 46b92fa86253f5ed1c3fb5a5e94d65d8a68e8293"},
-      data: {campus: 2, part: 2, track: 2}
+      // url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
+      headers: {Authorization: `Token ${getKeyCookies("key")}`},
+      data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
       .then(response => console.log(response))
       .catch()
@@ -82,36 +96,45 @@ const SsafyInfo = () => {
         <TrackUl>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "비전공"}
+              selected={trackSelect === 1}
               onClick={clickTrack}
-              value='비전공'
+              value='1'
             >
-              비전공
+              파이썬
             </TrackButton>
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "전공"}
+              selected={trackSelect === 3}
               onClick={clickTrack}
-              value='전공'
+              value='3'
             >
-              전공
+              자바(전공)
             </TrackButton>
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "모바일"}
+              selected={trackSelect === 2}
               onClick={clickTrack}
-              value='모바일'
+              value='2'
+            >
+              자바(비전공)
+            </TrackButton>
+          </TrackLi>
+          <TrackLi>
+            <TrackButton
+              selected={trackSelect === 5}
+              onClick={clickTrack}
+              value='5'
             >
               모바일
             </TrackButton>
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === "임베디드"}
+              selected={trackSelect === 4}
               onClick={clickTrack}
-              value='임베디드'
+              value='4'
             >
               임베디드
             </TrackButton>
