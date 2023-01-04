@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Router from "next/router";
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useState, useContext } from "react";
 import axios from "axios";
 
 import TitleText from "../../common/TitleText";
@@ -9,6 +9,7 @@ import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
 import Select from '../../component/Select';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
+import { UserInfoContext } from '../../modules/context/UserInfoContext';
 
 interface skillObjType {
   [key: string]: number
@@ -18,12 +19,13 @@ const SkillInfo = () => {
   const route = Router;
   const [signupPosition, setSignupPosition] = useState<number>();
   const [signupSkills, setSignupSkills] = useState<number[]>([]);
+  const ctxUserinfo = useContext(UserInfoContext);
 
-  const positionOption = {1: "프론트엔드", 2: "백엔드", 3: "DebOps", 4: "UI&UX"}
+  const positionOption = {1: "프론트엔드", 2: "백엔드", 3: "DevOps", 4: "UI&UX"}
 
   const getSkill = (event: SyntheticEvent): void => {
     const eventTarget = event.target as HTMLElement;
-    const skillObj: skillObjType = {'vuejs': 1, 'react': 2, 'django': 8, 'spring': 9, 'linux': 10, 'git': 16, 'xd': 14, 'figma': 13}
+    const skillObj: skillObjType = {'vuejs': 1, 'react': 2, 'django': 8, 'spring': 9, 'linux': 10, 'Git': 16, 'XD': 14, 'figma': 13}
 
     if (signupSkills.includes(skillObj[eventTarget.innerText])) {
       const newSkillset = signupSkills.filter((skill) => {
@@ -42,13 +44,15 @@ const SkillInfo = () => {
     event.preventDefault();
     console.log(signupPosition)
     console.log(signupSkills)
+    console.log()
     axios({
       method: "PUT",
-      url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
+      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
       },
-      data: { skill: signupSkills },
+      data: { skill: signupSkills, position: signupPosition },
     })
       .then((response) => console.log(response))
       .catch();
@@ -75,10 +79,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='vuejs' clickable={true} textShow={true} />
+            <StackIcon stack='vuejs' clickable={true} textShow={true} list={""}/>
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='react' clickable={true} textShow={true} />
+            <StackIcon stack='react' clickable={true} textShow={true} list={""} />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -86,21 +90,21 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='django' clickable={true} textShow={true} />
+            <StackIcon stack='django' clickable={true} textShow={true} list={""} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='spring' clickable={true} textShow={true} />
+            <StackIcon stack='spring' clickable={true} textShow={true} list={""} />
           </div>
         </IconBox>
         <SkillLabelText>
-          <SubtitleText>DebOps</SubtitleText>
+          <SubtitleText>DevOps</SubtitleText>
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='linux' clickable={true} textShow={true} />
+            <StackIcon stack='linux' clickable={true} textShow={true} list={""} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='git' clickable={true} textShow={true} />
+            <StackIcon stack='Git' clickable={true} textShow={true} list={""} />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -108,10 +112,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='figma' clickable={true} textShow={true} />
+            <StackIcon stack='figma' clickable={true} textShow={true} list={""}/>
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='xd' clickable={true} textShow={true} />
+            <StackIcon stack='XD' clickable={true} textShow={true} list={""}/>
           </div>
         </IconBox>
         <MainButton type='submit'>작성 완료</MainButton>

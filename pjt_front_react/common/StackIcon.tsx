@@ -47,9 +47,10 @@ const IconName = styled.div`
 const IconBody = styled.span`
     background: ${props => props.color};
     height: 35px;
-    min-width: 90px;
+    min-width: 60px;
     width: fit-content;
     padding: 5px 10px;
+    padding-left: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,6 +58,9 @@ const IconBody = styled.span`
     font-family: 'NanumSquareNeoRegular';
     font-size: 12px;
     cursor:pointer;
+    margin: 2px;
+    border-radius: 5px;
+    
 
     & * {
         color: white;
