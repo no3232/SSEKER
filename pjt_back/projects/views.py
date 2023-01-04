@@ -1,6 +1,8 @@
 from .models import Project
 from .serializers import ProjectSerializer, ProjectListSerializer
 from objects.models import Campus
+
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status
@@ -39,7 +41,14 @@ def projects(request):
         count = int(count)
         projects = projects[(count-1)*filter_count:count*filter_count]
         serializer = ProjectListSerializer(projects, many=True)
-        return Response(serializer.data)
+        
+        projects_count = len(projects)
+        projects = serializer.data
+        context = {
+            'projects_count': projects_count, 
+            'projects': projects,
+        }
+        return JsonResponse(context)
 
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def project_detail(request, project_id=None):

@@ -73,8 +73,13 @@ def peoples(request):
             'skill': skill,
         }
         peoples_json.append(people)
-
-    context = {'peoples': peoples_json}
+        
+    peoples_count = len(peoples_json)
+    peoples = peoples_json
+    context = {
+        'peoples_count': peoples_count,
+        'peoples': peoples,
+        }
     return JsonResponse(context)
 
 @api_view(['GET', 'PUT', 'DELETE'])
