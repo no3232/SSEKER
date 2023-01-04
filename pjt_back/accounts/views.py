@@ -73,8 +73,8 @@ def peoples(request):
             'skill': skill,
         }
         peoples_json.append(people)
-        
-    peoples_count = len(peoples_json)
+
+    peoples_count = len(User.objects.all()) - 1
     peoples = peoples_json
     context = {
         'peoples_count': peoples_count,

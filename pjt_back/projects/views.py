@@ -42,7 +42,7 @@ def projects(request):
         projects = projects[(count-1)*filter_count:count*filter_count]
         serializer = ProjectListSerializer(projects, many=True)
         
-        projects_count = len(projects)
+        projects_count = len(Project.objects.all())
         projects = serializer.data
         context = {
             'projects_count': projects_count, 
