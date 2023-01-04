@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import styled from "styled-components";
 
 import DetailHeader from "../../component/DetailHeader";
@@ -10,6 +10,7 @@ import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import axios from "axios";
 import {skillObject} from "../../modules/types/dummy";
+import {UserInfoContext} from "../../modules/context/UserInfoContext";
 
 interface StackElement {
     "id" : number,
@@ -17,102 +18,66 @@ interface StackElement {
     "category" : number
 }
 
-const test: StackElement[] = [
-    {
-        "id": 1,
-        "title": "vuejs",
-        "category": 1
-    }, {
-        "id": 2,
-        "title": "react",
-        "category": 1
-    }, {
-        "id": 3,
-        "title": "reactnative",
-        "category": 1
-    }, {
-        "id": 4,
-        "title": "rust",
-        "category": 1
-    }, {
-        "id": 5,
-        "title": "spring",
-        "category": 1
-    }
-]
-
 const index = () => {
-    const [userInfo, setUserInfo] = useState({
-        id: 0,
-        username: "",
-        campus: {
-            id: 0,
-            title: "",
-            partcount: 0
-        },
-        part: 0,
-        skill: [],
-        github: "",
-        blog: "",
-        level: {
-            id: 0,
-            level: "",
-            color: ""
-        },
-        track: {
-            id: 0,
-            track: ""
-        },
-        language: [],
-        email: "",
-        introduce: ""
-    })
+    const [userInfo, setUserInfo] = useState(useContext(UserInfoContext))
 
     const skills = (category : string) => {
-        const lst = userInfo
-            .skill
-            .filter((item : skillObject) => {
-                return item.category == category
-            })
+        if (userInfo.skill.length === 0) {
+            return "설정된 스킬이 없습니다"
+        } else {
+            const lst = userInfo
+                .skill
+                .filter((item : skillObject) => {
+                    return item.category == category
+                })
 
-        return lst.map(
-            (item : StackElement) => <StackIcon
-                stack={item.title}
-                key={item.id}
-                clickable={false}
-                textShow={true}
-                list={"skill"}/>
-        )
+            return lst.map(
+                (item : StackElement | any) => <StackIcon
+                    stack={item.title}
+                    key={item.id}
+                    clickable={false}
+                    textShow={true}
+                    list={"skill"}/>
+            )
+        }
     }
 
-    const language: JSX.Element[] = userInfo
-        .language
-        .map(
-            (item : StackElement) => <StackIcon
-                stack={item.title}
-                key={item.id}
-                clickable={false}
-                textShow={true}
-                list={"langauge"}/>
-        )
+    // const language = () => {
+    //     const lst = userInfo.langauge
 
-    useEffect(() => {
-        axios
-            .get('https://ssekerapi.site/accounts/jay')
-            .then((res) => {
-                const {data} = res;
+    //     console.log("language", lst)
 
-                setUserInfo(data);
-            })
-    }, [])
+    //     if (lst === undefined || lst.length === 0) {
+    //         return "설정된 언어가 없습니다"
+    //     } else {
+    //         return lst.map(
+    //             (item : StackElement | any) => <StackIcon
+    //                 stack={item.title}
+    //                 key={item.id}
+    //                 clickable={false}
+    //                 textShow={true}
+    //                 list={"skill"}/>
+    //         )
+    //     }
+    // }
 
-    console.log(userInfo)
+    // const language: JSX.Element[] = (userInfo.langauge === undefined)
+    //     ? (<span>"설정된 언어가 없습니다"</span>)
+    //     : userInfo.langauge.map(
+    //         (item
+    //         : StackElement|any) => <StackIcon
+    //             stack={item.title}
+    //             key={item.id}
+    //             clickable={false}
+    //             textShow={true}
+    //             list={"langauge"}/>
+    //     )
 
     return <Container>
         <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <DetailHeader name={userInfo.username} mattermost={`@${userInfo.email}`}/>
+        <DetailHeader name={userInfo.username} mattermost={`${userInfo.email}`}/>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
             <Campus>{userInfo.campus.title}</Campus>
@@ -125,7 +90,7 @@ const index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    {language}
+                    {/* {language()} */}
                 </Icons>
             </SubBox>
 
@@ -162,10 +127,17 @@ const index = () => {
         <DetailBox className="rank">
             <SubtitleText>백준 랭크</SubtitleText>
 
-            <RankBox>
-                <Rank className="bx bxs-crown" color={userInfo.level.color}/>
-                <RankName>{userInfo.level.level}</RankName>
-            </RankBox>
+            {
+                (userInfo.level === null || userInfo.level.id === 0)
+                    ? <RankBox>
+                            <Rank className="bx bxs-crown" color={"#000"}/>
+                            <RankName>Unrated</RankName>
+                        </RankBox>
+                    : <RankBox>
+                            <Rank className="bx bxs-crown" color={userInfo.level.color}/>
+                            {/* <RankName>{userInfo.level.level}</RankName> */}
+                        </RankBox>
+            }
         </DetailBox>
 
         <DetailBox className="rank">

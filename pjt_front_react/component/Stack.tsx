@@ -1,28 +1,33 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import { list } from "../modules/StackIconDummy";
-import { StackAll } from "../modules/types/dummy";
+import {language, skill} from "../modules/StackIconDummy";
+import {StackAll} from "../modules/types/dummy";
 
-const Stack = ({stack, UpdateStackState}: StackAll) => {
+const Stack = ({stack, UpdateStackState, list} : StackAll) => {
     const {id, title} = stack;
-    
-    return <Body onClick={()=>{
-        UpdateStackState(id, false)
-    }}
-    color={list[title].color}
-    >
-        {list[title].icon}
+    const lst = (list==="langauge") ? language:skill;
+
+    console.log(stack)
+
+    return <Body
+        onClick={() => {
+            UpdateStackState(id, false)
+        }}
+        color={lst[title].color}>
+        {lst[title].icon}
         {title}
     </Body>
 }
 
 export default Stack;
 
-const Body = styled.article<{color: string}>`
+const Body = styled.article < {
+    color: string
+} > `
     height: 35px;
     transition: all .3s ease-in-out;
     transition-delay: .1s;
-    background: ${props=>props.color};
+    background: ${props => props.color};
     border-radius: 5px;
     color: var(--body-color);
     display: flex;

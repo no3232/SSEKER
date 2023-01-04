@@ -145,13 +145,13 @@ export const skill: {[key:string]:iconList} = {
         name: "XD",
         color: "#FF61F6",
         icon: xd,
-        category: 4
+        category: 3
     },
     "oven":{
         name: "oven",
         color: "#c0c0c0",
         icon: oven,
-        category: 4
+        category: 3
     },
     "k8s":{
         name: "k8s",

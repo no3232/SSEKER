@@ -6,14 +6,14 @@ import styled from "styled-components";
 import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
-const ModifyHeader = () => {
+const ModifyHeader = ({name}: {name:any}) => {
     const router = useRouter().pathname;
 
     return <TitleBox>
         <GmarketMedium/>
         <NanumSquareBold/>
         <ContentBox>
-            <InputBox placeholder="이름을 입력하세요"/>
+            <InputBox placeholder={name?name:`이름을 입력하세요`}/>
 
             <Link href={(router === "/usermodify")?"/userdetail":"/teamdetail"}>
                 <Edit className="bx bx-check"/>
