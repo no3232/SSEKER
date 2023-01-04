@@ -34,7 +34,7 @@ export interface languageList {
 
 export interface Selection {
   title: string;
-  options: any[];
+  options: any;
   handler: any;
 }
 

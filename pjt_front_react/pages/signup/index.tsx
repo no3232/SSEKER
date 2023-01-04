@@ -22,52 +22,37 @@ const SignupPage = () => {
     // console.log({ signupEmail, signupPassword, signupPasswordConfirm });
     const getKey = await axios({
       method: "POST",
-      // url: "https://ssekerapi.site/dj-accounts/signup/",
-      // data: {
-      //   username: signupEmail,
-      //   password1: signupPassword,
-      //   password2: signupPasswordConfirm,
-      // },
-      url: "https://ssekerapi.site/dj-accounts/login/",
+      url: "https://ssekerapi.site/dj-accounts/signup/",
       data: {
         username: signupEmail,
-        password: signupPassword,
+        password1: signupPassword,
+        password2: signupPasswordConfirm,
       },
     })
       .then((response) => {
         ctxKeyinfo.addKey(response.data.key);
         return response.data.key;
-        // route.push("/signup/complete");
       })
       .catch((err) => {
         console.log(err.response);
-        return '0';
+        return '';
       });
       console.log(getKey)
-      const getUserInfo = await axios({
-        method: "GET",
-        // url: "https://https://ssekerapi.site/dj-accounts/user/",
-        // data: {
-        //   username: signupEmail,
-        //   password1: signupPassword,
-        //   password2: signupPasswordConfirm,
-        // },
-        url: `https://ssekerapi.site/accounts/${signupEmail}`,
-        // headers: {
-        //   Authorization: `Token ${getKey}`
-        // }
-      })
-        .then((response) => {
-          
-          console.log(response.data);
-          ctxUserinfo.addUser(response.data)
-          console.log(ctxUserinfo)
-          // route.push("/signup/complete");
+      if (getKey !== '') {
+
+        const getUserInfo = await axios({
+          method: "GET",
+          url: `https://ssekerapi.site/accounts/${signupEmail}`,
         })
-        .catch((err) => {
-          console.log(err.response);
-          return;
-        });
+          .then((response) => {
+            ctxUserinfo.addUser(response.data)
+            route.push("/signup/ssafyinfo");
+          })
+          .catch((err) => {
+            console.log(err.response);
+            return;
+          });
+      }
   };
 
   const getSignupEmail = (email: string) => {

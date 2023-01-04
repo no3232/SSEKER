@@ -1,45 +1,64 @@
 import styled from "styled-components";
 import Router from "next/router";
 import React, { SyntheticEvent, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import TitleText from "../../common/TitleText";
 import SubtitleText from "../../common/SubtitleText";
 import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
-import { ListFormat } from 'typescript';
+import Select from '../../component/Select';
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
+
+interface skillObjType {
+  [key: string]: number
+}
 
 const SkillInfo = () => {
   const route = Router;
-  const [signupSkills, setSignupSkills] = useState<string[]>([]);
+  const [signupPosition, setSignupPosition] = useState<number>();
+  const [signupSkills, setSignupSkills] = useState<number[]>([]);
+
+  const positionOption = {1: "프론트엔드", 2: "백엔드", 3: "DebOps", 4: "UI&UX"}
 
   const getSkill = (event: SyntheticEvent): void => {
     const eventTarget = event.target as HTMLElement;
-    if (signupSkills.includes(eventTarget.innerText)) {
+    const skillObj: skillObjType = {'vuejs': 1, 'react': 2, 'django': 8, 'spring': 9, 'linux': 10, 'git': 16, 'xd': 14, 'figma': 13}
+
+    if (signupSkills.includes(skillObj[eventTarget.innerText])) {
       const newSkillset = signupSkills.filter((skill) => {
-        if (skill === eventTarget.innerText) {
+        if (skill === skillObj[eventTarget.innerText]) {
           return false;
         }
         return true;
       });
       setSignupSkills(newSkillset);
     } else {
-      setSignupSkills([...signupSkills, eventTarget.innerText]);
+      setSignupSkills([...signupSkills, skillObj[eventTarget.innerText]]);
     }
   };
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
+    console.log(signupPosition)
+    console.log(signupSkills)
     axios({
-      method: 'PUT',
-      url: 'https://ssekerapi.site/accounts/ssafy123@ssafy.com',
-      headers: {Authorization: "Token 46b92fa86253f5ed1c3fb5a5e94d65d8a68e8293"},
-      data: {skill: [1, 2, 3, 4]}
+      method: "PUT",
+      url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
+      headers: {
+        Authorization: `Token ${getKeyCookies("key")}`,
+      },
+      data: { skill: signupSkills },
     })
-      .then(response => console.log(response))
-      .catch()
+      .then((response) => console.log(response))
+      .catch();
     route.push("/signup/after");
   };
+
+  const getPosition = (position: number) => {
+    console.log(position)
+    setSignupPosition(position)
+  }
 
   return (
     <SkillBox>
@@ -47,6 +66,10 @@ const SkillInfo = () => {
         <TitleText>Skill Info</TitleText>
       </TitleBox>
       <FormBox onSubmit={moveToAfter}>
+        <SkillLabelText>
+          <SubtitleText>선호 포지션</SubtitleText>
+        </SkillLabelText>
+        <Select title="포지션 선택" options={positionOption} handler={getPosition} />
         <SkillLabelText>
           <SubtitleText>프론트엔드</SubtitleText>
         </SkillLabelText>
@@ -77,7 +100,7 @@ const SkillInfo = () => {
             <StackIcon stack='linux' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='linux' clickable={true} textShow={true} />
+            <StackIcon stack='git' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -88,7 +111,7 @@ const SkillInfo = () => {
             <StackIcon stack='figma' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='linux' clickable={true} textShow={true} />
+            <StackIcon stack='xd' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <MainButton type='submit'>작성 완료</MainButton>
