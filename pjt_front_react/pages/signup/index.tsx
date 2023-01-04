@@ -8,6 +8,7 @@ import InputStyle from "../../component/InputStyle";
 import axios from "axios";
 import { UserInfoContext } from "../../modules/context/UserInfoContext";
 import { KeyContext } from "../../modules/context/KeyContext";
+import { setKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SignupPage = () => {
   const route = Router;
@@ -30,7 +31,7 @@ const SignupPage = () => {
       },
     })
       .then((response) => {
-        ctxKeyinfo.addKey(response.data.key);
+        setKeyCookies("key", response.data.key)
         return response.data.key;
       })
       .catch((err) => {

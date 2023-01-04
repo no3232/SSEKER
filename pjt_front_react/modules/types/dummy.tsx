@@ -93,22 +93,35 @@ export interface userData {
 
 export interface teamData {
   id: number;
+  title: string;
+  skill: skillObject[];
+  fixed_count: number;
+  prticipant_count: number;
+  status: number;
   campus: campusObject;
   part: number;
-  skill: number[];
-  prticipant_count: number;
-  title: string;
-  status: number;
 }
 
 export interface listCardTypes {
   data: userData | teamData;
 }
 
-export interface EachCardTypes {
+export interface EachUserCardTypes {
   id: number;
   title: string;
   stack: string[];
+  part: number;
+  class: string;
+}
+
+export interface EachTeamCardTypes {
+  id: number;
+  title: string;
+  stack: string[];
+  part: number;
+  class: string;
+  fixedcount: number;
+  participant: number;
   status: number;
 }
 
