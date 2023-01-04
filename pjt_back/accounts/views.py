@@ -1,6 +1,10 @@
 from .models import User
-from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer
-from objects.models import Campus
+
+
+
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, RecommendUserListSerializer
+
+from objects.models import Campus, SkillCategory
 from objects.serializers import SkillSerializer, CampusSerializer
 
 from django.http import JsonResponse
@@ -70,7 +74,12 @@ def peoples(request):
         }
         peoples_json.append(people)
 
-    context = {'peoples': peoples_json}
+    peoples_count = len(User.objects.all()) - 1
+    peoples = peoples_json
+    context = {
+        'peoples_count': peoples_count,
+        'peoples': peoples,
+        }
     return JsonResponse(context)
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -105,4 +114,22 @@ def search(request):
     name = unquote(request.GET.get('name'))
     users = User.objects.filter(name__contains=name)
     serializer = UserSearchSerializer(users, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def recommend_users(request):
+    position        = SkillCategory.objects.all()
+    frontend_user   = {0: User.objects.filter(position=position[0]).exists()}
+    backend_user    = {1: User.objects.filter(position=position[1]).exists()} 
+    uiux_user       = {2: User.objects.filter(position=position[2]).exists()}
+    devops_user     = {3: User.objects.filter(position=position[3]).exists()}
+    
+    position_users  = [frontend_user, backend_user, uiux_user, devops_user]
+    recommend_users = []
+    for temp_user in position_users:
+        for pos, flag in temp_user.items():
+            if flag:
+                user = User.objects.filter(position=position[pos]).order_by('?')[0]
+                recommend_users.append(user)
+    serializer = RecommendUserListSerializer(recommend_users, many=True)
     return Response(serializer.data)

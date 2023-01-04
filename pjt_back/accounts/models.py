@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True)
     campus = models.ForeignKey(Campus, blank=True, null=True, on_delete=models.CASCADE)
     part = models.IntegerField(default=0)
     skill = models.ManyToManyField(Skill, blank=True)

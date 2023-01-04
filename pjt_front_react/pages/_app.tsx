@@ -38,6 +38,28 @@ export default function App({ Component, pageProps }: AppProps) {
       })
     })
     }
+  // if (getKeyCookies("key") !== undefined) {
+  //   axios({
+  //     method: "GET",
+  //     url: "https://ssekerapi.site/dj-accounts/user/",
+  //     headers: {
+  //       Authorization: `Token ${getKeyCookies("key")}`,
+  //     },
+  //   })
+  //   .then(response => {
+  //     console.log(response.data.username)
+  //     const id = response.data.username
+  //     axios({
+  //     method: "GET",
+  //     url: `https://ssekerapi.site/accounts/${id}`,
+  //   })
+  //     .then((response) => {
+  //       ctxUserinfo.addUser(response.data)
+  //       console.log(ctxUserinfo)
+  //       return
+  //     })
+  //   })
+  //   }
   
 
   return (

@@ -6,51 +6,69 @@ import UserCardList from "../../component/UserCardList";
 import ClassSelect from "../../common/ClassSelect";
 import SearchBar from "../../component/SearchBar";
 import StackFilter from "../../component/StackFilter";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { userData, listCardTypes } from "../../modules/types/dummy";
-
-// const getUsers = async (): Promise<userData | string> => {
-//   try {
-//     // 👇️ const data: GetUsersResponse
-//     const { data, status } = await axios.get<userData>(
-//       "http://ec2-3-36-247-242.ap-northeast-2.compute.amazonaws.com:8000/accounts/",
-//       {
-//         headers: {
-//           Accept: "application/json",
-//         },
-//       }
-//     );
-
-//     // console.log(JSON.stringify(data, null, 4));
-
-//     // // 👇️ "response status is: 200"
-//     // console.log("response status is: ", status);
-
-//     return data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       console.log("error message: ", error.message);
-//       return error.message;
-//     } else {
-//       console.log("unexpected error: ", error);
-//       return "An unexpected error occurred";
-//     }
-//   }
-// };
+import DropDown from '../../component/DropDown';
 
 const UserListPage = () => {
   const [filterOpen, setFilterOpen] = useState(false);
-  const [userList, setUserList] = useState<listCardTypes | any>();
-  const [pageNum, setPageNum] = useState<number>(1);
+  const [userList, setUserList] = useState<listCardTypes[] | any>([]);
+  const [pageNum, setPageNum] = useState<{[key: string]: number}>({page: 1, totalPage: 1});
+  const [searchList, setSearchList] = useState([]);
+  const [target, setTarget] = useState<Element | null>(null);
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `https://ssekerapi.site/accounts/?count=${pageNum}&campus=&part=&skills`,
+      url: `https://ssekerapi.site/accounts/?count=${pageNum.page}&campus=&part=&skills`,
     }).then((response) => {
-      setUserList(response.data);
+      if (response.status === 200) {
+        setUserList((prev: any) => {
+          if (response.data.peoples.length > 0) {
+            const peopleList = Object.values(response.data.peoples)
+            return [...prev, ...peopleList]
+              
+          }
+          return response.data.peoples;
+        });
+
+        setPageNum((prev) => ({
+          ...prev,
+          totalPage: Math.ceil(response.data.peoples_count/20)
+        }));
+      }
     });
-  }, [pageNum]);
+  }, [pageNum.page]);
+
+  const handleIntersect = useCallback(
+    ([entry]: IntersectionObserverEntry[]) => {
+      if (entry.isIntersecting) {
+        setPageNum((prev) => {
+          if (prev.totalPage > prev.page) {
+            return {
+              ...prev,
+              page: prev.page + 1
+            };
+          }
+          return prev;
+        });
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersect, {
+      threshold: 0,
+      root: null
+    });
+
+    target && observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [handleIntersect, target]);
 
   const openFilter = () => {
     setFilterOpen((prevState: boolean) => !prevState);
@@ -62,6 +80,7 @@ const UserListPage = () => {
         <TitleText>팀원을 찾고 싶어요!</TitleText>
       </TitleBox>
       <SearchBar />
+      {/* <DropDown /> */}
       {/* <FilterIconBox onClick={openFilter}>
         {filterOpen ? (
           <i className='bx bx-x'></i>
@@ -74,6 +93,7 @@ const UserListPage = () => {
         <StackFilter />
       </FilterOption> */}
       <UserCardList {...userList} />
+      <Spinner ref={setTarget}></Spinner>
     </UserBox>
   );
 };
@@ -102,6 +122,10 @@ const FilterIconBox = styled.div`
   margin-right: 15px;
   margin-bottom: 8px;
 `;
+
+const Spinner = styled.div`
+  height: 100px
+`
 
 const DUMMY_LIST = [
   {
