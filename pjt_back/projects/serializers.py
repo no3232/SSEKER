@@ -51,7 +51,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectListSerializer(serializers.ModelSerializer):
     participant_count = serializers.IntegerField(source='participant.count', read_only=True)
+    skill = SkillSerializer(many=True)
+    campus = CampusSerializer()
 
     class Meta:
         model = Project
-        fields = ('id', 'title', 'skill', 'fixed_count', 'participant_count', 'status',)
+        fields = ('id', 'title', 'skill', 'fixed_count', 'participant_count', 'status', 'campus', 'part')
