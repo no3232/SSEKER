@@ -1,6 +1,6 @@
-from .models import Project
-from .serializers import ProjectSerializer, ProjectListSerializer
-from objects.models import Campus
+from .models import Project, Applicant
+from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, UpdateApplicantSerializer
+from objects.models import Campus, SkillCategory
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -72,3 +72,27 @@ def project_detail(request, project_id=None):
             else:
                 print(serializer.errors)
             return Response(status=status.HTTP_201_CREATED)
+
+@api_view(['POST', 'GET', 'PUT', 'DELETE'])
+def apply_project(request):
+    user = request.user
+    project_id = request.GET.get('project_id')
+    applicant = Applicant.objects.filter(project=project_id).filter(user=user)
+    if request.method == 'POST':
+        serializer = ApplicantSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
+    elif request.method == 'GET':
+        applicants = Applicant.objects.filter(project=project_id)
+        serializer = ApplicantSerializer(applicants, many=True)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ApplicantSerializer(applicant, data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=user)
+        else:
+            print(serializer.errors)
+    elif request.method == 'DELETE':
+        applicant.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_201_CREATED)
