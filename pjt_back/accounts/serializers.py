@@ -81,3 +81,11 @@ class UserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'name', 'campus', 'part',)
+
+
+class RecommendUserListSerializer(serializers.ModelSerializer):
+    position = SkillCategorySerializer()
+
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'campus', 'part', 'comment', 'position')

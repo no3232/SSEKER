@@ -1,6 +1,6 @@
 from .models import User
-from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer
-from objects.models import Campus
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, ADuserListSerializer
+from objects.models import Campus, SkillCategory
 from objects.serializers import SkillSerializer, CampusSerializer
 
 from django.http import JsonResponse
@@ -105,4 +105,16 @@ def search(request):
     name = unquote(request.GET.get('name'))
     users = User.objects.filter(name__contains=name)
     serializer = UserSearchSerializer(users, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def recommend_users(request):
+    position        = SkillCategory.objects.all()
+    frontend_user   = User.objects.filter(position=position[0]).order_by('?')[0]
+    backend_user    = User.objects.filter(position=position[1]).order_by('?')[0]
+    uiux_user       = User.objects.filter(position=position[2]).order_by('?')[0]
+    devops_user     = User.objects.filter(position=position[3]).order_by('?')[0]
+
+    recommend_users = [frontend_user, backend_user, uiux_user, devops_user]
+    serializer      = ADuserListSerializer(recommend_users, many=True)
     return Response(serializer.data)
