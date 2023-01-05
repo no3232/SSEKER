@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const ctxUserinfo = useContext(UserInfoContext)
 
-  console.log(getKeyCookies("key"))
+  
   if (getKeyCookies("key") !== undefined) {
     let key = ""
     axios({
