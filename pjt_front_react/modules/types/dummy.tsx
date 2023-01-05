@@ -11,7 +11,6 @@ export interface Stack {
     stack: string;
     clickable: boolean;
     textShow: boolean;
-    list: string;
 }
 
 export interface DetailHeaderType {

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
-const ModifyHeader = ({name}: {name:any}) => {
+const ModifyHeader = ({name}: {name:string}) => {
     const router = useRouter().pathname;
 
     return <TitleBox>

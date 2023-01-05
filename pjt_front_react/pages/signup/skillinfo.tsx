@@ -79,10 +79,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='vuejs' clickable={true} textShow={true} list={""}/>
+            <StackIcon stack='vuejs' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='react' clickable={true} textShow={true} list={""} />
+            <StackIcon stack='react' clickable={true} textShow={true}  />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -90,10 +90,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='django' clickable={true} textShow={true} list={""} />
+            <StackIcon stack='django' clickable={true} textShow={true}  />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='spring' clickable={true} textShow={true} list={""} />
+            <StackIcon stack='spring' clickable={true} textShow={true}  />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -101,10 +101,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='linux' clickable={true} textShow={true} list={""} />
+            <StackIcon stack='linux' clickable={true} textShow={true}  />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='Git' clickable={true} textShow={true} list={""} />
+            <StackIcon stack='Git' clickable={true} textShow={true}  />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -112,10 +112,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='figma' clickable={true} textShow={true} list={""}/>
+            <StackIcon stack='figma' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='XD' clickable={true} textShow={true} list={""}/>
+            <StackIcon stack='XD' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <MainButton type='submit'>작성 완료</MainButton>

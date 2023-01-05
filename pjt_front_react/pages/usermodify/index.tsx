@@ -16,7 +16,7 @@ import { skillList, skillObject } from "../../modules/types/dummy";
 import { language, skill } from "../../modules/StackIconDummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
-const index = () => {
+const Index = () => {
     const [allSkills, setAllSkills] = useState<skillObject[]>([])
     const [userInfo, setUserInfo] = useState<defaultUserInfo>({
         id: 0,
@@ -263,7 +263,7 @@ const index = () => {
     </Container>
 }
 
-export default index;
+export default Index;
 
 const Rank = styled.i < {
     color: string
