@@ -77,7 +77,7 @@ def project_detail(request, project_id=None):
 def apply_project(request):
     user = request.user
     project_id = request.GET.get('project_id')
-    applicant = Applicant.objects.filter(project=project_id).filter(user=user)
+    applicant = Applicant.objects.filter(project=project_id).filter(user=user)[0]
     if request.method == 'POST':
         serializer = ApplicantSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,8 +90,6 @@ def apply_project(request):
         serializer = ApplicantSerializer(applicant, data=request.data)
         if serializer.is_valid():
             serializer.save(user=user)
-        else:
-            print(serializer.errors)
     elif request.method == 'DELETE':
         applicant.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
