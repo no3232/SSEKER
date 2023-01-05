@@ -23,3 +23,17 @@ def objects(request):
         'skill_category': skill_category.data,
     }
     return Response(context)
+
+@api_view(['GET'])
+def get_skill_language(request):
+    skills = SkillSerializer(Skill.objects.all(), many=True).data
+    languages = LanguageSerializer(Language.objects.all(), many=True).data
+    
+    json_list = []
+    for skill in skills:
+        temp_skill = {skill['title']: skill}
+        json_list.append(temp_skill)
+    for language in languages:
+        temp_language = {language['title']: language}
+        json_list.append(temp_language)
+    return Response(json_list)
