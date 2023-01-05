@@ -13,223 +13,240 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { skill } from "../../modules/StackIconDummy";
+import { language, skill } from "../../modules/StackIconDummy";
 import { userInfo } from "../../modules/types/UserInfoTypes";
 
 const index = () => {
-    // const [userInfo, setUserInfo] = useState<userInfo>({
-    //     id: 0,
-    //     username: "",
-    //     campus: {
-    //         id: 0,
-    //         title: "",
-    //         partcount: 0
-    //     },
-    //     part: 0,
-    //     skill: [],
-    //     github: "",
-    //     blog: "",
-    //     level: {
-    //         id: 0,
-    //         level: "",
-    //         color: ""
-    //     },
-    //     track: {
-    //         id: 0,
-    //         track: ""
-    //     },
-    //     langauge: [],
-    //     email: "",
-    //     introduce: ""
-    // })
+    const [allSkills, setAllSkills] = useState<skillObject[]>([])
+    const [allLangs, setAllLangs] = useState<skillObject[]>([])
+    const [userInfo, setUserInfo] = useState<userInfo>({
+        id: 0,
+        username: "",
+        campus: {
+            id: 0,
+            title: "",
+            partcount: 0
+        },
+        part: 0,
+        skill: [],
+        github: "",
+        blog: "",
+        level: {
+            id: 0,
+            level: "",
+            color: ""
+        },
+        track: {
+            id: 0,
+            track: ""
+        },
+        langauge: [],
+        email: "",
+        introduce: ""
+    })
 
-    // // const [selectRank, setSelectRank] = useState<Boolean>(false);
-    // const test = ["I", "II", "III", "IV", "V"];
-    // const rank = [
-    //     [
-    //         "Unrated", "#222222"
-    //     ],
-    //     [
-    //         "Bronze", "#a94e00"
-    //     ],
-    //     [
-    //         "Silver", "#365471"
-    //     ],
-    //     [
-    //         "Gold", "#f4c46a"
-    //     ],
-    //     [
-    //         "Platinum", "#22e1a2"
-    //     ],
-    //     [
-    //         "Diamond", "#05b6fc"
-    //     ],
-    //     [
-    //         "Ruby", "#ff0766"
-    //     ]
-    // ]
+    // const [selectRank, setSelectRank] = useState<Boolean>(false);
+    const test = ["I", "II", "III", "IV", "V"];
+    const rank = [
+        [
+            "Unrated", "#222222"
+        ],
+        [
+            "Bronze", "#a94e00"
+        ],
+        [
+            "Silver", "#365471"
+        ],
+        [
+            "Gold", "#f4c46a"
+        ],
+        [
+            "Platinum", "#22e1a2"
+        ],
+        [
+            "Diamond", "#05b6fc"
+        ],
+        [
+            "Ruby", "#ff0766"
+        ]
+    ]
 
-    // const rankoptions: JSX.Element[] = rank.map((item : string[], index:number) => {
-    //     return <RankBox key={index}>
-    //         <Rank className="bx bxs-crown" color={item[1]} /> {item[0]}
-    //     </RankBox>
-    // })
+    const rankoptions: JSX.Element[] = rank.map((item : string[], index:number) => {
+        return <RankBox key={index}>
+            <Rank className="bx bxs-crown" color={item[1]} /> {item[0]}
+        </RankBox>
+    })
 
-    // // const BackjoonHandler = () => {
-    // //     setSelectRank(true);
-    // // }
-
-    // const mySkills:{[key:number]:skillList[]} = {
-    //     1:[],
-    //     2:[],
-    //     3:[],
-    //     4:[]
+    // const BackjoonHandler = () => {
+    //     setSelectRank(true);
     // }
 
-    // let mySkillList:string[] = []
+    const mySkills:{[key:number]:skillList[]} = {
+        1:[],
+        2:[],
+        3:[],
+        4:[]
+    }
 
-    // for (let i = 0; i < userInfo.skill.length; i++) {
-    //     mySkillList.push(userInfo.skill[i].title)
-    // }
+    let mySkillList:string[] = []
 
-    // for (const i in skill) {
-    //     const info = userInfo.skill.filter((item:skillObject)=> {
-    //         return item.title === i
-    //     })
+    for (let i = 0; i < userInfo.skill.length; i++) {
+        mySkillList.push(userInfo.skill[i].title)
+    }
 
-    //     if (mySkillList.includes(i)) {
-    //         switch (skill[i].category) {
-    //             case 1:
-    //                 mySkills[1].push({...info[0], selected:true})
-    //                 break;
-    //             case 2:
-    //                 mySkills[2].push({...info[0], selected:true})
-    //                 break;
-    //             case 3:
-    //                 mySkills[3].push({...info[0], selected:true})
-    //                 break;
-    //             case 4:
-    //                 mySkills[4].push({...info[0], selected:true})
-    //                 break;
-    //         }
-    //     } else {
-    //         switch (skill[i].category) {
-    //             case 1:
-    //                 mySkills[1].push({...info[0], selected:false})
-    //                 break;
-    //             case 2:
-    //                 mySkills[2].push({...info[0], selected:false})
-    //                 break;
-    //             case 3:
-    //                 mySkills[3].push({...info[0], selected:false})
-    //                 break;
-    //             case 4:
-    //                 mySkills[4].push({...info[0], selected:false})
-    //                 break;
-    //         }
-    //     }
-    // }
+    for (const i in allSkills) {
 
-    // useEffect(() => {
-    //     axios
-    //         .get('https://ssekerapi.site/accounts/jay')
-    //         .then((res) => {
-    //             const {data} = res;
+        const SkillsCategory = parseInt(allSkills[i].category)
+        const title = allSkills[i].title
+        
+        if (mySkillList.includes(title)) {
+            const info = userInfo.skill.filter((item:skillObject)=> {
+                return item.title === title
+            })
 
-    //             setUserInfo(data);
-    //         })
-    // }, [])
+            switch (SkillsCategory) {
+                case 1:
+                    mySkills[1].push({...info[0], selected:true})
+                    break;
+                case 2:
+                    mySkills[2].push({...info[0], selected:true})
+                    break;
+                case 3:
+                    mySkills[3].push({...info[0], selected:true})
+                    break;
+                case 4:
+                    mySkills[4].push({...info[0], selected:true})
+                    break;
+            }
+        } else {
+            const info:skillObject = allSkills[i]
+            switch (SkillsCategory) {
+                case 1:
+                    mySkills[1].push({...info, selected:false})
+                    break;
+                case 2:
+                    mySkills[2].push({...info, selected:false})
+                    break;
+                case 3:
+                    mySkills[3].push({...info, selected:false})
+                    break;
+                case 4:
+                    mySkills[4].push({...info, selected:false})
+                    break;
+            }
+        }
+    }
 
-    // console.log(mySkills)
+    useEffect(() => {
+        axios
+            .get('https://ssekerapi.site/accounts/jay')
+            .then((res) => {
+                const {data} = res;
 
-    // return <Container>
-    //     <GlobalStyle/>
-    //     <NanumSquareRegular/>
-    //     <NanumSquareBold/>
-    //     <ModifyHeader name={userInfo.username}/>
-    //     <CampusBox>
-    //         <SubtitleText className="title">매터모스트 아이디</SubtitleText>
-    //         <InputBox placeholder={userInfo.email} />
-    //     </CampusBox>
-    //     <CampusBox>
-    //         <SubtitleText className="title">소속캠퍼스</SubtitleText>
-    //         <ClassSelect/>
-    //     </CampusBox>
-    //     <DetailBox>
-    //         <SubtitleText className="title">Skill</SubtitleText>
-    //         <SubBox>
-    //             <SubtitleText>언어</SubtitleText>
+                setUserInfo(data);
+            })
+            .catch((err)=>console.log(err))
 
-    //             <Icons>
-    //                 {/* <StackSelect list={"langauge"} /> */}
-    //             </Icons>
-    //         </SubBox>
+        axios.get('https://ssekerapi.site/objects/')
+            .then((res) => {
+                const {data} = res;
 
-    //         <SubBox>
-    //             <SubtitleText>프론트엔드</SubtitleText>
+                setAllSkills(data.skill)
+                setAllLangs(data.language)
+            })
+            .catch((err)=>console.log(err))
+    }, [])
 
-    //             <Icons>
-    //                 <StackSelect list={"skills"} mySkills={mySkills} type={1} />
-    //             </Icons>
-    //         </SubBox>
-    //         <SubBox>
-    //             <SubtitleText>백엔드</SubtitleText>
+    console.log(allLangs)
 
-    //             <Icons>
-    //                 {/* <StackSelect list={"skills"} mySkills={mySkills} type={2} /> */}
-    //             </Icons>
-    //         </SubBox>
-    //         <SubBox>
-    //             <SubtitleText>UI/UX</SubtitleText>
+    return <Container>
+        <GlobalStyle/>
+        <NanumSquareRegular/>
+        <NanumSquareBold/>
+        <ModifyHeader name={userInfo.username}/>
+        <CampusBox>
+            <SubtitleText className="title">매터모스트 아이디</SubtitleText>
+            <InputBox placeholder={userInfo.email} />
+        </CampusBox>
+        <CampusBox>
+            <SubtitleText className="title">소속캠퍼스</SubtitleText>
+            <ClassSelect/>
+        </CampusBox>
+        <DetailBox>
+            <SubtitleText className="title">Skill</SubtitleText>
+            <SubBox>
+                <SubtitleText>언어</SubtitleText>
 
-    //             <Icons>
-    //                 {/* <StackSelect /> */}
-    //             </Icons>
-    //         </SubBox>
-    //         <SubBox>
-    //             <SubtitleText>Devops</SubtitleText>
+                <Icons>
+                    {/* <StackSelect list={"langauge"} mySkills={mySkills} type={0} /> */}
+                </Icons>
+            </SubBox>
 
-    //             <Icons>
-    //                 {/* <StackSelect /> */}
-    //             </Icons>
-    //         </SubBox>
-    //         <SubBox>
-    //             <SubtitleText>참고</SubtitleText>
+            <SubBox>
+                <SubtitleText>프론트엔드</SubtitleText>
 
-    //             <Icons>
-    //                 {/* <StackSelect /> */}
-    //             </Icons>
-    //         </SubBox>
-    //     </DetailBox>
+                <Icons>
+                    <StackSelect list={"skills"} mySkills={mySkills} type={1} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>백엔드</SubtitleText>
 
-    //     <DetailBox className="rank">
-    //         <SubtitleText>백준 랭크</SubtitleText>
+                <Icons>
+                    <StackSelect list={"skills"} mySkills={mySkills} type={2} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>UI/UX</SubtitleText>
 
-    //         {/* <Select title="티어 선택" options={rankoptions} handler={BackjoonHandler}/>
-    //         {
-    //             selectRank
-    //                 ? <Select title="랭크 선택" options={test} handler={null}/>
-    //                 : null
-    //         } */}
-    //     </DetailBox>
+                <Icons>
+                    <StackSelect list={"skills"} mySkills={mySkills} type={3} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>Devops</SubtitleText>
 
-    //     <DetailBox className="rank">
-    //         <SubtitleText>GitHub</SubtitleText>
+                <Icons>
+                    <StackSelect list={"skills"} mySkills={mySkills} type={4} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>참고</SubtitleText>
 
-    //         <InputBox placeholder={userInfo.github?userInfo.github:"깃허브 주소를 입력해주세요"} />
-    //     </DetailBox>
+                <Icons>
+                    {/* <StackSelect /> */}
+                </Icons>
+            </SubBox>
+        </DetailBox>
 
-    //     <DetailBox className="rank">
-    //         <SubtitleText>Blog</SubtitleText>
+        <DetailBox className="rank">
+            <SubtitleText>백준 랭크</SubtitleText>
 
-    //         <InputBox placeholder={userInfo.blog?userInfo.blog:"블로그 주소를 입력해주세요"} />
-    //     </DetailBox>
+            {/* <Select title="티어 선택" options={rankoptions} handler={BackjoonHandler}/>
+            {
+                selectRank
+                    ? <Select title="랭크 선택" options={test} handler={null}/>
+                    : null
+            } */}
+        </DetailBox>
 
-    //     <DetailBox>
-    //         <SubtitleText>소개</SubtitleText>
-    //         <IntroBox placeholder={userInfo.introduce?userInfo.introduce:'자기 소개를 넣어주세요'}></IntroBox>
-    //     </DetailBox>
-    // </Container>
+        <DetailBox className="rank">
+            <SubtitleText>GitHub</SubtitleText>
+
+            <InputBox placeholder={userInfo.github?userInfo.github:"깃허브 주소를 입력해주세요"} />
+        </DetailBox>
+
+        <DetailBox className="rank">
+            <SubtitleText>Blog</SubtitleText>
+
+            <InputBox placeholder={userInfo.blog?userInfo.blog:"블로그 주소를 입력해주세요"} />
+        </DetailBox>
+
+        <DetailBox>
+            <SubtitleText>소개</SubtitleText>
+            <IntroBox placeholder={userInfo.introduce?userInfo.introduce:'자기 소개를 넣어주세요'}></IntroBox>
+        </DetailBox>
+    </Container>
 }
 
 export default index;
