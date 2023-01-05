@@ -6,14 +6,11 @@ import {dropDown, skillList} from "../modules/types/dummy";
 import Stack from "./Stack";
 import StackSelector from "./StackSelector";
 
-const DropDown = ({stacks, list, type} : dropDown) => {
+const DropDown = ({stacks, type} : dropDown) => {
     const [stackList, setStackList] = useState<skillList[]>([]);
 
     useEffect(()=>{
-        if (type !== 0)
-            setStackList(stacks[type])
-        else
-            setStackList(stacks)
+        setStackList(stacks[type])
     }, [stacks])
 
     const UpdateStackState = (stackId : number, newState : boolean) => {
@@ -30,15 +27,12 @@ const DropDown = ({stacks, list, type} : dropDown) => {
             ))
         }
     }
-
-    console.log("렌더링 왜 여러번")
     
     const Stacks = stackList.map(s => {
         if (s.selected) {
             return <Stack
                 stack={s}
                 key={s.id}
-                list={list}
                 UpdateStackState={UpdateStackState}/>
         }
     })
@@ -48,7 +42,6 @@ const DropDown = ({stacks, list, type} : dropDown) => {
             {Stacks}
         </StackEl>
         <StackSelector
-            list={list}
             stackListHandle={{
                 stackList,
                 UpdateStackState
