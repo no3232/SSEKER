@@ -61,8 +61,12 @@ const index = () => {
     //     }
     // }
 
-    // const language: JSX.Element[] = (userInfo.langauge === undefined)
-    //     ? (<span>"설정된 언어가 없습니다"</span>)
+    // console.log(userInfo)
+
+    // console.log("HIHI", userInfo.langauge)
+
+    // const language: JSX.Element[] | string = (userInfo.langauge.length === 0)
+    //     ? "설정된 언어가 없습니다"
     //     : userInfo.langauge.map(
     //         (item
     //         : StackElement|any) => <StackIcon
@@ -90,7 +94,7 @@ const index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    {/* {language()} */}
+                    {/* {language} */}
                 </Icons>
             </SubBox>
 

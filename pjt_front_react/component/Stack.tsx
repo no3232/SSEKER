@@ -7,8 +7,6 @@ const Stack = ({stack, UpdateStackState, list} : StackAll) => {
     const {id, title} = stack;
     const lst = (list==="langauge") ? language:skill;
 
-    console.log(stack)
-
     return <Body
         onClick={() => {
             UpdateStackState(id, false)

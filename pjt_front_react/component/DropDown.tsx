@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
-import {dropDown} from "../modules/types/dummy";
+import { SkillInfoContext } from "../modules/context/SkillContext";
+import {dropDown, skillList} from "../modules/types/dummy";
 
 import Stack from "./Stack";
 import StackSelector from "./StackSelector";
 
 const DropDown = ({stacks, list, type} : dropDown) => {
-    const [stackList, setStackList] = useState(stacks[type]);
+    const [stackList, setStackList] = useState<skillList[]>([]);
 
     useEffect(()=>{
-        setStackList(stacks[type])
-    }, [stackList])
+        setStackList(stacks[type])   
+    }, [stacks])
 
     const UpdateStackState = (stackId : number, newState : boolean) => {
         if (stackId) {
@@ -26,6 +27,8 @@ const DropDown = ({stacks, list, type} : dropDown) => {
             ))
         }
     }
+
+    console.log("렌더링 왜 여러번")
     
     const Stacks = stackList.map(s => {
         if (s.selected) {
