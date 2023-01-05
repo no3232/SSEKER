@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle"
 
 const SearchBar = () => {
+  const [listOpne, setListOpen] = useState(false)
+
+  const Opening = () => {
+    setListOpen(true)
+  }
   return (
     <SearchContainer>
       <GlobalStyle />
@@ -10,14 +16,26 @@ const SearchBar = () => {
           className='searchInput'
           type='text'
           placeholder='focus here to search'
+          onFocus={Opening}
+          // onBlur={}
         />
         <SearchInputIcon className='bx bx-search'></SearchInputIcon>
       </SearchInputWrapper>
+      {listOpne &&
+        (<SearchResultList className='searchList'>
+        <p>123</p>
+        <p>123123</p>
+        </SearchResultList>)
+      }
     </SearchContainer>
   );
 };
 
 export default SearchBar;
+
+const SearchResultList = styled.div`
+
+`
 
 const SearchContainer = styled.div`
   display: flex;

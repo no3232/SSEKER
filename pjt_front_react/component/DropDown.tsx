@@ -1,14 +1,16 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
-import {testElem} from "../modules/types/dummy";
+import {dropDown} from "../modules/types/dummy";
 
 import Stack from "./Stack";
 import StackSelector from "./StackSelector";
 
-const DropDown = ({stacks} : {
-    stacks: testElem[]
-}) => {
-    const [stackList, setStackList] = useState(stacks);
+const DropDown = ({stacks, list, type} : dropDown) => {
+    const [stackList, setStackList] = useState(stacks[type]);
+
+    useEffect(()=>{
+        setStackList(stacks[type])
+    }, [stackList])
 
     const UpdateStackState = (stackId : number, newState : boolean) => {
         if (stackId) {
@@ -24,21 +26,23 @@ const DropDown = ({stacks} : {
             ))
         }
     }
+    
+    const Stacks = stackList.map(s => {
+        if (s.selected) {
+            return <Stack
+                stack={s}
+                key={s.id}
+                list={list}
+                UpdateStackState={UpdateStackState}/>
+        }
+    })
 
     return <Body>
         <StackEl>
-            {
-                stackList.map(s => {
-                    if (s.selected) {
-                        return <Stack
-                            stack={s}
-                            key={s.id}
-                            UpdateStackState={UpdateStackState}/>
-                    }
-                })
-            }
+            {Stacks}
         </StackEl>
         <StackSelector
+            list={list}
             stackListHandle={{
                 stackList,
                 UpdateStackState

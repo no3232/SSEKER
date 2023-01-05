@@ -17,11 +17,11 @@ const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
         <ContentBox>
             <Info>
                 <NameBox>
-                    {name}
+                    {(name.length === 0)?name:"anonymous"}
                 </NameBox>
-                <IdBox>
-                    {mattermost}
-                </IdBox>
+                {/* <IdBox>
+                    {mattermost?mattermost:"anonymous"}
+                </IdBox> */}
             </Info>
 
             <Link href={(router === "/userdetail")? "/usermodify":"/teammodify"}>

@@ -51,7 +51,7 @@ const SsafyInfo = () => {
 
   const clickTrack = (event: any) => {
     event.preventDefault();
-    
+    console.log(event.target.value)
     setTrackSelect(event.target.value);
     return;
   };
@@ -62,8 +62,8 @@ const SsafyInfo = () => {
     console.log(getKeyCookies("key"))
     axios({
       method: 'PUT',
-      // url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
-      url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
+      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      // url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
@@ -96,7 +96,7 @@ const SsafyInfo = () => {
         <TrackUl>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === 1}
+              selected={trackSelect == 1}
               onClick={clickTrack}
               value='1'
             >
@@ -105,7 +105,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === 3}
+              selected={trackSelect == 3}
               onClick={clickTrack}
               value='3'
             >
@@ -114,7 +114,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === 2}
+              selected={trackSelect == 2}
               onClick={clickTrack}
               value='2'
             >
@@ -123,7 +123,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === 5}
+              selected={trackSelect == 5}
               onClick={clickTrack}
               value='5'
             >
@@ -132,7 +132,7 @@ const SsafyInfo = () => {
           </TrackLi>
           <TrackLi>
             <TrackButton
-              selected={trackSelect === 4}
+              selected={trackSelect == 4}
               onClick={clickTrack}
               value='4'
             >

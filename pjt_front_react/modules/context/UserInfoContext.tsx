@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { ContextUserInfoTypes } from "../types/dummy";
+import { defaultUserInfo, userInfo } from "../types/UserInfoTypes";
 
 // export const KeyContext = React.createContext({
 //   key: ''
@@ -10,17 +11,17 @@ import { ContextUserInfoTypes } from "../types/dummy";
 //   key: ''
 // };
 
-export const UserInfoContext = React.createContext<ContextUserInfoTypes>({
+export const UserInfoContext = React.createContext<userInfo>({
   id: 0,
   username: "",
-  campus: { id: 0, campus: "", partcount: 0 },
+  campus: { id: 0, title: "", partcount: 0 },
   part: 0,
-  skill: { id: 0, title: "", category: "" },
+  skill: [],
   github: "",
   blog: "",
-  level: { id: 0, BJlevel: "" },
+  level: { id: 0, BJlevel: "", color: "" },
   track: { id: 0, track: "" },
-  language: { id: 0, language: "" },
+  langauge: [],
   email: "",
   introduce: "",
   addUser: (userinfo: any) => {},
@@ -29,17 +30,17 @@ export const UserInfoContext = React.createContext<ContextUserInfoTypes>({
   // removeKey: () => {}
 });
 
-const defaultUserState = {
+const defaultUserState:defaultUserInfo = {
   id: 0,
   username: "",
-  campus: { id: 0, campus: "", partcount: 0 },
+  campus: { id: 0, title: "", partcount: 0 },
   part: 0,
-  skill: { id: 0, title: "", category: "" },
+  skill: [],
   github: "",
   blog: "",
-  level: { id: 0, BJlevel: "" },
+  level: { id: 0, BJlevel: "", color:"" },
   track: { id: 0, track: "" },
-  language: { id: 0, language: "" },
+  langauge: [],
   email: "",
   introduce: "",
 };
@@ -69,7 +70,7 @@ export const UserInfoProvider = (props: any) => {
   //   key: keyInfoState.key
   // }
 
-  const userinfo: ContextUserInfoTypes = {
+  const userinfo: userInfo = {
     id: userInfoState.id,
     username: userInfoState.username,
     campus: userInfoState.campus,
@@ -79,7 +80,7 @@ export const UserInfoProvider = (props: any) => {
     blog: userInfoState.blog,
     level: userInfoState.level,
     track: userInfoState.track,
-    language: userInfoState.language,
+    langauge: userInfoState.langauge,
     email: userInfoState.email,
     introduce: userInfoState.introduce,
     addUser: addUserHandler,

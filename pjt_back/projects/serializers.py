@@ -57,3 +57,19 @@ class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'title', 'skill', 'fixed_count', 'participant_count', 'status', 'campus', 'part')
+
+
+class ApplicantSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Applicant
+        fields = '__all__'
+        read_only_fields = ('user',)
+
+
+class UpdateApplicantSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Applicant
+        fields = '__all__'
+        read_only_fields = ('user', 'project')

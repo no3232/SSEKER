@@ -5,8 +5,8 @@ import {testElem} from "../modules/types/dummy";
 
 import StackListItem from "./StackListItem";
 
-const StackSelector = ({stackListHandle} : {
-    stackListHandle: any
+const StackSelector = ({stackListHandle, list} : {
+    stackListHandle: any, list:string
 }) => {
     const {stackList, UpdateStackState} = stackListHandle
     const [searchList, setSearchList] = useState([]);
@@ -67,6 +67,7 @@ const StackSelector = ({stackListHandle} : {
                 if(!s.selected) {
                     return <StackListItem
                         key={s.id}
+                        list={list}
                         stack={s}
                         removeItem={RemoveItem}
                         UpdateStackState={UpdateStackState}

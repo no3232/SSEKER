@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useRef} from "react";
 import styled from "styled-components";
-import { list } from "../modules/StackIconDummy";
+import { language, skill } from "../modules/StackIconDummy";
 import {StackList} from "../modules/types/dummy";
 
-const StackListItem = ({stack, removeItem, UpdateStackState} : StackList) => {
+const StackListItem = ({stack, removeItem, UpdateStackState, list} : StackList) => {
     const {id, title} = stack;
     const [visible, setVisible] = useState(false);
     const ItemRef = useRef(null !);
+    const lst = (list==="language") ? language:skill;
 
     let observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting === true) 
@@ -28,8 +29,8 @@ const StackListItem = ({stack, removeItem, UpdateStackState} : StackList) => {
         removeItem(id);
     }
 
-    return <ListItem visible={visible} color={list[title].color} ref={ItemRef} onClick={AddStack}>
-        {list[title].icon}
+    return <ListItem visible={visible} color={lst[title].color} ref={ItemRef} onClick={AddStack}>
+        {lst[title].icon}
         {title}
     </ListItem>
 }

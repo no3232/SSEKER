@@ -1,14 +1,24 @@
 import styled from "styled-components";
 import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
-import { EachCardTypes } from "../modules/types/dummy";
+import { EachUserCardTypes } from "../modules/types/dummy";
 
-const UserListCard = (props: EachCardTypes) => {
+const UserListCard = (props: EachUserCardTypes) => {
+  // console.log(props)
   const CardStack = (
     <>
-      {props.stack.map((stack) => (
-        <StackIcon key={stack} stack={stack} clickable={false} textShow={false} />
-      ))}
+      {props.stack.slice(0, 4).map((stack: any) => {
+        // console.log(stack.title)
+        return (
+          <StackIcon
+            key={stack.title}
+            stack={stack.title}
+            clickable={false}
+            textShow={false}
+            list={""}
+          />
+        );
+      })}
     </>
   );
 
@@ -17,12 +27,15 @@ const UserListCard = (props: EachCardTypes) => {
       <CardMainside>
         <CardTitleside>
           <TitleText>{props.title}</TitleText>
-          <CardStatusside>{props.status}</CardStatusside>
+          <CardStatusside>
+            {props.class}
+            {props.part}반
+          </CardStatusside>
         </CardTitleside>
-        <CardStackside>{CardStack}</CardStackside>
+        <CardStackside>{CardStack}{props.stack.length > 4 && <span>+ {props.stack.length - 4}</span>}</CardStackside>
       </CardMainside>
       <CardButtonside>
-        <CardButton className='bx bx-chevron-right'/>
+        <CardButton className='bx bx-chevron-right' />
       </CardButtonside>
     </CardOutside>
   );
@@ -48,7 +61,7 @@ const CardButtonside = styled.div`
 
 const CardButton = styled.i`
   font-size: 40px;
-`
+`;
 
 const CardMainside = styled.div`
   display: flex;
@@ -65,7 +78,7 @@ const CardTitleside = styled.div`
 
 const CardStatusside = styled.div`
   display: flex;
-  margin-left: 16px
+  margin-left: 16px;
 `;
 
 const CardStackside = styled.div`

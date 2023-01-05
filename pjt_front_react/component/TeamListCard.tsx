@@ -1,14 +1,25 @@
 import styled from "styled-components";
 import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
-import { EachCardTypes } from "../modules/types/dummy";
+import { EachTeamCardTypes } from "../modules/types/dummy";
 
-const TeamListCard = (props: EachCardTypes) => {
+const TeamListCard = (props: EachTeamCardTypes) => {
+  const statusObj:{[key: number]: string} = {1: "마감", 2: "모집중", 3:"모집예정"}
+
   const CardStack = (
     <>
-      {props.stack.map((stack) => (
-        <StackIcon key={stack} stack={stack} clickable={false} textShow={false} />
-      ))}
+      {props.stack.slice(0, 4).map((stack: any) => {
+        // console.log(stack.title)
+        return (
+          <StackIcon
+            key={stack.title}
+            stack={stack.title}
+            clickable={false}
+            textShow={false}
+            list={""}
+          />
+        );
+      })}
     </>
   );
 
@@ -17,9 +28,10 @@ const TeamListCard = (props: EachCardTypes) => {
       <CardMainside>
         <CardTitleside>
           <TitleText>{props.title}</TitleText>
-          <CardStatusside>{props.status}</CardStatusside>
+          <CardStatusside>{props.class}
+            {props.part}반 {statusObj[props.status]}</CardStatusside>
         </CardTitleside>
-        <CardStackside>{CardStack}</CardStackside>
+        <CardStackside>{CardStack}{props.stack.length > 4 && <span>+ {props.stack.length - 4}</span>}</CardStackside>
       </CardMainside>
       <CardButtonside>
         <CardButton className='bx bx-chevron-right'/>
