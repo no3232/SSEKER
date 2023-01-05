@@ -8,11 +8,12 @@ import { KeyInfoProvider } from "../modules/context/KeyContext";
 import { UserInfoContext, UserInfoProvider } from "../modules/context/UserInfoContext";
 import { getKeyCookies } from '../modules/cookie/keyCookies';
 import axios from 'axios';
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const ctxUserinfo = useContext(UserInfoContext)
-
+  const path = useRouter().pathname
   
   if (getKeyCookies("key") !== undefined) {
     let key = ""
@@ -61,12 +62,19 @@ export default function App({ Component, pageProps }: AppProps) {
   //   })
   //   }
   
+  console.log(path)
 
   return (
     <>
       <GlobalStyle />
-      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      {(path.includes('login') || path.includes('signup') || path === '/')
+        ? null
+        : <div>
+            <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+            <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+          </div>
+      }
+      
       <UserInfoProvider>
         <KeyInfoProvider>
           <Component {...pageProps} />
