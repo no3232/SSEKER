@@ -1,41 +1,63 @@
-import { useState } from 'react';
+import axios from "axios";
+import Link from "next/link";
+import { useState } from "react";
 import styled from "styled-components";
-import GlobalStyle from "../modules/GlobalStyle/GlobalStyle"
+import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
 const SearchBar = () => {
-  const [listOpne, setListOpen] = useState(false)
+  const [listOpne, setListOpen] = useState(false);
+  const [searchList, setSearchList] = useState([]);
+  console.log(searchList)
+
+  const Searching = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value !== "") {
+      axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/user/search?name=${event.target.value}`,
+      }).then((response) => {
+        setSearchList(Object.values(response.data));
+      });
+    }
+  };
+  const SearchListItems = searchList.map((person) => {
+      console.log(person)
+      // return (
+      //   // <li>{person.name} {person.campus} {person.part}<Link href={"/login"}>123</Link></li>
+      // )
+    })
 
   const Opening = () => {
-    setListOpen(true)
-  }
+    setListOpen(true);
+  };
+  const Closing = () => {
+    setListOpen(false);
+  };
   return (
     <SearchContainer>
       <GlobalStyle />
       <SearchInputWrapper>
         <SearchInput
-          className='searchInput'
-          type='text'
-          placeholder='focus here to search'
+          className="searchInput"
+          type="text"
+          placeholder="focus here to search"
           onFocus={Opening}
-          // onBlur={}
+          onBlur={Closing}
+          onChange={Searching}
         />
-        <SearchInputIcon className='bx bx-search'></SearchInputIcon>
+        <SearchInputIcon className="bx bx-search"></SearchInputIcon>
       </SearchInputWrapper>
-      {listOpne &&
-        (<SearchResultList className='searchList'>
-        <p>123</p>
-        <p>123123</p>
-        </SearchResultList>)
-      }
+      {listOpne && (
+        <SearchResultList className="searchList">
+          {/* {SearchListItems} */}
+        </SearchResultList>
+      )}
     </SearchContainer>
   );
 };
 
 export default SearchBar;
 
-const SearchResultList = styled.div`
-
-`
+const SearchResultList = styled.ul``;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -55,7 +77,7 @@ const SearchInput = styled.input`
   padding: 0 1rem;
   border-radius: 2rem;
   border: 1px solid #a1a1a1;
-  :focus{
+  :focus {
     outline-color: var(--primary-color);
   }
 `;

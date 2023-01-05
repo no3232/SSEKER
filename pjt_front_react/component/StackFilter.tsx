@@ -35,20 +35,20 @@ const stack = [
   "xd"
 ];
 
-const StackFilterCheckboxs = stack.map((skill) => {
-  return (
-    <>
-      <StackIcon key={skill} stack={skill} clickable={true} textShow={false} />
-    </>
-  );
-});
+// const StackFilterCheckboxs = stack.map((skill) => {
+//   return (
+//     <>
+//       <StackIcon key={skill} stack={skill} clickable={true} textShow={false} />
+//     </>
+//   );
+// });
 
 const StackFilter = () => {
   return (
     <>
     <SubtitleText>스킬</SubtitleText>
     <FilterDiv>
-      {StackFilterCheckboxs}
+      {/* {StackFilterCheckboxs} */}
     </FilterDiv>
     </>
   );
