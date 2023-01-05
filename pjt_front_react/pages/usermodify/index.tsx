@@ -14,12 +14,11 @@ import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import { skillList, skillObject } from "../../modules/types/dummy";
 import { language, skill } from "../../modules/StackIconDummy";
-import { userInfo } from "../../modules/types/UserInfoTypes";
+import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
-const index = () => {
+const Index = () => {
     const [allSkills, setAllSkills] = useState<skillObject[]>([])
-    const [allLangs, setAllLangs] = useState<skillObject[]>([])
-    const [userInfo, setUserInfo] = useState<userInfo>({
+    const [userInfo, setUserInfo] = useState<defaultUserInfo>({
         id: 0,
         username: "",
         campus: {
@@ -33,14 +32,14 @@ const index = () => {
         blog: "",
         level: {
             id: 0,
-            level: "",
+            BJlevel: "",
             color: ""
         },
         track: {
             id: 0,
             track: ""
         },
-        langauge: [],
+        language: [],
         email: "",
         introduce: ""
     })
@@ -82,6 +81,7 @@ const index = () => {
     // }
 
     const mySkills:{[key:number]:skillList[]} = {
+        0:[],
         1:[],
         2:[],
         3:[],
@@ -94,17 +94,30 @@ const index = () => {
         mySkillList.push(userInfo.skill[i].title)
     }
 
+    for (let i = 0; i < userInfo.language.length; i++) {
+        mySkillList.push(userInfo.language[i].title)
+    }
+
     for (const i in allSkills) {
 
         const SkillsCategory = parseInt(allSkills[i].category)
         const title = allSkills[i].title
         
         if (mySkillList.includes(title)) {
-            const info = userInfo.skill.filter((item:skillObject)=> {
+            let info = userInfo.skill.filter((item:skillObject)=> {
                 return item.title === title
             })
 
+            if (info.length === 0) {
+                info = userInfo.language.filter((item:skillObject)=> {
+                    return item.title === title
+                })
+            }
+
             switch (SkillsCategory) {
+                case 0:
+                    mySkills[0].push({...info[0], selected:true})
+                    break;
                 case 1:
                     mySkills[1].push({...info[0], selected:true})
                     break;
@@ -117,10 +130,14 @@ const index = () => {
                 case 4:
                     mySkills[4].push({...info[0], selected:true})
                     break;
+
             }
         } else {
             const info:skillObject = allSkills[i]
             switch (SkillsCategory) {
+                case 0:
+                    mySkills[0].push({...info, selected:false})
+                    break;
                 case 1:
                     mySkills[1].push({...info, selected:false})
                     break;
@@ -147,17 +164,14 @@ const index = () => {
             })
             .catch((err)=>console.log(err))
 
-        axios.get('https://ssekerapi.site/objects/')
+        axios.get('https://ssekerapi.site/objects/skill-language')
             .then((res) => {
                 const {data} = res;
 
-                setAllSkills(data.skill)
-                setAllLangs(data.language)
+                setAllSkills(data)
             })
             .catch((err)=>console.log(err))
     }, [])
-
-    console.log(allLangs)
 
     return <Container>
         <GlobalStyle/>
@@ -178,7 +192,7 @@ const index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    {/* <StackSelect list={"langauge"} mySkills={mySkills} type={0} /> */}
+                    <StackSelect mySkills={mySkills} type={0} />
                 </Icons>
             </SubBox>
 
@@ -186,28 +200,28 @@ const index = () => {
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    <StackSelect list={"skills"} mySkills={mySkills} type={1} />
+                    <StackSelect mySkills={mySkills} type={1} />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    <StackSelect list={"skills"} mySkills={mySkills} type={2} />
+                    <StackSelect mySkills={mySkills} type={2} />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    <StackSelect list={"skills"} mySkills={mySkills} type={3} />
+                    <StackSelect mySkills={mySkills} type={3} />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    <StackSelect list={"skills"} mySkills={mySkills} type={4} />
+                    <StackSelect mySkills={mySkills} type={4} />
                 </Icons>
             </SubBox>
             <SubBox>
@@ -249,7 +263,7 @@ const index = () => {
     </Container>
 }
 
-export default index;
+export default Index;
 
 const Rank = styled.i < {
     color: string

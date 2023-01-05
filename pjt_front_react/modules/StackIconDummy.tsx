@@ -176,7 +176,79 @@ export const skill: {[key:string]:iconList} = {
         color: "#000",
         icon: blog,
         category: 5
-    }
+    },
+    "C":{
+        name: "C",
+        color: "#A8B9CC",
+        icon: c,
+        category: 0
+    },
+    "C++":{
+        name: "C++",
+        color: "#00599C",
+        icon: cplusplus,
+        category: 0
+    },
+    "Dart":{
+        name: "Dart",
+        color: "#0175C2",
+        icon: dart,
+        category: 0
+    },
+    "Go":{
+        name: "Go",
+        color: "#4285F4",
+        icon: go,
+        category: 0
+    },
+    "Python":{
+        name: "Python",
+        color: "#61DAFB",
+        icon: python,
+        category: 0
+    },
+    "JavaScript":{
+        name: "JavaScript",
+        color: "#F7DF1E",
+        icon: javascript,
+        category: 0
+    },
+    "Kotlin":{
+        name: "Kotlin",
+        color: "#7F52FF",
+        icon: kotlin,
+        category: 0
+    },
+    "Swift":{
+        name: "Swift",
+        color: "#F05138",
+        icon: swift,
+        category: 0
+    },
+    "Rust":{
+        name: "Rust",
+        color: "#000000",
+        icon: rust,
+        category: 0
+    },
+    "SQL":{
+        name: "SQL",
+        color: "#4479A1",
+        icon: mysql,
+        category: 0
+    },
+    "TypeScript":{
+        name: "TypeScript",
+        color: "#3178C6",
+        icon: typescript,
+        category: 0
+    },
+    "Java":{
+        name: "Java",
+        color: "#5382A1",
+        icon: java,
+        category: 0
+    },
 }
 
 export const language: {[key:string]:languageList} = {

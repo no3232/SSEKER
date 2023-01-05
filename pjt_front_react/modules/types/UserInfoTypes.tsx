@@ -27,7 +27,7 @@ export interface userInfo {
     blog: string;
     level: level;
     track: track;
-    langauge: skillObject[];
+    language: skillObject[];
     email: string;
     introduce: string;
     addUser: Function;
@@ -44,7 +44,7 @@ export interface defaultUserInfo {
     blog: string;
     level: level;
     track: track;
-    langauge: skillObject[];
+    language: skillObject[];
     email: string;
     introduce: string;
 }

@@ -12,19 +12,16 @@ const Icon = (props: Stack) => {
   const NoneHandler = () => {
     return ;
   }
-
-  const list = (props.list==="langauge")? language:skill;
-
-  const IconText = (props.textShow ? list[props.stack].name : '')
+  const IconText = (props.textShow ?  skill[props.stack].name : '')
 
   return (
     <IconBody
       className={props.clickable ? 'notClick' : ''}
       onClick={props.clickable ? StyleHandler : NoneHandler}
-      color={list[props.stack].color}
+      color={ skill[props.stack].color}
     >
       <NanumSquareRegular />
-      <IconImg>{list[props.stack].icon}</IconImg>
+      <IconImg>{ skill[props.stack].icon}</IconImg>
       <IconName>{IconText}</IconName>
     </IconBody>
   );

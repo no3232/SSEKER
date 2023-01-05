@@ -15,7 +15,6 @@ const UserListCard = (props: EachUserCardTypes) => {
             stack={stack.title}
             clickable={false}
             textShow={false}
-            list={""}
           />
         );
       })}

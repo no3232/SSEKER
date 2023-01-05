@@ -43,3 +43,11 @@ class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
         fields = ('__all__')
+
+
+class LanguageCategorysSerializer(serializers.ModelSerializer):
+    category = serializers.IntegerField(default=0)
+    
+    class Meta:
+        model = Language
+        fields = ('__all__')

@@ -1,18 +1,17 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {language, skill} from "../modules/StackIconDummy";
+import {skill} from "../modules/StackIconDummy";
 import {StackAll} from "../modules/types/dummy";
 
-const Stack = ({stack, UpdateStackState, list} : StackAll) => {
+const Stack = ({stack, UpdateStackState} : StackAll) => {
     const {id, title} = stack;
-    const lst = (list==="langauge") ? language:skill;
 
     return <Body
         onClick={() => {
             UpdateStackState(id, false)
         }}
-        color={lst[title].color}>
-        {lst[title].icon}
+        color={skill[title].color}>
+        {skill[title].icon}
         {title}
     </Body>
 }

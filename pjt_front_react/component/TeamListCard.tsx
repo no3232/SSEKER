@@ -16,7 +16,6 @@ const TeamListCard = (props: EachTeamCardTypes) => {
             stack={stack.title}
             clickable={false}
             textShow={false}
-            list={""}
           />
         );
       })}

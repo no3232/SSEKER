@@ -18,7 +18,7 @@ interface StackElement {
     "category" : number
 }
 
-const index = () => {
+const Index = () => {
     const [userInfo, setUserInfo] = useState(useContext(UserInfoContext))
 
     const skills = (category : string) => {
@@ -36,8 +36,7 @@ const index = () => {
                     stack={item.title}
                     key={item.id}
                     clickable={false}
-                    textShow={true}
-                    list={"skill"}/>
+                    textShow={true} />
             )
         }
     }
@@ -149,7 +148,7 @@ const index = () => {
 
             <RankBox>
                 <a href={userInfo.github}>
-                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} list={"skill"}/>
+                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} />
                 </a>
             </RankBox>
         </DetailBox>
@@ -159,7 +158,7 @@ const index = () => {
 
             <RankBox>
                 <a href={userInfo.blog}>
-                    <StackIcon stack={"Blog"} clickable={false} textShow={true} list={"skill"}/>
+                    <StackIcon stack={"Blog"} clickable={false} textShow={true} />
                 </a>
             </RankBox>
         </DetailBox>
@@ -171,7 +170,7 @@ const index = () => {
     </Container>
 }
 
-export default index;
+export default Index;
 
 const RankName = styled.span ``
 

@@ -11,7 +11,6 @@ export interface Stack {
     stack: string;
     clickable: boolean;
     textShow: boolean;
-    list: string;
 }
 
 export interface DetailHeaderType {
@@ -47,14 +46,12 @@ export interface testElem {
 export interface StackAll {
     stack: testElem;
     UpdateStackState: any;
-    list: string;
 }
 
 export interface StackList {
     stack: testElem;
     removeItem: any;
     UpdateStackState: any;
-    list: string;
 }
 
 export interface campusObject {
@@ -93,12 +90,10 @@ export interface skillList {
 
 export interface dropDown {
     stacks: {[key:number]:skillList[]},
-    list: string,
     type: number
 }
 
 export interface stackSelect {
-    list: string,
     mySkills: {
         [key: number]: skillList[]
     },
