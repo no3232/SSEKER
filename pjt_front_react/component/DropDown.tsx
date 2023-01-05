@@ -10,7 +10,10 @@ const DropDown = ({stacks, list, type} : dropDown) => {
     const [stackList, setStackList] = useState<skillList[]>([]);
 
     useEffect(()=>{
-        setStackList(stacks[type])   
+        if (type !== 0)
+            setStackList(stacks[type])
+        else
+            setStackList(stacks)
     }, [stacks])
 
     const UpdateStackState = (stackId : number, newState : boolean) => {

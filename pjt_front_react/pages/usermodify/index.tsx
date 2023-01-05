@@ -13,11 +13,12 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { skill } from "../../modules/StackIconDummy";
+import { language, skill } from "../../modules/StackIconDummy";
 import { userInfo } from "../../modules/types/UserInfoTypes";
 
 const index = () => {
     const [allSkills, setAllSkills] = useState<skillObject[]>([])
+    const [allLangs, setAllLangs] = useState<skillObject[]>([])
     const [userInfo, setUserInfo] = useState<userInfo>({
         id: 0,
         username: "",
@@ -94,6 +95,7 @@ const index = () => {
     }
 
     for (const i in allSkills) {
+
         const SkillsCategory = parseInt(allSkills[i].category)
         const title = allSkills[i].title
         
@@ -150,9 +152,12 @@ const index = () => {
                 const {data} = res;
 
                 setAllSkills(data.skill)
+                setAllLangs(data.language)
             })
             .catch((err)=>console.log(err))
     }, [])
+
+    console.log(allLangs)
 
     return <Container>
         <GlobalStyle/>
@@ -173,7 +178,7 @@ const index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    {/* <StackSelect list={"langauge"} /> */}
+                    {/* <StackSelect list={"langauge"} mySkills={mySkills} type={0} /> */}
                 </Icons>
             </SubBox>
 
