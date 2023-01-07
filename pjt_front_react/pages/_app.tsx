@@ -11,7 +11,6 @@ import { Router, useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const ctxUserinfo = useContext(UserInfoContext)
   const path = useRouter().pathname
   const router = Router;
   

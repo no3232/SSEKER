@@ -11,6 +11,7 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import axios from "axios";
 import {skillObject} from "../../modules/types/dummy";
 import {UserInfoContext} from "../../modules/context/UserInfoContext";
+import {useRouter} from 'next/router';
 
 interface StackElement {
     "id" : number,
@@ -35,13 +36,24 @@ const defaultUserState = {
   };
 
 const Index = () => {
+    const router = useRouter();
+    console.log(router.query)
+
     const [userInfo, setUserInfo] = useState(defaultUserState)
     useEffect(() => {
-        if (localStorage.getItem("userinfo")) {
+        // if (localStorage.getItem("userinfo")) {
 
-            setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}'))
-        }
-    }, [])
+        //     setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}'))
+        // }
+        axios
+      .get(`https://ssekerapi.site/accounts/${router.query.userid}`)
+      .then((res) => {
+        const { data } = res;
+        console.log(data)
+        setUserInfo(data);
+      })
+      .catch((err) => console.log(err));
+    }, [router.query.userid])
     const skills = (category : string) => {
         if (userInfo.skill.length === 0) {
             return "설정된 스킬이 없습니다"

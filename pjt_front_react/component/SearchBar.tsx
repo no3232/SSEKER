@@ -4,10 +4,19 @@ import { useState } from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
+interface searchUser {
+  name: string;
+  campus: number;
+  part: number;
+}
+
 const SearchBar = () => {
-  const [listOpne, setListOpen] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
   const [searchList, setSearchList] = useState([]);
-  console.log(searchList)
+
+
+  const regionOption: {[key: number]: string} = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
+
 
   const Searching = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== "") {
@@ -19,11 +28,12 @@ const SearchBar = () => {
       });
     }
   };
-  const SearchListItems = searchList.map((person) => {
-      console.log(person)
-      // return (
-      //   // <li>{person.name} {person.campus} {person.part}<Link href={"/login"}>123</Link></li>
-      // )
+  const SearchListItems = searchList.map((person: searchUser) => {
+      return (
+        <div>
+          <Link href={`/userdetail/ssafy123@ssafy.com`}><li>{person.name} {regionOption[person.campus]} {person.part + '반'}</li></Link>
+        </div>
+      )
     })
 
   const Opening = () => {
@@ -33,7 +43,8 @@ const SearchBar = () => {
     setListOpen(false);
   };
   return (
-    <SearchContainer>
+    <SearchContainer >
+      {listOpen && <Box onClick={Closing}></Box>}
       <GlobalStyle />
       <SearchInputWrapper>
         <SearchInput
@@ -41,23 +52,46 @@ const SearchBar = () => {
           type="text"
           placeholder="focus here to search"
           onFocus={Opening}
-          onBlur={Closing}
           onChange={Searching}
         />
         <SearchInputIcon className="bx bx-search"></SearchInputIcon>
-      </SearchInputWrapper>
-      {listOpne && (
+        {listOpen && SearchListItems.length !== 0 && (
         <SearchResultList className="searchList">
-          {/* {SearchListItems} */}
+          {SearchListItems}
         </SearchResultList>
       )}
+      </SearchInputWrapper>
+      
     </SearchContainer>
   );
 };
 
 export default SearchBar;
 
-const SearchResultList = styled.ul``;
+const Box = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    background-color: grey;
+    opacity: 0.5;
+`
+
+const SearchResultList = styled.ul`
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color);
+  list-style: none;
+  > a {
+    text-decoration: none;
+  }
+  > div {
+    padding: 4px 5px
+  }
+`;
 
 const SearchContainer = styled.div`
   display: flex;
@@ -69,6 +103,7 @@ const SearchContainer = styled.div`
 
 const SearchInputWrapper = styled.div`
   position: relative;
+  z-index: 2;
 `;
 
 const SearchInput = styled.input`
