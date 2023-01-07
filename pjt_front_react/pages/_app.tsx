@@ -1,19 +1,20 @@
 import type { AppProps } from "next/app";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import Menu from "../common/Menu";
 import MenuBox from "../component/MenuBox";
-import { KeyInfoProvider } from "../modules/context/KeyContext";
 import { UserInfoContext, UserInfoProvider } from "../modules/context/UserInfoContext";
 import { getKeyCookies } from '../modules/cookie/keyCookies';
 import axios from 'axios';
+import { Router, useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const ctxUserinfo = useContext(UserInfoContext)
-
-  console.log(getKeyCookies("key"))
+  const path = useRouter().pathname
+  const router = Router;
+  
   if (getKeyCookies("key") !== undefined) {
     let key = ""
     axios({
@@ -24,53 +25,34 @@ export default function App({ Component, pageProps }: AppProps) {
       },
     })
     .then(response => {
-      console.log(response.data.username)
       key = response.data.username
       axios({
       method: "GET",
       url: `https://ssekerapi.site/accounts/${key}`,
     })
-      .then((response) => {
-        ctxUserinfo.addUser(response.data)
-        console.log(response.data)
-        console.log(ctxUserinfo)
+      .then(async (response) => {
+        localStorage.setItem("userinfo", JSON.stringify(response.data))
+        // console.log(JSON.parse(localStorage.getItem("userinfo") || '{}'))
         return
       })
     })
     }
-  // if (getKeyCookies("key") !== undefined) {
-  //   axios({
-  //     method: "GET",
-  //     url: "https://ssekerapi.site/dj-accounts/user/",
-  //     headers: {
-  //       Authorization: `Token ${getKeyCookies("key")}`,
-  //     },
-  //   })
-  //   .then(response => {
-  //     console.log(response.data.username)
-  //     const id = response.data.username
-  //     axios({
-  //     method: "GET",
-  //     url: `https://ssekerapi.site/accounts/${id}`,
-  //   })
-  //     .then((response) => {
-  //       ctxUserinfo.addUser(response.data)
-  //       console.log(ctxUserinfo)
-  //       return
-  //     })
-  //   })
-  //   }
   
-
   return (
     <>
       <GlobalStyle />
-      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      {(path.includes('login') || path.includes('signup') || path === '/')
+        ? null
+        : <div>
+            <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+            <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+          </div>
+      }
+
       <UserInfoProvider>
-        <KeyInfoProvider>
+
           <Component {...pageProps} />
-        </KeyInfoProvider>
+        
       </UserInfoProvider>
     </>
   );

@@ -17,7 +17,7 @@ const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
         <ContentBox>
             <Info>
                 <NameBox>
-                    {(name.length === 0)?name:"anonymous"}
+                    {(name.length === 0)?"anonymous": name}
                 </NameBox>
                 {/* <IdBox>
                     {mattermost?mattermost:"anonymous"}

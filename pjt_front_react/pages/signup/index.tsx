@@ -20,7 +20,6 @@ const SignupPage = () => {
 
   const moveToComplete = async (event: SyntheticEvent) => {
     event.preventDefault();
-    // console.log({ signupEmail, signupPassword, signupPasswordConfirm });
     const getKey = await axios({
       method: "POST",
       url: "https://ssekerapi.site/dj-accounts/signup/",
@@ -30,23 +29,27 @@ const SignupPage = () => {
         password2: signupPasswordConfirm,
       },
     })
-      .then((response) => {
+    .then((response) => {
+      if (response.status === 201){
         setKeyCookies("key", response.data.key)
-        return response.data.key;
-      })
-      .catch((err) => {
-        console.log(err.response);
-        return '';
-      });
+        return response.status;
+      }
+      return alert("이메일/비밀번호를 확인 해 주세요!")
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return alert("이메일/비밀번호를 확인 해 주세요!")
+    });
+      
       console.log(getKey)
-      if (getKey !== '') {
+      if (getKey === 201) {
 
         const getUserInfo = await axios({
           method: "GET",
           url: `https://ssekerapi.site/accounts/${signupEmail}`,
         })
           .then((response) => {
-            ctxUserinfo.addUser(response.data)
+            localStorage.setItem("userinfo", JSON.stringify(response.data))
             route.push("/signup/ssafyinfo");
           })
           .catch((err) => {
@@ -71,7 +74,7 @@ const SignupPage = () => {
   return (
     <SignupBox>
       <TitleBox>
-        <TitleText>Login Page</TitleText>
+        <TitleText>SignUp Page</TitleText>
       </TitleBox>
       <FormBox onSubmit={moveToComplete}>
         <InputStyle

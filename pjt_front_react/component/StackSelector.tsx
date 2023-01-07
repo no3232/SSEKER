@@ -8,7 +8,7 @@ import StackListItem from "./StackListItem";
 const StackSelector = ({stackListHandle} : {
     stackListHandle: any
 }) => {
-    const {stackList, UpdateStackState} = stackListHandle
+    const {stackList, UpdateStackState, type} = stackListHandle
     const [searchList, setSearchList] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +43,9 @@ const StackSelector = ({stackListHandle} : {
 
     return <SelectorBody open={isOpen}>
         <GlobalStyle />
+        {isOpen && <Box onClick={()=>{
+                    setIsOpen(false);
+                }}/>}
         <InputSections open={isOpen}>
             <Icon className="bx bx-search"/>
             <Input
@@ -70,6 +73,7 @@ const StackSelector = ({stackListHandle} : {
                         stack={s}
                         removeItem={RemoveItem}
                         UpdateStackState={UpdateStackState}
+                        type={type}
                     />
                 }
             })}
@@ -78,6 +82,15 @@ const StackSelector = ({stackListHandle} : {
 }
 
 export default StackSelector;
+
+const Box = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+`
 
 const List = styled.div `
     display: flex;

@@ -16,7 +16,6 @@ const LoginMainPage = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const ctxUserinfo = useContext(UserInfoContext);
-
   const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
     const getKey = await axios({
@@ -28,23 +27,26 @@ const LoginMainPage = () => {
       },
     })
       .then((response) => {
-        setKeyCookies("key", response.data.key)
-        console.log(response.data.key)
-        return response.data.key;
+        if (response.status === 200){
+          setKeyCookies("key", response.data.key)
+          return response.status;
+        }
+        return alert("이메일/비밀번호를 확인 해 주세요!")
       })
       .catch((err) => {
         console.log(err.response);
-        return "";
+        return alert("이메일/비밀번호를 확인 해 주세요!")
       });
-    if (getKey !== "") {
-      const getUserInfo = await axios({
+      console.log(getKey)
+    if (getKey === 200) {
+      await axios({
         method: "GET",
         url: `https://ssekerapi.site/accounts/${loginEmail}`,
       })
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           ctxUserinfo.addUser(response.data);
-          console.log(ctxUserinfo);
+          // console.log(ctxUserinfo);
           route.push("/login/after");
         })
         .catch((err) => {
