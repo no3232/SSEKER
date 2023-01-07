@@ -7,13 +7,12 @@ import MenuBox from "../component/MenuBox";
 import { UserInfoContext, UserInfoProvider } from "../modules/context/UserInfoContext";
 import { getKeyCookies } from '../modules/cookie/keyCookies';
 import axios from 'axios';
-import Router from 'next/router';
+import { Router, useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const path = useRouter().pathname
   const router = Router;
-
-
   
   if (getKeyCookies("key") !== undefined) {
     let key = ""
@@ -38,12 +37,17 @@ export default function App({ Component, pageProps }: AppProps) {
     })
     }
   
-
   return (
     <>
       <GlobalStyle />
-      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-      <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      {(path.includes('login') || path.includes('signup') || path === '/')
+        ? null
+        : <div>
+            <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+            <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+          </div>
+      }
+
       <UserInfoProvider>
 
           <Component {...pageProps} />

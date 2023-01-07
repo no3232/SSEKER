@@ -1,50 +1,58 @@
 import React, {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
-import { SkillInfoContext } from "../modules/context/SkillContext";
 import {dropDown, skillList} from "../modules/types/dummy";
 
 import Stack from "./Stack";
 import StackSelector from "./StackSelector";
 
-const DropDown = ({stacks, type} : dropDown) => {
+const DropDown = ({stacks, UpdateStackState, type} : dropDown) => {
     const [stackList, setStackList] = useState<skillList[]>([]);
+    const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
 
-    useEffect(()=>{
-        setStackList(stacks[type])
+    useEffect(() => {
+        setStackList(stacks)
     }, [stacks])
 
-    const UpdateStackState = (stackId : number, newState : boolean) => {
-        if (stackId) {
-            setStackList(stackList => stackList.map(s => {
-                if (s.id === stackId) 
-                    return {
-                        ...s,
-                        selected: newState
-                    }
-                else 
-                    return s;
+    // const UpdateStackState = (stackId : number, newState : boolean) => {
+    //     if (stackId) {
+    //         setStackList(stackList => stackList.map(s => {
+    //             if (s.id === stackId) {
+    //                 return {
+    //                     ...s,
+    //                     selected: newState
+    //                 }
+    //             } else 
+    //                 return s;
+    //             }
+    //         ))
+    //     }
+    // }
+
+    const Stacks = () => {
+        let returnList:any[] = []
+
+        if (stackList.length !== 0) {
+            returnList = stackList.map(s => {
+                if (s.selected) {
+                    return <Stack stack={s} key={s.id} UpdateStackState={UpdateStackState} type={type} />
                 }
-            ))
+            })
+        } else {
+            returnList = []
         }
+
+        return returnList
     }
-    
-    const Stacks = stackList.map(s => {
-        if (s.selected) {
-            return <Stack
-                stack={s}
-                key={s.id}
-                UpdateStackState={UpdateStackState}/>
-        }
-    })
 
     return <Body>
         <StackEl>
-            {Stacks}
+            {Stacks()}
         </StackEl>
         <StackSelector
             stackListHandle={{
                 stackList,
-                UpdateStackState
+                UpdateStackState,
+                type
             }}/>
     </Body>
 }

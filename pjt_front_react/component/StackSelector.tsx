@@ -8,7 +8,7 @@ import StackListItem from "./StackListItem";
 const StackSelector = ({stackListHandle} : {
     stackListHandle: any
 }) => {
-    const {stackList, UpdateStackState} = stackListHandle
+    const {stackList, UpdateStackState, type} = stackListHandle
     const [searchList, setSearchList] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +73,7 @@ const StackSelector = ({stackListHandle} : {
                         stack={s}
                         removeItem={RemoveItem}
                         UpdateStackState={UpdateStackState}
+                        type={type}
                     />
                 }
             })}

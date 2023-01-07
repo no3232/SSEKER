@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { language, skill } from "../modules/StackIconDummy";
 import {StackList} from "../modules/types/dummy";
 
-const StackListItem = ({stack, removeItem, UpdateStackState} : StackList) => {
+const StackListItem = ({stack, removeItem, UpdateStackState, type} : StackList) => {
     const {id, title} = stack;
     const [visible, setVisible] = useState(false);
     const ItemRef = useRef(null !);
@@ -24,7 +24,7 @@ const StackListItem = ({stack, removeItem, UpdateStackState} : StackList) => {
     }, [stack])
 
     const AddStack = () => {
-        UpdateStackState(id, true);
+        UpdateStackState(id, true, type);
         removeItem(id);
     }
 

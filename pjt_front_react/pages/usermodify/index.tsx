@@ -12,7 +12,6 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { language, skill } from "../../modules/StackIconDummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
 const ExampleUser = {
@@ -115,6 +114,42 @@ const Index = () => {
     setSelectTier(tier);
     // console.log(selectTier)
   };
+    const [lastList, setLastList] = useState<{[key:number]:skillList[]}>({
+        0:[],
+        1:[],
+        2:[],
+        3:[],
+        4:[]
+    })
+    const [languages, setLanguages] = useState<number[]>([])
+    const [skills, setSkills] = useState<number[]>([])
+
+
+    useEffect(()=>{
+        setSkillList()
+    }, [allSkills])
+    
+    useEffect(()=> {
+        let skillTmp:number[] = []
+
+        for (let i in lastList) {
+            const tmp = []
+
+            for (let j of lastList[i]) {
+                if(j.selected) {
+                    tmp.push(j.id)
+                }
+            }
+
+            if(i === "0") {
+                setLanguages(tmp)
+            } else {
+                skillTmp = skillTmp.concat(tmp)
+            }
+        }
+
+        setSkills(skillTmp)
+    }, [lastList])
 
   const regionOption = {
     6: "전국",
@@ -174,81 +209,117 @@ const Index = () => {
 
   //   console.log(rankoptions)
 
-  const mySkills: { [key: number]: skillList[] } = {
-    0: [],
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-  };
+    const setSkillList = () => {
+        const mySkills:{[key:number]:skillList[]} = {
+            0:[],
+            1:[],
+            2:[],
+            3:[],
+            4:[]
+        }
 
-  let mySkillList: string[] = [];
+        //가지고 있는 스킬 title만 추출하기
+        let mySkillList:string[] = [];
+        for (let i = 0; i < userInfo.skill.length; i++) {
+            mySkillList.push(userInfo.skill[i].title)
+        }
+    
+        for (let i = 0; i < userInfo.language.length; i++) {
+            mySkillList.push(userInfo.language[i].title)
+        }
+    
+        const resetSkill:Set<number> = new Set()
+        const resetLangs:number[] = []
 
-  for (let i = 0; i < userInfo.skill.length; i++) {
-    mySkillList.push(userInfo.skill[i].title);
-  }
+        for (const i in allSkills) {
+    
+            const SkillsCategory = parseInt(allSkills[i].category)
+            const title = allSkills[i].title
+            
+            if (mySkillList.includes(title)) {
+                let info = userInfo.skill.filter((item:skillObject)=> {
+                    resetSkill.add(item.id)
+                    return item.title === title
+                })
+    
+                if (info.length === 0) {
+                    info = userInfo.language.filter((item:skillObject)=> {
+                        resetLangs.push(item.id)
+                        return item.title === title
+                    })
+                }
+    
+                switch (SkillsCategory) {
+                    case 0:
+                        mySkills[0].push({...info[0], selected:true})
+                        break;
+                    case 1:
+                        mySkills[1].push({...info[0], selected:true})
+                        break;
+                    case 2:
+                        mySkills[2].push({...info[0], selected:true})
+                        break;
+                    case 3:
+                        mySkills[3].push({...info[0], selected:true})
+                        break;
+                    case 4:
+                        mySkills[4].push({...info[0], selected:true})
+                        break;
+                }
+            } else {
+                const info:skillObject = allSkills[i]
+                switch (SkillsCategory) {
+                    case 0:
+                        mySkills[0].push({...info, selected:false})
+                        break;
+                    case 1:
+                        mySkills[1].push({...info, selected:false})
+                        break;
+                    case 2:
+                        mySkills[2].push({...info, selected:false})
+                        break;
+                    case 3:
+                        mySkills[3].push({...info, selected:false})
+                        break;
+                    case 4:
+                        mySkills[4].push({...info, selected:false})
+                        break;
+                }
+            }
 
-  for (let i = 0; i < userInfo.language.length; i++) {
-    mySkillList.push(userInfo.language[i].title);
-  }
+        }
+    
+        setLanguages(resetLangs)
+        setSkills(Array.from(resetSkill))
 
-  for (const i in allSkills) {
-    const SkillsCategory = parseInt(allSkills[i].category);
-    const title = allSkills[i].title;
-
-    if (mySkillList.includes(title)) {
-      let info = userInfo.skill.filter((item: skillObject) => {
-        return item.title === title;
-      });
-
-      if (info.length === 0) {
-        info = userInfo.language.filter((item: skillObject) => {
-          return item.title === title;
-        });
-      }
-
-      switch (SkillsCategory) {
-        case 0:
-          mySkills[0].push({ ...info[0], selected: true });
-          break;
-        case 1:
-          mySkills[1].push({ ...info[0], selected: true });
-          break;
-        case 2:
-          mySkills[2].push({ ...info[0], selected: true });
-          break;
-        case 3:
-          mySkills[3].push({ ...info[0], selected: true });
-          break;
-        case 4:
-          mySkills[4].push({ ...info[0], selected: true });
-          break;
-      }
-    } else {
-      const info: skillObject = allSkills[i];
-      switch (SkillsCategory) {
-        case 0:
-          mySkills[0].push({ ...info, selected: false });
-          break;
-        case 1:
-          mySkills[1].push({ ...info, selected: false });
-          break;
-        case 2:
-          mySkills[2].push({ ...info, selected: false });
-          break;
-        case 3:
-          mySkills[3].push({ ...info, selected: false });
-          break;
-        case 4:
-          mySkills[4].push({ ...info, selected: false });
-          break;
-      }
+        setLastList(mySkills)
     }
-  }
+
+    console.log("-----")
+    console.log(languages)
+    console.log(skills)
+
+    const UpdateStackState = (stackId:number, newState:boolean, type: number) => {
+        if (stackId) {
+            const tmp = lastList[type].map(s => {
+                if (s.id === stackId) {
+                    return {
+                        ...s,
+                        selected: newState
+                    }
+                } else {
+                    return s;
+                }
+            )
+
+            setLastList({...lastList, [type]:tmp})
+        }
+    }
 
   const submitHandler = () => {
     console.log(signupClass, signupRegion);
   };
+
 
   return (
     <Container>
@@ -282,52 +353,48 @@ const Index = () => {
           <SubtitleText>언어</SubtitleText>
 
           <Icons>
-            <StackSelect mySkills={mySkills} type={0} />
+              <StackSelect mySkills={lastList[0]} type={0} UpdateStackState={UpdateStackState} />
           </Icons>
         </SubBox>
 
         <SubBox>
           <SubtitleText>프론트엔드</SubtitleText>
 
-          <Icons>
-            <StackSelect mySkills={mySkills} type={1} />
-          </Icons>
-        </SubBox>
-        <SubBox>
-          <SubtitleText>백엔드</SubtitleText>
+                <Icons>
+                    <StackSelect mySkills={lastList[1]} type={1} UpdateStackState={UpdateStackState} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>백엔드</SubtitleText>
 
-          <Icons>
-            <StackSelect mySkills={mySkills} type={2} />
-          </Icons>
-        </SubBox>
-        <SubBox>
-          <SubtitleText>UI/UX</SubtitleText>
+                <Icons>
+                    <StackSelect mySkills={lastList[2]} type={2} UpdateStackState={UpdateStackState} />
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>UI/UX</SubtitleText>
 
-          <Icons>
-            <StackSelect mySkills={mySkills} type={3} />
-          </Icons>
-        </SubBox>
-        <SubBox>
-          <SubtitleText>Devops</SubtitleText>
+                <Icons>
+                    <StackSelect mySkills={lastList[3]} type={3} UpdateStackState={UpdateStackState}/>
+                </Icons>
+            </SubBox>
+            <SubBox>
+                <SubtitleText>Devops</SubtitleText>
 
-          <Icons>
-            <StackSelect mySkills={mySkills} type={4} />
-          </Icons>
-        </SubBox>
-        <SubBox>
-          <SubtitleText>참고</SubtitleText>
+                <Icons>
+                    <StackSelect mySkills={lastList[4]} type={4} UpdateStackState={UpdateStackState} />
+                </Icons>
+            </SubBox>
+        </DetailBox>
 
-          <Icons>{/* <StackSelect /> */}</Icons>
-        </SubBox>
-      </DetailBox>
-
-      <DetailBox className='rank'>
+        <DetailBox className='rank'>
         <SubtitleText>백준 랭크</SubtitleText>
 
         <Select title='티어 선택' options={rank} handler={rankHandler} />
         {selectRank ? (
           <Select title='랭크 선택' options={test} handler={tierHandler} />
         ) : null}
+        
       </DetailBox>
 
       <DetailBox className='rank'>
@@ -362,7 +429,7 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Index
 
 const Rank = styled.i<{
   color: string;

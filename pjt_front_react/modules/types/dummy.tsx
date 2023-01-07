@@ -45,13 +45,15 @@ export interface testElem {
 
 export interface StackAll {
     stack: testElem;
-    UpdateStackState: any;
+    UpdateStackState: Function;
+    type: number
 }
 
 export interface StackList {
     stack: testElem;
-    removeItem: any;
-    UpdateStackState: any;
+    removeItem: Function;
+    type: number
+    UpdateStackState: Function;
 }
 
 export interface campusObject {
@@ -89,15 +91,15 @@ export interface skillList {
 }
 
 export interface dropDown {
-    stacks: {[key:number]:skillList[]},
+    stacks: skillList[]
     type: number
+    UpdateStackState: Function
 }
 
 export interface stackSelect {
-    mySkills: {
-        [key: number]: skillList[]
-    },
+    mySkills: skillList[]
     type: number
+    UpdateStackState: Function;
 }
 
 export interface userData {
