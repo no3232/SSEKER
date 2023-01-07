@@ -43,6 +43,9 @@ const StackSelector = ({stackListHandle} : {
 
     return <SelectorBody open={isOpen}>
         <GlobalStyle />
+        {isOpen && <Box onClick={()=>{
+                    setIsOpen(false);
+                }}/>}
         <InputSections open={isOpen}>
             <Icon className="bx bx-search"/>
             <Input
@@ -79,6 +82,15 @@ const StackSelector = ({stackListHandle} : {
 }
 
 export default StackSelector;
+
+const Box = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+`
 
 const List = styled.div `
     display: flex;

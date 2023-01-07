@@ -31,7 +31,7 @@ const SsafyInfo = () => {
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
-      console.log(21)
+
       setClassOption({1: "1반", 2: "2반"})
     } else if (region == 3) {
       setClassOption({1: "1반", 2: "2반", 3: "3반"})
@@ -41,25 +41,23 @@ const SsafyInfo = () => {
       setClassOption ({1: "전국"})
     }
     setSignupRegion(region);
-    console.log(classOption)
+
   }
 
   const getSignupClass = (classoption: number) => {
-    // console.log(classoption)
+
     setSignupClass(classoption);
   }
 
   const clickTrack = (event: any) => {
     event.preventDefault();
-    console.log(event.target.value)
+
     setTrackSelect(event.target.value);
     return;
   };
 
   const moveToSkillInfo = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log({signupName, trackSelect, signupRegion, signupClass})
-    console.log(getKeyCookies("key"))
     axios({
       method: 'PUT',
       url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
@@ -67,7 +65,6 @@ const SsafyInfo = () => {
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
-      .then(response => console.log(response))
       .catch()
     route.push("/signup/skillinfo");
   };

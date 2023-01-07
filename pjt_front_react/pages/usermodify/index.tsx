@@ -1,17 +1,16 @@
-import React, {useState, useEffect, useMemo, createContext} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
 import StackIcon from "../../common/StackIcon";
-import ClassSelect from "../../common/ClassSelect";
 import Select from "../../component/Select";
 import StackSelect from "../../layout/StackSelect";
 
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
-import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
+import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import { skillList, skillObject } from "../../modules/types/dummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
@@ -74,37 +73,88 @@ const Index = () => {
     useEffect(()=>{
         setSkillList()
     }, [allSkills])
+    
+    useEffect(()=> {
+        let skillTmp:number[] = []
 
-    // const [selectRank, setSelectRank] = useState<Boolean>(false);
-    const test = ["I", "II", "III", "IV", "V"];
-    const rank = [
-        [
-            "Unrated", "#222222"
-        ],
-        [
-            "Bronze", "#a94e00"
-        ],
-        [
-            "Silver", "#365471"
-        ],
-        [
-            "Gold", "#f4c46a"
-        ],
-        [
-            "Platinum", "#22e1a2"
-        ],
-        [
-            "Diamond", "#05b6fc"
-        ],
-        [
-            "Ruby", "#ff0766"
-        ]
-    ]
+        for (let i in lastList) {
+            const tmp = []
 
-    const rankoptions: JSX.Element[] = rank.map((item : string[], index:number) => {
-        return <RankBox key={index}>
-            <Rank className="bx bxs-crown" color={item[1]} /> {item[0]}
+            for (let j of lastList[i]) {
+                if(j.selected) {
+                    tmp.push(j.id)
+                }
+            }
+
+            if(i === "0") {
+                setLanguages(tmp)
+            } else {
+                skillTmp = skillTmp.concat(tmp)
+            }
+        }
+
+        setSkills(skillTmp)
+    }, [lastList])
+
+  // const [selectRank, setSelectRank] = useState<Boolean>(false);
+  const test = ["I", "II", "III", "IV", "V"];
+  const rank = [
+    ["Unrated", "#222222"],
+    ["Bronze", "#a94e00"],
+    ["Silver", "#365471"],
+    ["Gold", "#f4c46a"],
+    ["Platinum", "#22e1a2"],
+    ["Diamond", "#05b6fc"],
+    ["Ruby", "#ff0766"],
+  ];
+  const regionOption = {
+    6: "전국",
+    5: "서울",
+    3: "대전",
+    4: "부울경",
+    1: "구미",
+    2: "광주",
+  };
+  const [signupRegion, setSignupRegion] = useState<number>();
+  const [signupClass, setSignupClass] = useState<number>();
+  const [classOption, setClassOption] = useState<Object>({
+    1: "반을 선택 해 주세요",
+  });
+
+  const getSignupRegion = (region: number) => {
+    if (region == 1 || region == 2 || region == 4) {
+      console.log(21);
+      setClassOption({ 1: "1반", 2: "2반" });
+    } else if (region == 3) {
+      setClassOption({ 1: "1반", 2: "2반", 3: "3반" });
+    } else if (region == 5) {
+      setClassOption({
+        1: "1반",
+        2: "2반",
+        3: "3반",
+        4: "4반",
+        5: "5반",
+        6: "6반",
+      });
+    } else if (region == 6) {
+      setClassOption({ 1: "전국" });
+    }
+    setSignupRegion(region);
+    console.log(classOption);
+  };
+
+  const getSignupClass = (classoption: number) => {
+    // console.log(classoption)
+    setSignupClass(classoption);
+  };
+
+  const rankoptions: JSX.Element[] = rank.map(
+    (item: string[], index: number) => {
+      return (
+        <RankBox key={index}>
+          <Rank className='bx bxs-crown' color={item[1]} /> {item[0]}
         </RankBox>
+      )
     })
 
     // const BackjoonHandler = () => {
@@ -197,6 +247,10 @@ const Index = () => {
         setLastList(mySkills)
     }
 
+    console.log("-----")
+    console.log(languages)
+    console.log(skills)
+
     const UpdateStackState = (stackId:number, newState:boolean, type: number) => {
         if (stackId) {
             const tmp = lastList[type].map(s => {
@@ -214,53 +268,43 @@ const Index = () => {
         }
     }
 
-    useEffect(()=> {
-        let skillTmp:number[] = []
+  return (
+    <Container>
+      <GlobalStyle />
+      <NanumSquareRegular />
+      <NanumSquareBold />
+      <ModifyHeader name={userInfo.username} />
+      <CampusBox>
+        <SubtitleText className='title'>매터모스트 아이디</SubtitleText>
+        <InputBox placeholder={userInfo.email} />
+      </CampusBox>
+      <CampusBox>
+        <SubtitleText className='title'>소속캠퍼스</SubtitleText>
+        <p>반</p>
+        <Select
+          title='지역 선택'
+          options={regionOption}
+          handler={getSignupRegion}
+        />
+        <p>지역</p>
+        <Select
+          title='반 선택'
+          options={classOption}
+          handler={getSignupClass}
+        />
+      </CampusBox>
+      <DetailBox>
+        <SubtitleText className='title'>Skill</SubtitleText>
+        <SubBox>
+          <SubtitleText>언어</SubtitleText>
 
-        for (let i in lastList) {
-            const tmp = []
+          <Icons>
+              <StackSelect mySkills={lastList[0]} type={0} UpdateStackState={UpdateStackState} />
+          </Icons>
+        </SubBox>
 
-            for (let j of lastList[i]) {
-                if(j.selected) {
-                    tmp.push(j.id)
-                }
-            }
-
-            if(i === "0") {
-                setLanguages(tmp)
-            } else {
-                skillTmp = skillTmp.concat(tmp)
-            }
-        }
-
-        setSkills(skillTmp)
-    }, [lastList])
-
-    return <Container>
-        <GlobalStyle/>
-        <NanumSquareRegular/>
-        <NanumSquareBold/>
-        <ModifyHeader name={userInfo.username}/>
-        <CampusBox>
-            <SubtitleText className="title">매터모스트 아이디</SubtitleText>
-            <InputBox placeholder={userInfo.email} />
-        </CampusBox>
-        <CampusBox>
-            <SubtitleText className="title">소속캠퍼스</SubtitleText>
-            <ClassSelect/>
-        </CampusBox>
-        <DetailBox>
-            <SubtitleText className="title">Skill</SubtitleText>
-            <SubBox>
-                <SubtitleText>언어</SubtitleText>
-
-                <Icons>
-                    <StackSelect mySkills={lastList[0]} type={0} UpdateStackState={UpdateStackState} />
-                </Icons>
-            </SubBox>
-
-            <SubBox>
-                <SubtitleText>프론트엔드</SubtitleText>
+        <SubBox>
+          <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
                     <StackSelect mySkills={lastList[1]} type={1} UpdateStackState={UpdateStackState} />
@@ -298,86 +342,99 @@ const Index = () => {
                     ? <Select title="랭크 선택" options={test} handler={null}/>
                     : null
             } */}
-        </DetailBox>
+      </DetailBox>
 
-        <DetailBox className="rank">
-            <SubtitleText>GitHub</SubtitleText>
+      <DetailBox className='rank'>
+        <SubtitleText>GitHub</SubtitleText>
 
-            <InputBox placeholder={userInfo.github?userInfo.github:"깃허브 주소를 입력해주세요"} />
-        </DetailBox>
+        <InputBox
+          placeholder={
+            userInfo.github ? userInfo.github : "깃허브 주소를 입력해주세요"
+          }
+        />
+      </DetailBox>
 
-        <DetailBox className="rank">
-            <SubtitleText>Blog</SubtitleText>
+      <DetailBox className='rank'>
+        <SubtitleText>Blog</SubtitleText>
 
-            <InputBox placeholder={userInfo.blog?userInfo.blog:"블로그 주소를 입력해주세요"} />
-        </DetailBox>
+        <InputBox
+          placeholder={
+            userInfo.blog ? userInfo.blog : "블로그 주소를 입력해주세요"
+          }
+        />
+      </DetailBox>
 
-        <DetailBox>
-            <SubtitleText>소개</SubtitleText>
-            <IntroBox placeholder={userInfo.introduce?userInfo.introduce:'자기 소개를 넣어주세요'}></IntroBox>
-        </DetailBox>
+      <DetailBox>
+        <SubtitleText>소개</SubtitleText>
+        <IntroBox
+          placeholder={
+            userInfo.introduce ? userInfo.introduce : "자기 소개를 넣어주세요"
+          }
+        ></IntroBox>
+      </DetailBox>
     </Container>
-}
+  );
+};
 
 export default Index
 
-const Rank = styled.i < {
-    color: string
-} > `
-    color: ${props => props.color};
-    font-size: 25px;
-`
-
-const RankBox = styled.div `
-    display: flex;
-    align-items: center;
-    gap: 1em;
-`
-
-const InputBox = styled.input `
-    border: solid 2px var(--primary-color-light);
-    padding: 0.5em 1em;
-    border-radius: 1em;
-`
-
-const IntroBox = styled.textarea `
-    width: 100%;
-    height: 50vh;
-    margin-top: 1em;
-    padding: 1em;
-    border-radius: 6px;
-    border: solid 2px var(--primary-color-light);
-`
-
-const Icons = styled.div `
-    width: 100%;
-`
-
-const SubBox = styled.div `
-    padding: 1em 0 0 0;
-    
-    & div {
-        font-family: 'NanumSquareNeoBold';
-    }
-`
-
-const DetailBox = styled.div `
-    margin: 2em;
-`
-
-const CampusBox = styled.div `
-    margin: 2em;
+const Rank = styled.i<{
+  color: string;
+}>`
+  color: ${(props) => props.color};
+  font-size: 25px;
 `;
 
-const Container = styled.div `
-    font-family: 'NanumSquareNeoLight';
-    min-height: 100vh;
-    padding-bottom: 5em;
+const RankBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1em;
+`;
 
-    & .rank {
-        display: flex;
-        align-items: center;
-        justify-content: flex-center;
-        gap: 1.5em;
-    }
-`
+const InputBox = styled.input`
+  border: solid 2px var(--primary-color-light);
+  padding: 0.5em 1em;
+  border-radius: 1em;
+`;
+
+const IntroBox = styled.textarea`
+  width: 100%;
+  height: 50vh;
+  margin-top: 1em;
+  padding: 1em;
+  border-radius: 6px;
+  border: solid 2px var(--primary-color-light);
+`;
+
+const Icons = styled.div`
+  width: 100%;
+`;
+
+const SubBox = styled.div`
+  padding: 1em 0 0 0;
+
+  & div {
+    font-family: "NanumSquareNeoBold";
+  }
+`;
+
+const DetailBox = styled.div`
+  margin: 2em;
+`;
+
+const CampusBox = styled.div`
+  margin: 2em;
+`;
+
+const Container = styled.div`
+  font-family: "NanumSquareNeoLight";
+  min-height: 100vh;
+  padding-bottom: 5em;
+
+  & .rank {
+    display: flex;
+    align-items: center;
+    justify-content: flex-center;
+    gap: 1.5em;
+  }
+`;

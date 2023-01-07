@@ -9,3 +9,7 @@ export const setKeyCookies = (key: string, value: string, option?: any) => {
 export const getKeyCookies = (key:string) => {
   return cookies.get(key)
 }
+
+export const removeKeyCookies = (key:string) => {
+  cookies.remove(key)
+}
