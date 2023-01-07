@@ -80,7 +80,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'campus', 'part',)
+        fields = ('id', 'name', 'campus', 'part', 'username')
 
 
 class RecommendUserListSerializer(serializers.ModelSerializer):

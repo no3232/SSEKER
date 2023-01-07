@@ -63,6 +63,7 @@ def peoples(request):
         id = people.id
         name = people.name
         part = people.part
+        username = people.username
         campus = CampusSerializer(people.campus).data
         skill = SkillSerializer(priority_skills, many=True).data
         people = {
@@ -71,6 +72,7 @@ def peoples(request):
             'part': part,
             'campus': campus,
             'skill': skill,
+            'username': username,
         }
         peoples_json.append(people)
 
