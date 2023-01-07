@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { SyntheticEvent, useState, useContext } from "react";
+import { SyntheticEvent, useState, useContext, useEffect } from "react";
 import Router from "next/router";
 import axios from 'axios';
 
@@ -20,7 +20,11 @@ const SsafyInfo = () => {
   const [signupRegion, setSignupRegion] = useState<number>();
   const [signupClass, setSignupClass] = useState<number>();
   const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
-  const ctxUserinfo = useContext(UserInfoContext);
+  let username = {username: ""}
+  useEffect(() => {
+    username = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    console.log(username.username);
+  }, []);
 
 
   const regionOption = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
@@ -60,7 +64,7 @@ const SsafyInfo = () => {
     event.preventDefault();
     axios({
       method: 'PUT',
-      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
+      url: `https://ssekerapi.site/accounts/${username}`,
       // url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
