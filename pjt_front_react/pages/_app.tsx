@@ -25,7 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
       },
     })
     .then(response => {
-      console.log(response.data.username)
       key = response.data.username
       axios({
       method: "GET",
@@ -33,8 +32,6 @@ export default function App({ Component, pageProps }: AppProps) {
     })
       .then((response) => {
         ctxUserinfo.addUser(response.data)
-        console.log(response.data)
-        console.log(ctxUserinfo)
         return
       })
     })
@@ -61,8 +58,6 @@ export default function App({ Component, pageProps }: AppProps) {
   //     })
   //   })
   //   }
-  
-  console.log(path)
 
   return (
     <>
@@ -74,7 +69,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <MenuBox menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
           </div>
       }
-      
+
       <UserInfoProvider>
         <KeyInfoProvider>
           <Component {...pageProps} />

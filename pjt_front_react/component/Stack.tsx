@@ -3,12 +3,12 @@ import styled from "styled-components";
 import {skill} from "../modules/StackIconDummy";
 import {StackAll} from "../modules/types/dummy";
 
-const Stack = ({stack, UpdateStackState} : StackAll) => {
+const Stack = ({stack, UpdateStackState, type} : StackAll) => {
     const {id, title} = stack;
 
     return <Body
         onClick={() => {
-            UpdateStackState(id, false)
+            UpdateStackState(id, false, type)
         }}
         color={skill[title].color}>
         {skill[title].icon}

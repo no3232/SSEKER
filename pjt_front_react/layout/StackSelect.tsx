@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import DropDown from "../component/DropDown";
 
-import {skillList, stackSelect} from "../modules/types/dummy";
+import {stackSelect} from "../modules/types/dummy";
 
-const StackSelect = ({mySkills, type} :stackSelect) => {
+const StackSelect = ({mySkills, UpdateStackState, type} :stackSelect) => {
     return <Container>
-        <DropDown stacks={mySkills} type={type}/>
+        <DropDown stacks={mySkills} type={type} UpdateStackState={UpdateStackState}/>
     </Container>
 }
 

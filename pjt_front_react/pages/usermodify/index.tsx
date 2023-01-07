@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useMemo, createContext} from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -13,7 +13,6 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { language, skill } from "../../modules/StackIconDummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
 const Index = () => {
@@ -43,6 +42,38 @@ const Index = () => {
         email: "",
         introduce: ""
     })
+    const [lastList, setLastList] = useState<{[key:number]:skillList[]}>({
+        0:[],
+        1:[],
+        2:[],
+        3:[],
+        4:[]
+    })
+    const [languages, setLanguages] = useState<number[]>([])
+    const [skills, setSkills] = useState<number[]>([])
+
+    useEffect(() => {
+        axios
+            .get('https://ssekerapi.site/accounts/jay')
+            .then((res) => {
+                const {data} = res;
+
+                setUserInfo(data);
+            })
+            .catch((err)=>console.log(err))
+
+        axios.get('https://ssekerapi.site/objects/skill-language')
+            .then((res) => {
+                const {data} = res;
+
+                setAllSkills(data)
+            })
+            .catch((err)=>console.log(err))
+    }, [])
+
+    useEffect(()=>{
+        setSkillList()
+    }, [allSkills])
 
     // const [selectRank, setSelectRank] = useState<Boolean>(false);
     const test = ["I", "II", "III", "IV", "V"];
@@ -80,98 +111,130 @@ const Index = () => {
     //     setSelectRank(true);
     // }
 
-    const mySkills:{[key:number]:skillList[]} = {
-        0:[],
-        1:[],
-        2:[],
-        3:[],
-        4:[]
-    }
+    const setSkillList = () => {
+        const mySkills:{[key:number]:skillList[]} = {
+            0:[],
+            1:[],
+            2:[],
+            3:[],
+            4:[]
+        }
 
-    let mySkillList:string[] = []
+        //가지고 있는 스킬 title만 추출하기
+        let mySkillList:string[] = [];
+        for (let i = 0; i < userInfo.skill.length; i++) {
+            mySkillList.push(userInfo.skill[i].title)
+        }
+    
+        for (let i = 0; i < userInfo.language.length; i++) {
+            mySkillList.push(userInfo.language[i].title)
+        }
+    
+        const resetSkill:Set<number> = new Set()
+        const resetLangs:number[] = []
 
-    for (let i = 0; i < userInfo.skill.length; i++) {
-        mySkillList.push(userInfo.skill[i].title)
-    }
-
-    for (let i = 0; i < userInfo.language.length; i++) {
-        mySkillList.push(userInfo.language[i].title)
-    }
-
-    for (const i in allSkills) {
-
-        const SkillsCategory = parseInt(allSkills[i].category)
-        const title = allSkills[i].title
-        
-        if (mySkillList.includes(title)) {
-            let info = userInfo.skill.filter((item:skillObject)=> {
-                return item.title === title
-            })
-
-            if (info.length === 0) {
-                info = userInfo.language.filter((item:skillObject)=> {
+        for (const i in allSkills) {
+    
+            const SkillsCategory = parseInt(allSkills[i].category)
+            const title = allSkills[i].title
+            
+            if (mySkillList.includes(title)) {
+                let info = userInfo.skill.filter((item:skillObject)=> {
+                    resetSkill.add(item.id)
                     return item.title === title
                 })
+    
+                if (info.length === 0) {
+                    info = userInfo.language.filter((item:skillObject)=> {
+                        resetLangs.push(item.id)
+                        return item.title === title
+                    })
+                }
+    
+                switch (SkillsCategory) {
+                    case 0:
+                        mySkills[0].push({...info[0], selected:true})
+                        break;
+                    case 1:
+                        mySkills[1].push({...info[0], selected:true})
+                        break;
+                    case 2:
+                        mySkills[2].push({...info[0], selected:true})
+                        break;
+                    case 3:
+                        mySkills[3].push({...info[0], selected:true})
+                        break;
+                    case 4:
+                        mySkills[4].push({...info[0], selected:true})
+                        break;
+                }
+            } else {
+                const info:skillObject = allSkills[i]
+                switch (SkillsCategory) {
+                    case 0:
+                        mySkills[0].push({...info, selected:false})
+                        break;
+                    case 1:
+                        mySkills[1].push({...info, selected:false})
+                        break;
+                    case 2:
+                        mySkills[2].push({...info, selected:false})
+                        break;
+                    case 3:
+                        mySkills[3].push({...info, selected:false})
+                        break;
+                    case 4:
+                        mySkills[4].push({...info, selected:false})
+                        break;
+                }
             }
 
-            switch (SkillsCategory) {
-                case 0:
-                    mySkills[0].push({...info[0], selected:true})
-                    break;
-                case 1:
-                    mySkills[1].push({...info[0], selected:true})
-                    break;
-                case 2:
-                    mySkills[2].push({...info[0], selected:true})
-                    break;
-                case 3:
-                    mySkills[3].push({...info[0], selected:true})
-                    break;
-                case 4:
-                    mySkills[4].push({...info[0], selected:true})
-                    break;
+        }
+    
+        setLanguages(resetLangs)
+        setSkills(Array.from(resetSkill))
 
-            }
-        } else {
-            const info:skillObject = allSkills[i]
-            switch (SkillsCategory) {
-                case 0:
-                    mySkills[0].push({...info, selected:false})
-                    break;
-                case 1:
-                    mySkills[1].push({...info, selected:false})
-                    break;
-                case 2:
-                    mySkills[2].push({...info, selected:false})
-                    break;
-                case 3:
-                    mySkills[3].push({...info, selected:false})
-                    break;
-                case 4:
-                    mySkills[4].push({...info, selected:false})
-                    break;
-            }
+        setLastList(mySkills)
+    }
+
+    const UpdateStackState = (stackId:number, newState:boolean, type: number) => {
+        if (stackId) {
+            const tmp = lastList[type].map(s => {
+                if (s.id === stackId) {
+                    return {
+                        ...s,
+                        selected: newState
+                    }
+                } else 
+                    return s;
+                }
+            )
+
+            setLastList({...lastList, [type]:tmp})
         }
     }
 
-    useEffect(() => {
-        axios
-            .get('https://ssekerapi.site/accounts/jay')
-            .then((res) => {
-                const {data} = res;
+    useEffect(()=> {
+        let skillTmp:number[] = []
 
-                setUserInfo(data);
-            })
-            .catch((err)=>console.log(err))
+        for (let i in lastList) {
+            const tmp = []
 
-        axios.get('https://ssekerapi.site/objects/skill-language')
-            .then((res) => {
-                const {data} = res;
+            for (let j of lastList[i]) {
+                if(j.selected) {
+                    tmp.push(j.id)
+                }
+            }
 
-                setAllSkills(data)
-            })
-            .catch((err)=>console.log(err))
-    }, [])
+            if(i === "0") {
+                setLanguages(tmp)
+            } else {
+                skillTmp = skillTmp.concat(tmp)
+            }
+        }
+
+        setSkills(skillTmp)
+    }, [lastList])
 
     return <Container>
         <GlobalStyle/>
@@ -192,7 +255,7 @@ const Index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    <StackSelect mySkills={mySkills} type={0} />
+                    <StackSelect mySkills={lastList[0]} type={0} UpdateStackState={UpdateStackState} />
                 </Icons>
             </SubBox>
 
@@ -200,35 +263,28 @@ const Index = () => {
                 <SubtitleText>프론트엔드</SubtitleText>
 
                 <Icons>
-                    <StackSelect mySkills={mySkills} type={1} />
+                    <StackSelect mySkills={lastList[1]} type={1} UpdateStackState={UpdateStackState} />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>백엔드</SubtitleText>
 
                 <Icons>
-                    <StackSelect mySkills={mySkills} type={2} />
+                    <StackSelect mySkills={lastList[2]} type={2} UpdateStackState={UpdateStackState} />
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>UI/UX</SubtitleText>
 
                 <Icons>
-                    <StackSelect mySkills={mySkills} type={3} />
+                    <StackSelect mySkills={lastList[3]} type={3} UpdateStackState={UpdateStackState}/>
                 </Icons>
             </SubBox>
             <SubBox>
                 <SubtitleText>Devops</SubtitleText>
 
                 <Icons>
-                    <StackSelect mySkills={mySkills} type={4} />
-                </Icons>
-            </SubBox>
-            <SubBox>
-                <SubtitleText>참고</SubtitleText>
-
-                <Icons>
-                    {/* <StackSelect /> */}
+                    <StackSelect mySkills={lastList[4]} type={4} UpdateStackState={UpdateStackState} />
                 </Icons>
             </SubBox>
         </DetailBox>
@@ -263,7 +319,7 @@ const Index = () => {
     </Container>
 }
 
-export default Index;
+export default Index
 
 const Rank = styled.i < {
     color: string
