@@ -50,7 +50,9 @@ export const UserInfoProvider = (props: any) => {
   // const [keyInfoState, setKeyInfoState] = useState(defaultKeyState);
 
   const addUserHandler = (userinfo: any) => {
+    console.log(userinfo)
     if (userinfo.id !== userInfoState.id) {
+      console.log(userinfo)
       setUserInfoState(userinfo);
     }
   };

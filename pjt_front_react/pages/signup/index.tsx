@@ -20,7 +20,6 @@ const SignupPage = () => {
 
   const moveToComplete = async (event: SyntheticEvent) => {
     event.preventDefault();
-    // console.log({ signupEmail, signupPassword, signupPasswordConfirm });
     const getKey = await axios({
       method: "POST",
       url: "https://ssekerapi.site/dj-accounts/signup/",
@@ -38,7 +37,6 @@ const SignupPage = () => {
         console.log(err.response);
         return '';
       });
-      console.log(getKey)
       if (getKey !== '') {
 
         const getUserInfo = await axios({
@@ -46,7 +44,7 @@ const SignupPage = () => {
           url: `https://ssekerapi.site/accounts/${signupEmail}`,
         })
           .then((response) => {
-            ctxUserinfo.addUser(response.data)
+            localStorage.setItem("userinfo", JSON.stringify(response.data))
             route.push("/signup/ssafyinfo");
           })
           .catch((err) => {

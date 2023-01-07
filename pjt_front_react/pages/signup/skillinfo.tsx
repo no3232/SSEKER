@@ -42,9 +42,7 @@ const SkillInfo = () => {
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log(signupPosition)
-    console.log(signupSkills)
-    console.log()
+    
     axios({
       method: "PUT",
       url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
@@ -54,13 +52,11 @@ const SkillInfo = () => {
       },
       data: { skill: signupSkills, position: signupPosition },
     })
-      .then((response) => console.log(response))
       .catch();
     route.push("/signup/after");
   };
 
   const getPosition = (position: number) => {
-    console.log(position)
     setSignupPosition(position)
   }
 
