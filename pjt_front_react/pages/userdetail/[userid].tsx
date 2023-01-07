@@ -23,17 +23,28 @@ const defaultUserState = {
     id: 0,
     username: "",
     name: "Ananymous",
-    campus: { id: 0, title: "", partcount: 0 },
+    campus: {
+        id: 0,
+        title: "",
+        partcount: 0
+    },
     part: 0,
     skill: [],
     github: "",
     blog: "",
-    level: { id: 0, BJlevel: "", color:"" },
-    track: { id: 0, track: "" },
+    level: {
+        id: 0,
+        BJlevel: "",
+        color: ""
+    },
+    track: {
+        id: 0,
+        track: ""
+    },
     language: [],
     email: "",
-    introduce: "",
-  };
+    introduce: ""
+};
 
 const Index = () => {
     const router = useRouter();
@@ -42,18 +53,17 @@ const Index = () => {
     const [userInfo, setUserInfo] = useState(defaultUserState)
     useEffect(() => {
         // if (localStorage.getItem("userinfo")) {
-
-        //     setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}'))
-        // }
+        // setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}')) }
         axios
-      .get(`https://ssekerapi.site/accounts/${router.query.userid}`)
-      .then((res) => {
-        const { data } = res;
-        console.log(data)
-        setUserInfo(data);
-      })
-      .catch((err) => console.log(err));
+            .get(`https://ssekerapi.site/accounts/${router.query.userid}`)
+            .then((res) => {
+                const {data} = res;
+                console.log(data)
+                setUserInfo(data);
+            })
+            .catch((err) => console.log(err));
     }, [router.query.userid])
+
     const skills = (category : string) => {
         if (userInfo.skill.length === 0) {
             return "설정된 스킬이 없습니다"
@@ -64,16 +74,23 @@ const Index = () => {
                     return item.category == category
                 })
 
-            return lst.map(
-                (item : StackElement | any) => <StackIcon
-                    stack={item.title}
-                    key={item.id}
-                    clickable={false}
-                    textShow={true} />
-            )
+            if (lst.length === 0) {
+                return "설정된 스킬이 없습니다"
+            } else {
+                return lst.map(
+                    (item : StackElement | any) => <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
+                )
+            }
         }
     }
 
+    const language = (userInfo.language.length === 0)
+        ? "설정한 언어가 없습니다"
+        : userInfo
+            .language
+            .map((item : StackElement | any) => {
+                return <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
+            })
 
     return <Container>
         <GlobalStyle/>
@@ -92,7 +109,7 @@ const Index = () => {
                 <SubtitleText>언어</SubtitleText>
 
                 <Icons>
-                    {/* {language} */}
+                    {language}
                 </Icons>
             </SubBox>
 
@@ -136,8 +153,7 @@ const Index = () => {
                             <RankName>Unrated</RankName>
                         </RankBox>
                     : <RankBox>
-                            <Rank className="bx bxs-crown" color={userInfo.level.color}/>
-                            {/* <RankName>{userInfo.level.level}</RankName> */}
+                            <Rank className="bx bxs-crown" color={userInfo.level.color}/> {/* <RankName>{userInfo.level.level}</RankName> */}
                         </RankBox>
             }
         </DetailBox>
@@ -147,7 +163,7 @@ const Index = () => {
 
             <RankBox>
                 <a href={userInfo.github}>
-                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} />
+                    <StackIcon stack={"GitHub"} clickable={false} textShow={true}/>
                 </a>
             </RankBox>
         </DetailBox>
@@ -157,14 +173,18 @@ const Index = () => {
 
             <RankBox>
                 <a href={userInfo.blog}>
-                    <StackIcon stack={"Blog"} clickable={false} textShow={true} />
+                    <StackIcon stack={"Blog"} clickable={false} textShow={true}/>
                 </a>
             </RankBox>
         </DetailBox>
 
         <DetailBox>
             <SubtitleText>소개</SubtitleText>
-            <IntroBox>{userInfo.introduce}</IntroBox>
+            <IntroBox>{
+                    (userInfo.introduce === null)
+                        ? "자기소개가 없습니다"
+                        : userInfo.introduce
+                }</IntroBox>
         </DetailBox>
     </Container>
 }

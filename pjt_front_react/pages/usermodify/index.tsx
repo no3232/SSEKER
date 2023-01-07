@@ -310,6 +310,7 @@ const Index = () => {
                 } else {
                     return s;
                 }
+            }
             )
 
             setLastList({...lastList, [type]:tmp})

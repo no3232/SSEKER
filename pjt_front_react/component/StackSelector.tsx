@@ -8,14 +8,14 @@ import StackListItem from "./StackListItem";
 const StackSelector = ({stackListHandle} : {
     stackListHandle: any
 }) => {
-    const {stackList, UpdateStackState, type} = stackListHandle
+    const {stacks, UpdateStackState, type} = stackListHandle
     const [searchList, setSearchList] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        setSearchList(stackList);
-    }, [stackList]);
+        setSearchList(stacks);
+    }, [stacks]);
 
     const RemoveItem = (id : number) => {
         setSearchList(SearchList => SearchList.filter((x : testElem) => x.id !== id));
@@ -27,7 +27,7 @@ const StackSelector = ({stackListHandle} : {
     const Search = (value : any) => {
         setSearchInput(value);
         if (value) {
-            setSearchList(stackList.filter((x : testElem) => {
+            setSearchList(stacks.filter((x : testElem) => {
                 if (!x.selected) {
                     return x
                         .title
@@ -37,7 +37,7 @@ const StackSelector = ({stackListHandle} : {
                     return false
             }))
         } else {
-            setSearchList(stackList)
+            setSearchList(stacks)
         }
     }
 
