@@ -18,9 +18,30 @@ interface StackElement {
     "category" : number
 }
 
-const index = () => {
-    const [userInfo, setUserInfo] = useState(useContext(UserInfoContext))
+const defaultUserState = {
+    id: 0,
+    username: "",
+    name: "Ananymous",
+    campus: { id: 0, title: "", partcount: 0 },
+    part: 0,
+    skill: [],
+    github: "",
+    blog: "",
+    level: { id: 0, BJlevel: "", color:"" },
+    track: { id: 0, track: "" },
+    language: [],
+    email: "",
+    introduce: "",
+  };
 
+const Index = () => {
+    const [userInfo, setUserInfo] = useState(defaultUserState)
+    useEffect(() => {
+        if (localStorage.getItem("userinfo")) {
+
+            setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}'))
+        }
+    }, [])
     const skills = (category : string) => {
         if (userInfo.skill.length === 0) {
             return "설정된 스킬이 없습니다"
@@ -36,52 +57,17 @@ const index = () => {
                     stack={item.title}
                     key={item.id}
                     clickable={false}
-                    textShow={true}
-                    list={"skill"}/>
+                    textShow={true} />
             )
         }
     }
 
-    // const language = () => {
-    //     const lst = userInfo.langauge
-
-    //     console.log("language", lst)
-
-    //     if (lst === undefined || lst.length === 0) {
-    //         return "설정된 언어가 없습니다"
-    //     } else {
-    //         return lst.map(
-    //             (item : StackElement | any) => <StackIcon
-    //                 stack={item.title}
-    //                 key={item.id}
-    //                 clickable={false}
-    //                 textShow={true}
-    //                 list={"skill"}/>
-    //         )
-    //     }
-    // }
-
-    // console.log(userInfo)
-
-    // console.log("HIHI", userInfo.langauge)
-
-    // const language: JSX.Element[] | string = (userInfo.langauge.length === 0)
-    //     ? "설정된 언어가 없습니다"
-    //     : userInfo.langauge.map(
-    //         (item
-    //         : StackElement|any) => <StackIcon
-    //             stack={item.title}
-    //             key={item.id}
-    //             clickable={false}
-    //             textShow={true}
-    //             list={"langauge"}/>
-    //     )
 
     return <Container>
         <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <DetailHeader name={userInfo.username} mattermost={`${userInfo.email}`}/>
+        <DetailHeader name={userInfo.name} mattermost={`${userInfo.email}`}/>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
             <Campus>{userInfo.campus.title}</Campus>
@@ -149,7 +135,7 @@ const index = () => {
 
             <RankBox>
                 <a href={userInfo.github}>
-                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} list={"skill"}/>
+                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} />
                 </a>
             </RankBox>
         </DetailBox>
@@ -159,7 +145,7 @@ const index = () => {
 
             <RankBox>
                 <a href={userInfo.blog}>
-                    <StackIcon stack={"Blog"} clickable={false} textShow={true} list={"skill"}/>
+                    <StackIcon stack={"Blog"} clickable={false} textShow={true} />
                 </a>
             </RankBox>
         </DetailBox>
@@ -171,7 +157,7 @@ const index = () => {
     </Container>
 }
 
-export default index;
+export default Index;
 
 const RankName = styled.span ``
 

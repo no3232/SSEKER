@@ -2,38 +2,13 @@ import styled from 'styled-components';
 
 import StackIcon from '../common/StackIcon'
 import SubtitleText from '../common/SubtitleText';
+import { skill } from '../modules/StackIconDummy';
 
-const stack = [
-  "android",
-  "angular",
-  "c",
-  "cplusplus",
-  "dart",
-  "django",
-  "docker",
-  "express",
-  "fastapi",
-  "figma",
-  "flask",
-  "flutter",
-  "git",
-  "go",
-  "javascript",
-  "kotlin",
-  "linux",
-  "mysql",
-  "python",
-  "react",
-  "reactnative",
-  "rust",
-  "spring",
-  "springboot",
-  "svelte",
-  "swift",
-  "typescript",
-  "vuejs",
-  "xd"
-];
+const stack:string[] = []
+
+for (let i in skill) {
+  stack.push(skill[i].name)
+}
 
 // const StackFilterCheckboxs = stack.map((skill) => {
 //   return (

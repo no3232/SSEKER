@@ -4,10 +4,9 @@ import DropDown from "../component/DropDown";
 
 import {skillList, stackSelect} from "../modules/types/dummy";
 
-const StackSelect = ({list, mySkills, type} :stackSelect) => {
-
+const StackSelect = ({mySkills, type} :stackSelect) => {
     return <Container>
-        <DropDown stacks={mySkills} list={list} type={type}/>
+        <DropDown stacks={mySkills} type={type}/>
     </Container>
 }
 

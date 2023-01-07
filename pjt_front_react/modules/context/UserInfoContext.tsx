@@ -21,7 +21,7 @@ export const UserInfoContext = React.createContext<userInfo>({
   blog: "",
   level: { id: 0, BJlevel: "", color: "" },
   track: { id: 0, track: "" },
-  langauge: [],
+  language: [],
   email: "",
   introduce: "",
   addUser: (userinfo: any) => {},
@@ -40,7 +40,7 @@ const defaultUserState:defaultUserInfo = {
   blog: "",
   level: { id: 0, BJlevel: "", color:"" },
   track: { id: 0, track: "" },
-  langauge: [],
+  language: [],
   email: "",
   introduce: "",
 };
@@ -50,7 +50,9 @@ export const UserInfoProvider = (props: any) => {
   // const [keyInfoState, setKeyInfoState] = useState(defaultKeyState);
 
   const addUserHandler = (userinfo: any) => {
+    console.log(userinfo)
     if (userinfo.id !== userInfoState.id) {
+      console.log(userinfo)
       setUserInfoState(userinfo);
     }
   };
@@ -80,7 +82,7 @@ export const UserInfoProvider = (props: any) => {
     blog: userInfoState.blog,
     level: userInfoState.level,
     track: userInfoState.track,
-    langauge: userInfoState.langauge,
+    language: userInfoState.language,
     email: userInfoState.email,
     introduce: userInfoState.introduce,
     addUser: addUserHandler,

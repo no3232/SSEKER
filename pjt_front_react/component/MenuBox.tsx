@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
@@ -6,13 +6,41 @@ import GmarketBold from "../modules/fonts/GmarketSansBold";
 import GmarketLight from "../modules/fonts/GmarketSansLight";
 import { Props } from "../modules/types/dummy";
 import Link from "next/link";
-import Router from 'next/router';
+import Router from "next/router";
+import axios from "axios";
+import { getKeyCookies, removeKeyCookies } from "../modules/cookie/keyCookies";
 
 const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
+  const [isUserLogin, setIsUserLogin] = useState(false);
+  const router = Router;
+
+  useEffect(() => {
+    if (localStorage.getItem("userinfo")) {
+      setIsUserLogin(true);
+    } else {
+      setIsUserLogin(false)
+    }
+  }, [getKeyCookies("key")]);
 
   const closeMenuList = () => {
-    setMenuOpen(!menuOpen);
-  }
+    setMenuOpen((prev) => !prev);
+  };
+
+  const logoutHandler = () => {
+    event?.preventDefault()
+    axios({
+      method: "POST",
+      url: "https://ssekerapi.site/dj-accounts/logout/",
+      headers: {
+        Authorization: `Token ${getKeyCookies("key")}`,
+      },
+    }).catch(error => console.log(error.response));
+    removeKeyCookies("key");
+    localStorage.removeItem("userinfo");
+    setIsUserLogin(false)
+    setMenuOpen((prev) => !prev);
+    router.push('/')
+  };
 
   return (
     <Container className={`${menuOpen ? "open-menu" : null}`}>
@@ -21,17 +49,33 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
       <GmarketLight />
       <MenuUl>
         <MenuLi>
-        <Link href={"/user"} onClick={closeMenuList}>팀원 구하기</Link>
+          <Link href={"/user"} onClick={closeMenuList}>
+            팀원 구하기
+          </Link>
         </MenuLi>
         <MenuLi>
-        <Link href={"/team"} onClick={closeMenuList}>팀에 들어가기</Link>
+          <Link href={"/team"} onClick={closeMenuList}>
+            팀에 들어가기
+          </Link>
         </MenuLi>
         <MenuLi>
-        <Link href={"/teammodify"} onClick={closeMenuList}>팀만들기</Link>
+          <Link href={"/teammodify"} onClick={closeMenuList}>
+            팀만들기
+          </Link>
         </MenuLi>
         <MenuLi>
-          <Link href={"/userdetail"} onClick={closeMenuList}>마이페이지</Link>
+          <Link href={"/userdetail"} onClick={closeMenuList}>
+            마이페이지
+          </Link>
         </MenuLi>
+        
+          <MenuLi>
+            {isUserLogin ? (<a onClick={logoutHandler} className="logout">로그아웃</a>) :
+            (<Link href={"/login"} onClick={closeMenuList}>
+            로그인
+            </Link>)}
+          </MenuLi>
+        )
       </MenuUl>
     </Container>
   );
@@ -74,6 +118,9 @@ const MenuLi = styled.li`
 
   & a:hover::after {
     opacity: 1;
+  }
+  & .logout {
+    color: red;
   }
 `;
 

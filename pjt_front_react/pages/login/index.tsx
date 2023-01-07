@@ -16,7 +16,6 @@ const LoginMainPage = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const ctxUserinfo = useContext(UserInfoContext);
-
   const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
     const getKey = await axios({
