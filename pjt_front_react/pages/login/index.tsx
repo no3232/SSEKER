@@ -37,14 +37,16 @@ const LoginMainPage = () => {
         console.log(err.response);
         return alert("이메일/비밀번호를 확인 해 주세요!")
       });
-
+      console.log(getKey)
     if (getKey === 200) {
       await axios({
         method: "GET",
         url: `https://ssekerapi.site/accounts/${loginEmail}`,
       })
         .then((response) => {
-          localStorage.setItem("userinfo", JSON.stringify(response.data))
+          // console.log(response.data);
+          ctxUserinfo.addUser(response.data);
+          // console.log(ctxUserinfo);
           route.push("/login/after");
         })
         .catch((err) => {
