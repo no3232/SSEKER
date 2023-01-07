@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from "styled-components";
 import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
@@ -22,6 +23,7 @@ const UserListCard = (props: EachUserCardTypes) => {
   );
 
   return (
+    <Link href={`/userdetail/`}>
     <CardOutside>
       <CardMainside>
         <CardTitleside>
@@ -37,6 +39,7 @@ const UserListCard = (props: EachUserCardTypes) => {
         <CardButton className='bx bx-chevron-right' />
       </CardButtonside>
     </CardOutside>
+    </Link>
   );
 };
 

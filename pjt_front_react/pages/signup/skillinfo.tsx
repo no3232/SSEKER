@@ -59,9 +59,6 @@ const SkillInfo = () => {
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
-    username = JSON.parse(localStorage.getItem("userinfo") || "{}");
-    console.log(username.username)
-    if (username.username !== "") {
       axios({
         method: "PUT",
         url: `https://ssekerapi.site/accounts/${username}`,
@@ -72,10 +69,8 @@ const SkillInfo = () => {
         data: { skill: signupSkills, position: signupPosition },
       }).catch();
       route.push("/signup/after");
-    } else {
-      alert("잘못된 접근입니다")
     }
-  };
+  
 
   const getPosition = (position: number) => {
     setSignupPosition(position);

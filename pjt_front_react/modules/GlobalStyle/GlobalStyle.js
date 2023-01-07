@@ -38,6 +38,11 @@ const GlobalStyle = createGlobalStyle`
       .filter-open{
         display: block;
       }
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
   
   `;
 

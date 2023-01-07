@@ -15,45 +15,107 @@ import { skillList, skillObject } from "../../modules/types/dummy";
 import { language, skill } from "../../modules/StackIconDummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 
-const Index = () => {
-  const [allSkills, setAllSkills] = useState<skillObject[]>([]);
-  const [userInfo, setUserInfo] = useState<defaultUserInfo>({
+const ExampleUser = {
+  id: 0,
+  username: "",
+  campus: {
     id: 0,
-    username: "",
-    campus: {
-      id: 0,
-      title: "",
-      partcount: 0,
-    },
-    part: 0,
-    skill: [],
-    github: "",
-    blog: "",
-    level: {
-      id: 0,
-      BJlevel: "",
-      color: "",
-    },
-    track: {
-      id: 0,
-      track: "",
-    },
-    language: [],
-    email: "",
-    introduce: "",
-  });
+    title: "",
+    partcount: 0,
+  },
+  part: 0,
+  skill: [],
+  github: "",
+  blog: "",
+  level: {
+    id: 0,
+    BJlevel: "",
+    color: "",
+  },
+  track: {
+    id: 0,
+    track: "",
+  },
+  language: [],
+  email: "",
+  introduce: "",
+};
 
-  // const [selectRank, setSelectRank] = useState<Boolean>(false);
-  const test = ["I", "II", "III", "IV", "V"];
-  const rank = [
-    ["Unrated", "#222222"],
-    ["Bronze", "#a94e00"],
-    ["Silver", "#365471"],
-    ["Gold", "#f4c46a"],
-    ["Platinum", "#22e1a2"],
-    ["Diamond", "#05b6fc"],
-    ["Ruby", "#ff0766"],
-  ];
+const Index = () => {
+  const [loaded, setLoaded] = useState(false)
+  const [allSkills, setAllSkills] = useState<skillObject[]>([]);
+  const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
+
+  // 로컬 스토리지에서 유저 데이터 불러옴
+  useEffect(() => {
+    // axios
+    //   .get(`https://ssekerapi.site/accounts/${username.username}`)
+    //   .then((res) => {
+    //     const { data } = res;
+    //     console.log(data)
+    //     // setUserInfo(data);
+    //   })
+    //   .catch((err) => console.log(err));
+
+    // 스킬 오브젝트 불러오기
+    axios
+      .get("https://ssekerapi.site/objects/skill-language")
+      .then((res) => {
+        const { data } = res;
+
+        setAllSkills(data);
+      })
+      .catch((err) => console.log(err));
+
+    setUserInfo(JSON.parse(localStorage.getItem("userinfo") || "{}"));
+    setLoaded(true)
+  }, []);
+
+  useEffect(() => {
+    setSignupRegion(userInfo.campus.id);
+    setSignupClass(userInfo.part);
+  }, [userInfo]);
+
+  // 랭크 수정 부분
+  const [selectRank, setSelectRank] = useState<number>(0);
+  const [selectTier, setSelectTier] = useState<number>(0);
+  const test = { 0: "I", 1: "II", 2: "III", 3: "IV", 4: "V" };
+  const rank = {
+    // 1: [<Rank className='bx bxs-crown' color={"#a94e00"} />, "Bronze"],
+    // 2: [<Rank className='bx bxs-crown' color={"#365471"} />, "Silver"],
+    // 3: [<Rank className='bx bxs-crown' color={"#f4c46a"} />, "Gold"],
+    // 4: [<Rank className='bx bxs-crown' color={"#22e1a2"} />, "Platinum"],
+    // 5: [<Rank className='bx bxs-crown' color={"#05b6fc"} />, "Diamond"],
+    // 6: [<Rank className='bx bxs-crown' color={"#ff0766"} />, "Ruby"],
+    // 7: [<Rank className='bx bxs-crown' color={"#222222"} />, "Unrated"],
+    1: "Bronze",
+    2: "Silver",
+    3: "Gold",
+    4: "Platinum",
+    5: "Diamond",
+    6: "Ruby",
+    7: "Unrated",
+  };
+  // const rank = [
+  //   ["Bronze", "#a94e00"],
+  //   ["Silver", "#365471"],
+  //   ["Gold", "#f4c46a"],
+  //   ["Platinum", "#22e1a2"],
+  //   ["Diamond", "#05b6fc"],
+  //   ["Ruby", "#ff0766"],
+  //   ["Unrated", "#222222"],
+  // ];
+
+  const rankHandler = (rank: number) => {
+    setSelectRank(rank);
+    // console.log(selectRank)
+  };
+
+  const tierHandler = (tier: number) => {
+    setSelectTier(tier);
+    // console.log(selectTier)
+  };
+
   const regionOption = {
     6: "전국",
     5: "서울",
@@ -62,15 +124,14 @@ const Index = () => {
     1: "구미",
     2: "광주",
   };
-  const [signupRegion, setSignupRegion] = useState<number>();
-  const [signupClass, setSignupClass] = useState<number>();
+  const [signupRegion, setSignupRegion] = useState<number>(userInfo.campus.id);
+  const [signupClass, setSignupClass] = useState<number>(userInfo.part);
   const [classOption, setClassOption] = useState<Object>({
     1: "반을 선택 해 주세요",
   });
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
-      console.log(21);
       setClassOption({ 1: "1반", 2: "2반" });
     } else if (region == 3) {
       setClassOption({ 1: "1반", 2: "2반", 3: "3반" });
@@ -86,8 +147,10 @@ const Index = () => {
     } else if (region == 6) {
       setClassOption({ 1: "전국" });
     }
+    setSignupClass(1);
+
     setSignupRegion(region);
-    console.log(classOption);
+    // console.log(classOption);
   };
 
   const getSignupClass = (classoption: number) => {
@@ -95,19 +158,21 @@ const Index = () => {
     setSignupClass(classoption);
   };
 
-  const rankoptions: JSX.Element[] = rank.map(
-    (item: string[], index: number) => {
-      return (
-        <RankBox key={index}>
-          <Rank className='bx bxs-crown' color={item[1]} /> {item[0]}
-        </RankBox>
-      );
-    }
-  );
+  // useEffect(() => {
+  //   setSignupClass(1);
+  // }, [signupRegion]);
 
-  // const BackjoonHandler = () => {
-  //     setSelectRank(true);
-  // }
+  // const rankoptions: JSX.Element[] = rank.map(
+  //   (item: string[], index: number) => {
+  //     return (
+  //       <RankBox key={index}>
+  //         <Rank className='bx bxs-crown' color={item[1]} /> {item[0]}
+  //       </RankBox>
+  //     );
+  //   }
+  // );
+
+  //   console.log(rankoptions)
 
   const mySkills: { [key: number]: skillList[] } = {
     0: [],
@@ -181,31 +246,16 @@ const Index = () => {
     }
   }
 
-  useEffect(() => {
-    axios
-      .get("https://ssekerapi.site/accounts/jay")
-      .then((res) => {
-        const { data } = res;
-
-        setUserInfo(data);
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get("https://ssekerapi.site/objects/skill-language")
-      .then((res) => {
-        const { data } = res;
-
-        setAllSkills(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const submitHandler = () => {
+    console.log(signupClass, signupRegion);
+  };
 
   return (
     <Container>
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
+      <button onClick={submitHandler}>123123</button>
       <ModifyHeader name={userInfo.username} />
       <CampusBox>
         <SubtitleText className='title'>매터모스트 아이디</SubtitleText>
@@ -213,15 +263,15 @@ const Index = () => {
       </CampusBox>
       <CampusBox>
         <SubtitleText className='title'>소속캠퍼스</SubtitleText>
-        <p>반</p>
+        <p>지역</p>
         <Select
-          title='지역 선택'
+          title={userInfo.campus.title}
           options={regionOption}
           handler={getSignupRegion}
         />
-        <p>지역</p>
+        <p>반</p>
         <Select
-          title='반 선택'
+          title={signupClass + "반"}
           options={classOption}
           handler={getSignupClass}
         />
@@ -274,12 +324,10 @@ const Index = () => {
       <DetailBox className='rank'>
         <SubtitleText>백준 랭크</SubtitleText>
 
-        {/* <Select title="티어 선택" options={rankoptions} handler={BackjoonHandler}/>
-            {
-                selectRank
-                    ? <Select title="랭크 선택" options={test} handler={null}/>
-                    : null
-            } */}
+        <Select title='티어 선택' options={rank} handler={rankHandler} />
+        {selectRank ? (
+          <Select title='랭크 선택' options={test} handler={tierHandler} />
+        ) : null}
       </DetailBox>
 
       <DetailBox className='rank'>

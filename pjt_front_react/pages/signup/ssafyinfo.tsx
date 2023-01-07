@@ -87,9 +87,9 @@ const SsafyInfo = () => {
           getInputValue={getSignupName}
         />
         {/* <ClassSelect /> */}
-        <p>반</p>
-        <Select title="지역 선택" options={regionOption} handler={getSignupRegion} />
         <p>지역</p>
+        <Select title="지역 선택" options={regionOption} handler={getSignupRegion} />
+        <p>반</p>
         <Select title="반 선택" options={classOption} handler={getSignupClass} />
         <TrackLabelText>
           <SubtitleText>수강 트랙</SubtitleText>
