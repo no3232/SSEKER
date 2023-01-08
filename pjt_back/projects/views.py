@@ -1,9 +1,12 @@
-from .models import Project, Applicant
-from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, UpdateApplicantSerializer
+from .models import Project, Applicant, Participant
+from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, ParticipantDetailSerializer
 from objects.models import Campus, SkillCategory
+from accounts.models import User
 
+from django.http import QueryDict
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -94,3 +97,25 @@ def apply_project(request):
         applicant.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST', 'PUT', 'DELETE'])
+def participant(request, project_id, participant_id=None):
+    manager_id = request.data.get('manager')
+    manager = User.objects.get(id=manager_id)
+    if participant_id:
+        participant = Participant.objects.get(id=participant_id)
+        if request.method == 'PUT':
+            serializer = ParticipantDetailSerializer(participant, data=request.data)
+            if serializer.is_valid():
+                serializer.save(manager=manager)
+        elif request.method == 'DELETE':
+            participant.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+    else:
+        if request.method == 'POST':
+            project = Project.objects.get(id=project_id)
+            serializer = ParticipantDetailSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(project=project, manager=manager)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
