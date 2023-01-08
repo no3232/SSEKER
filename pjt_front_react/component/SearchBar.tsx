@@ -8,6 +8,7 @@ interface searchUser {
   name: string;
   campus: number;
   part: number;
+  username: string;
 }
 
 const SearchBar = () => {
@@ -31,7 +32,7 @@ const SearchBar = () => {
   const SearchListItems = searchList.map((person: searchUser) => {
       return (
         <div>
-          <Link href={`/userdetail/ssafy123@ssafy.com`}><li>{person.name} {regionOption[person.campus]} {person.part + '반'}</li></Link>
+          <Link href={`/userdetail/${person.username}`}><li>{person.name} {regionOption[person.campus]} {person.part + '반'}</li></Link>
         </div>
       )
     })

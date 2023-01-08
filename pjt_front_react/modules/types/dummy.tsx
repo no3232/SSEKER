@@ -132,6 +132,7 @@ export interface EachUserCardTypes {
   stack: string[];
   part: number;
   class: string;
+  username: string;
 }
 
 export interface EachTeamCardTypes {

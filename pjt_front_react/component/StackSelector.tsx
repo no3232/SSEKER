@@ -69,7 +69,7 @@ const StackSelector = ({stackListHandle} : {
             {searchList.map((s: testElem) => {
                 if(!s.selected) {
                     return <StackListItem
-                        key={s.id}
+                        key={s.title}
                         stack={s}
                         removeItem={RemoveItem}
                         UpdateStackState={UpdateStackState}

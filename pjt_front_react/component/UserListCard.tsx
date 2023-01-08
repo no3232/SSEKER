@@ -23,7 +23,7 @@ const UserListCard = (props: EachUserCardTypes) => {
   );
 
   return (
-    <Link href={`/userdetail/`}>
+    <Link href={`/userdetail/${props.username}`}>
     <CardOutside>
       <CardMainside>
         <CardTitleside>
