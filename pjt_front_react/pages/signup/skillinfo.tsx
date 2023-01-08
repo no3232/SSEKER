@@ -9,7 +9,6 @@ import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
 import Select from "../../component/Select";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
-import { UserInfoContext } from "../../modules/context/UserInfoContext";
 
 interface skillObjType {
   [key: string]: number;

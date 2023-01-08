@@ -7,7 +7,6 @@ import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import SubText from "../../common/SubText";
-import { UserInfoContext } from "../../modules/context/UserInfoContext";
 import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
 // import { KeyContext } from "../../modules/context/KeyContext";
 
@@ -15,7 +14,6 @@ const LoginMainPage = () => {
   const route = Router;
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const ctxUserinfo = useContext(UserInfoContext);
 
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
