@@ -5,10 +5,12 @@ from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSe
 
 from django.http import JsonResponse
 
+import requests
 from urllib.parse import unquote
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 
 def filtering_peoples(request):
     campus  = request.GET.get('campus')
@@ -72,7 +74,7 @@ def peoples(request):
         }
         peoples_json.append(people)
 
-    peoples_count = len(User.objects.all()) - 1
+    peoples_count = len(peoples)
     peoples = peoples_json
     context = {
         'peoples_count': peoples_count,
