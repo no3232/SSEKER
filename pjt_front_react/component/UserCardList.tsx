@@ -36,7 +36,7 @@ const iconList = [
 ];
 
 const UserCardList = (props: listCardTypes) => {
-
+  // console.log(props)
   const ListCards = Object.values(props).map((item) => {
     // const FilterStack = item.skill.filter((skill: skillObject) => {
     //   if (iconList.includes(skill.title.toLowerCase())) {
@@ -49,7 +49,7 @@ const UserCardList = (props: listCardTypes) => {
     // })
     // console.log(item)
     return (
-      <UserListCard key={item.id} id={item.id} title={item.name} stack={item.skill} part={item.part} class={item.campus.title}/>
+      <UserListCard key={item.id} id={item.id} title={item.name} stack={item.skill} part={item.part} class={item.campus.title} username={item.username}/>
     );
   });
 

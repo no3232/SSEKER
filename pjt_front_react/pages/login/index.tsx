@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { SyntheticEvent, useState, useContext } from "react";
+import { SyntheticEvent, useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import SubText from "../../common/SubText";
 import { UserInfoContext } from "../../modules/context/UserInfoContext";
-import { setKeyCookies } from '../../modules/cookie/keyCookies';
+import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
 // import { KeyContext } from "../../modules/context/KeyContext";
 
 const LoginMainPage = () => {
@@ -16,6 +16,14 @@ const LoginMainPage = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const ctxUserinfo = useContext(UserInfoContext);
+
+  useEffect(() => {
+    if (getKeyCookies("key") !== undefined) {
+      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!")
+      route.push('/login/after')
+    }
+  }, []);
+
   const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
     const getKey = await axios({
@@ -44,8 +52,11 @@ const LoginMainPage = () => {
         url: `https://ssekerapi.site/accounts/${loginEmail}`,
       })
         .then((response) => {
+          if (localStorage.getItem("userinfo") === undefined) {
+            localStorage.removeItem("userinfo")
+          }
           // console.log(response.data);
-          ctxUserinfo.addUser(response.data);
+          localStorage.setItem("userinfo", JSON.stringify(response.data));
           // console.log(ctxUserinfo);
           route.push("/login/after");
         })

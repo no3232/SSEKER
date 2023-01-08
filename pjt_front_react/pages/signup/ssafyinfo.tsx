@@ -20,12 +20,15 @@ const SsafyInfo = () => {
   const [signupRegion, setSignupRegion] = useState<number>();
   const [signupClass, setSignupClass] = useState<number>();
   const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
-  let username = {username: ""}
-  useEffect(() => {
-    username = JSON.parse(localStorage.getItem("userinfo") || "{}");
-    console.log(username.username);
-  }, []);
+  let user = {username: ""};
 
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      route.push('/login')
+    } else {
+      user = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    }
+  }, []);
 
   const regionOption = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
 
@@ -35,14 +38,20 @@ const SsafyInfo = () => {
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
-
-      setClassOption({1: "1반", 2: "2반"})
+      setClassOption({ 1: "공통 1반", 2: "공통 2반" });
     } else if (region == 3) {
-      setClassOption({1: "1반", 2: "2반", 3: "3반"})
+      setClassOption({ 1: "공통 1반", 2: "공통 2반", 3: "공통 3반" });
     } else if (region == 5) {
-      setClassOption ({1: "1반", 2: "2반", 3: "3반", 4: "4반", 5: "5반", 6: "6반"})
+      setClassOption({
+        1: "공통 1반",
+        2: "공통 2반",
+        3: "공통 3반",
+        4: "공통 4반",
+        5: "공통 5반",
+        6: "공통 6반",
+      });
     } else if (region == 6) {
-      setClassOption ({1: "전국"})
+      setClassOption({ 1: "전국" });
     }
     setSignupRegion(region);
 
@@ -60,17 +69,33 @@ const SsafyInfo = () => {
     return;
   };
 
-  const moveToSkillInfo = (event: SyntheticEvent) => {
+  const moveToSkillInfo = async (event: SyntheticEvent) => {
     event.preventDefault();
-    axios({
+    user = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    await axios({
       method: 'PUT',
-      url: `https://ssekerapi.site/accounts/${username}`,
+      url: `https://ssekerapi.site/accounts/${user.username}`,
       // url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
+    .then(response => console.log(response))
       .catch()
-    route.push("/signup/skillinfo");
+    await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${user.username}`,
+      })
+        .then((response) => {
+          // console.log(response.data);
+          localStorage.setItem("userinfo", JSON.stringify(response.data));
+          // console.log(ctxUserinfo);
+          route.push("/login/after");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
+    await route.push("/signup/skillinfo");
   };
 
   return (

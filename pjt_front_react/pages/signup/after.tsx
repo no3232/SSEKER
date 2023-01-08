@@ -5,9 +5,19 @@ import LargeText from "../../common/LargeText";
 import SubtitleText from "../../common/SubtitleText";
 import MainButton from "../../common/MainButton";
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SignupAfterPage = () => {
   const router = Router;
+
+  useEffect(() => {
+    console.log(getKeyCookies("key"))
+    if (getKeyCookies("key") === undefined) {
+      router.push('/login')
+    }
+  }, []);
+
   const moveToTeamList = () => {
     router.push("/team");
   };

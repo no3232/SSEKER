@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { SyntheticEvent, useContext, useState } from "react";
+import { SyntheticEvent, useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import TitleText from "../../common/TitleText";
@@ -8,7 +8,7 @@ import InputStyle from "../../component/InputStyle";
 import axios from "axios";
 import { UserInfoContext } from "../../modules/context/UserInfoContext";
 import { KeyContext } from "../../modules/context/KeyContext";
-import { setKeyCookies } from '../../modules/cookie/keyCookies';
+import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SignupPage = () => {
   const route = Router;
@@ -17,6 +17,14 @@ const SignupPage = () => {
   const [signupPasswordConfirm, setSignupPasswordConfirm] = useState("");
   const ctxUserinfo = useContext(UserInfoContext);
   const ctxKeyinfo = useContext(KeyContext);
+
+  useEffect(() => {
+
+    if (getKeyCookies("key") !== undefined) {
+      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!")
+      route.push('/login/after')
+    }
+  }, []);
 
   const moveToComplete = async (event: SyntheticEvent) => {
     event.preventDefault();
@@ -49,6 +57,9 @@ const SignupPage = () => {
           url: `https://ssekerapi.site/accounts/${signupEmail}`,
         })
           .then((response) => {
+            if (localStorage.getItem("userinfo") === undefined) {
+              localStorage.removeItem("userinfo")
+            }
             localStorage.setItem("userinfo", JSON.stringify(response.data))
             route.push("/signup/ssafyinfo");
           })
