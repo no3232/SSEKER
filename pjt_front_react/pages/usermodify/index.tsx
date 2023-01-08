@@ -9,7 +9,6 @@ import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
-import StackIcon from "../../common/StackIcon";
 import Select from "../../component/Select";
 import StackSelect from "../../layout/StackSelect";
 
@@ -45,7 +44,10 @@ const ExampleUser: defaultUserInfo = {
   language: [],
   email: "",
   introduce: "",
-  position: 0
+  position: {
+    id:5,
+    category:""
+  },
 };
 
 const Rank: { [key: number]: string } = {
@@ -75,12 +77,25 @@ const regionOption = {
   2: "광주",
 };
 
+const positionOption = {
+  1: "Frontend",
+  2: "Backend",
+  3: "UI/UX",
+  4: "DevOps",
+  5: "선택 안함",
+}
+
 const Index = () => {
+  const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
-  const [selectRank, setSelectRank] = useState<number>(0);
-  const [selectTier, setSelectTier] = useState<number>(0);
+  const [selectBj, setSelectBj] = useState({
+    rankId: 0,
+    tierId: 0,
+    rankName: "랭크 선택",
+    tierName: "티어 선택"
+  })
   const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
     0: [],
     1: [],
@@ -125,6 +140,11 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    const levelId = userInfo.level.id
+    const rank = 5-(levelId%5);
+    const tier = Math.floor(levelId/5)+1
+
+    console.log(levelId, Rank[rank], Tier[tier])
     setChangeInfo((prev) => {
       return {
         ...prev,
@@ -133,17 +153,22 @@ const Index = () => {
         skill: [],
         github: userInfo.github,
         blog: userInfo.blog,
-        level: userInfo.level.id,
+        level: rank * 5 - tier,
         track: userInfo.track.id,
         language: [],
         introduce: userInfo.introduce,
         email: userInfo.email,
-        position: userInfo.position,
+        position: userInfo.position.id,
       };
-    }); //바뀐 값이 적용되지 않음
+    });
+
+    setSelectBj(()=>{
+      return {rankId:rank, tierId:tier, rankName:Rank[rank], tierName:Tier[tier]}
+    })
   }, [userInfo]);
 
-  console.log("바깥에서", changeInfo);
+  
+  console.log(selectBj.rankName, selectBj.tierName)
 
   useEffect(() => {
     setSkillList();
@@ -177,17 +202,21 @@ const Index = () => {
 
   useEffect(() => {
     setChangeInfo((prev) => {
-      return { ...prev, level:0 };
+      return { ...prev, level: selectBj.tierId * 5 - selectBj.rankId };
     });
-  }, [selectRank, selectTier]);
+  }, [selectBj]);
 
   // 랭크 수정 부분
   const rankHandler = (rank: number) => {
-    setSelectRank(rank);
+    setSelectBj((prev)=>{
+      return {...prev, rankId:rank, rankName:Rank[rank]}
+    })
   };
 
   const tierHandler = (tier: number) => {
-    setSelectTier(tier);
+    setSelectBj((prev)=>{
+      return {...prev, tierId:tier, tierName:Tier[tier]}
+    })
   };
 
   const getSignupRegion = (region: number) => {
@@ -359,7 +388,6 @@ const Index = () => {
     }
   };
 
-
   const getInputData = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
     type: number
@@ -391,22 +419,30 @@ const Index = () => {
   };
 
   const sendData: MouseEventHandler<HTMLElement> = () => {
-    console.log("AXIOS", changeInfo)
     axios({
       method: "PUT",
       url: `https://ssekerapi.site/accounts/${userInfo.username}`,
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
       },
-      data: {...changeInfo},
+      data: { ...changeInfo },
     })
       .then((res) => {
-        console.log(res);
+        router.push(path);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const getPosition = (item:any) => {
+    console.log(item)
+
+    
+    setChangeInfo((prev) => {
+      return { ...prev, position: item };
+    });
+  }
 
   return (
     <Container>
@@ -415,12 +451,12 @@ const Index = () => {
       <NanumSquareBold />
       <ModifyHeader
         name={userInfo.username}
-        path={path}
         nameHandler={getInputData}
         sendData={sendData}
       />
       <CampusBox>
         <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
+        <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
         <Select
           title={userInfo.campus.title}
@@ -432,6 +468,14 @@ const Index = () => {
           title={changeInfo.part + "반"}
           options={classOption}
           handler={getSignupClass}
+        />
+      </CampusBox>
+      <CampusBox>
+        <SubtitleText className="title"> 희망 포지션</SubtitleText>
+        <Select
+          title={userInfo.position.category}
+          options={positionOption}
+          handler={getPosition}
         />
       </CampusBox>
       <DetailBox>
@@ -489,10 +533,8 @@ const Index = () => {
       </DetailBox>
       <DetailBox className="rank">
         <SubtitleText> 백준 랭크</SubtitleText>
-        <Select title="티어 선택" options={Tier} handler={tierHandler} />
-        {selectTier ? (
-          <Select title="랭크 선택" options={Rank} handler={rankHandler} />
-        ) : null}
+        <Select title={selectBj.tierName} options={Tier} handler={tierHandler} />
+        <Select title={selectBj.rankName} options={Rank} handler={rankHandler} />
       </DetailBox>
       <DetailBox className="rank">
         <SubtitleText> GitHub</SubtitleText>

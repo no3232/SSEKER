@@ -19,7 +19,7 @@ interface StackElement {
   category: number;
 }
 
-const defaultUserState:detailUserInfo = {
+const defaultUserState: detailUserInfo = {
   id: 0,
   username: "",
   name: "Ananymous",
@@ -34,7 +34,7 @@ const defaultUserState:detailUserInfo = {
   blog: "",
   level: {
     id: 0,
-    BJlevel: "",
+    level: "",
     color: "",
   },
   track: {
@@ -44,6 +44,10 @@ const defaultUserState:detailUserInfo = {
   language: [],
   email: "",
   introduce: "",
+  position: {
+    id: 0,
+    category: ""
+  },
 };
 
 const Index = () => {
@@ -78,7 +82,7 @@ const Index = () => {
     blog: "",
     level: {
       id: 0,
-      BJlevel: "",
+      level: "",
       color: "",
     },
     track: {
@@ -88,10 +92,14 @@ const Index = () => {
     language: [],
     email: "",
     introduce: "",
-  })
-  
+    position: {
+      id: 0,
+      category: ""
+    },
+  });
+
   useEffect(() => {
-    setRealUser(JSON.parse(localStorage.getItem("userinfo") || "{}"))
+    setRealUser(JSON.parse(localStorage.getItem("userinfo") || "{}"));
   }, []);
 
   const skills = (category: string) => {
@@ -131,7 +139,7 @@ const Index = () => {
           );
         });
 
-  const isUser = (userInfo.username === realUser.username)? true:false
+  const isUser = userInfo.username === realUser.username ? true : false;
 
   return (
     <Container>
@@ -143,6 +151,10 @@ const Index = () => {
         <SubtitleText className="title">소속캠퍼스</SubtitleText>
         <Campus>{userInfo.campus.title}</Campus>
         <Campus>{`${userInfo.campus.partcount}반`}</Campus>
+      </CampusBox>
+      <CampusBox>
+        <SubtitleText className="title">희망 포지션</SubtitleText>
+        <Campus>{userInfo.position.category}</Campus>
       </CampusBox>
       <DetailBox>
         <SubtitleText className="title">Skill</SubtitleText>
@@ -186,7 +198,7 @@ const Index = () => {
         ) : (
           <RankBox>
             <Rank className="bx bxs-crown" color={userInfo.level.color} />{" "}
-            {/* <RankName>{userInfo.level.level}</RankName> */}
+            <RankName>{userInfo.level.level}</RankName>
           </RankBox>
         )}
       </DetailBox>
