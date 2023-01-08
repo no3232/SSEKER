@@ -1,11 +1,7 @@
 from .models import User
-
-
-
-from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, RecommendUserListSerializer
-
 from objects.models import Campus, SkillCategory
 from objects.serializers import SkillSerializer, CampusSerializer
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, RecommendUserListSerializer
 
 from django.http import JsonResponse
 
@@ -85,10 +81,10 @@ def peoples(request):
     return JsonResponse(context)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def people_detail(request, username):
+def people_detail(request, user_id):
     user = request.user
     if request.method == 'GET':
-        user = User.objects.get(username=username)
+        user = User.objects.get(id=user_id)
         serializer = UserSerializer(user)
         return Response(serializer.data ,status=status.HTTP_200_OK)
     elif request.method == 'PUT':
