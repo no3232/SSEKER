@@ -9,7 +9,6 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import { KeyContext } from '../../modules/context/KeyContext';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SsafyInfo = () => {
@@ -97,6 +96,8 @@ const SsafyInfo = () => {
     await route.push("/signup/skillinfo");
   };
 
+  
+
   return (
     <SsafyInfoBox>
       <TitleBox>
@@ -177,6 +178,9 @@ const SsafyInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`
