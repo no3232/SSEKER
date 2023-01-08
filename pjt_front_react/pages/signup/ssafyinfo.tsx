@@ -9,7 +9,6 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import { KeyContext } from '../../modules/context/KeyContext';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SsafyInfo = () => {
@@ -201,6 +200,7 @@ const TrackUl = styled.ul`
   margin-top: 10px;
   margin-bottom: 24px;
 `;
+
 const TrackLi = styled.li`
   display: flex;
 `;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Router from "next/router";
-import React, { SyntheticEvent, useState, useContext, useEffect } from "react";
+import React, { SyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 
 import TitleText from "../../common/TitleText";
@@ -9,6 +9,7 @@ import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
 import Select from "../../component/Select";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
+import { positionOption } from "../../modules/list/dummy";
 
 interface skillObjType {
   [key: string]: number;
@@ -26,13 +27,6 @@ const SkillInfo = () => {
       user = JSON.parse(localStorage.getItem("userinfo") || "{}");
     }
   }, []);
-
-  const positionOption = {
-    1: "프론트엔드",
-    2: "백엔드",
-    3: "DevOps",
-    4: "UI&UX",
-  };
 
   const getSkill = (event: SyntheticEvent): void => {
     const eventTarget = event.target as HTMLElement;

@@ -4,7 +4,7 @@ import React, {
   ChangeEvent,
   MouseEventHandler,
 } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
@@ -12,6 +12,7 @@ import SubtitleText from "../../common/SubtitleText";
 import Select from "../../component/Select";
 import StackSelect from "../../layout/StackSelect";
 
+import ClassButtonTypes from "../../modules/types/classSelectButton";
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
@@ -19,83 +20,27 @@ import { skillList, skillObject } from "../../modules/types/dummy";
 import { defaultUserInfo, sendInfo } from "../../modules/types/UserInfoTypes";
 import { useRouter } from "next/router";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
-
-const ExampleUser: defaultUserInfo = {
-  id: 0,
-  username: "",
-  campus: {
-    id: 0,
-    title: "",
-    partcount: 0,
-  },
-  part: 0,
-  skill: [],
-  github: "",
-  blog: "",
-  level: {
-    id: 0,
-    level: "",
-    color: "",
-  },
-  track: {
-    id: 0,
-    track: "",
-  },
-  language: [],
-  email: "",
-  introduce: "",
-  position: {
-    id:5,
-    category:""
-  },
-};
-
-const Rank: { [key: number]: string } = {
-  0: "I",
-  1: "II",
-  2: "III",
-  3: "IV",
-  4: "V",
-};
-
-const Tier: { [key: number]: string } = {
-  1: "Bronze",
-  2: "Silver",
-  3: "Gold",
-  4: "Platinum",
-  5: "Diamond",
-  6: "Ruby",
-  7: "Unrated",
-};
-
-const regionOption = {
-  6: "전국",
-  5: "서울",
-  3: "대전",
-  4: "부울경",
-  1: "구미",
-  2: "광주",
-};
-
-const positionOption = {
-  1: "Frontend",
-  2: "Backend",
-  3: "UI/UX",
-  4: "DevOps",
-  5: "선택 안함",
-}
+import {
+  ExampleUser,
+  Rank,
+  Tier,
+  regionOption,
+  positionOption,
+} from "../../modules/list/dummy";
 
 const Index = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
+  // const [changeInfo.track, setchangeInfo.track] = useState<number>();
   const [selectBj, setSelectBj] = useState({
     rankId: 0,
     tierId: 0,
     rankName: "랭크 선택",
-    tierName: "티어 선택"
-  })
+    tierName: "티어 선택",
+  });
+
   const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
     0: [],
     1: [],
@@ -140,11 +85,11 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    const levelId = userInfo.level.id
-    const rank = 5-(levelId%5);
-    const tier = Math.floor(levelId/5)+1
+    const levelId = userInfo.level.id;
+    const rank = 5 - (levelId % 5);
+    const tier = Math.floor(levelId / 5) + 1;
 
-    console.log(levelId, Rank[rank], Tier[tier])
+    console.log(levelId, Rank[rank], Tier[tier]);
     setChangeInfo((prev) => {
       return {
         ...prev,
@@ -162,13 +107,17 @@ const Index = () => {
       };
     });
 
-    setSelectBj(()=>{
-      return {rankId:rank, tierId:tier, rankName:Rank[rank], tierName:Tier[tier]}
-    })
+    setSelectBj(() => {
+      return {
+        rankId: rank,
+        tierId: tier,
+        rankName: Rank[rank],
+        tierName: Tier[tier],
+      };
+    });
   }, [userInfo]);
 
-  
-  console.log(selectBj.rankName, selectBj.tierName)
+  console.log(selectBj.rankName, selectBj.tierName);
 
   useEffect(() => {
     setSkillList();
@@ -208,15 +157,15 @@ const Index = () => {
 
   // 랭크 수정 부분
   const rankHandler = (rank: number) => {
-    setSelectBj((prev)=>{
-      return {...prev, rankId:rank, rankName:Rank[rank]}
-    })
+    setSelectBj((prev) => {
+      return { ...prev, rankId: rank, rankName: Rank[rank] };
+    });
   };
 
   const tierHandler = (tier: number) => {
-    setSelectBj((prev)=>{
-      return {...prev, tierId:tier, tierName:Tier[tier]}
-    })
+    setSelectBj((prev) => {
+      return { ...prev, tierId: tier, tierName: Tier[tier] };
+    });
   };
 
   const getSignupRegion = (region: number) => {
@@ -418,8 +367,8 @@ const Index = () => {
     }
   };
 
-  const sendData: MouseEventHandler<HTMLElement> = () => {
-    axios({
+  const sendData: MouseEventHandler<HTMLElement> = async () => {
+    const putMethod = await axios({
       method: "PUT",
       url: `https://ssekerapi.site/accounts/${userInfo.username}`,
       headers: {
@@ -428,48 +377,127 @@ const Index = () => {
       data: { ...changeInfo },
     })
       .then((res) => {
-        router.push(path);
+        return res.status;
       })
       .catch((err) => {
         console.log(err);
+        alert("잘못된 형식입니다.")
       });
+
+    if (putMethod === 200) {
+      await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${userInfo.username}`,
+      })
+        .then((res) => {
+          const { data } = res;
+          localStorage.setItem("userinfo", JSON.stringify(data));
+
+          router.push(path);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
-  const getPosition = (item:any) => {
-    console.log(item)
+  const getPosition = (item: any) => {
+    console.log(item);
 
-    
     setChangeInfo((prev) => {
       return { ...prev, position: item };
     });
-  }
+  };
+
+  const clickTrack = (event: any) => {
+    event.preventDefault();
+
+    setChangeInfo((prev) => {
+      return { ...prev, track: event.target.value };
+    });
+  };
 
   return (
     <Container>
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
+
       <ModifyHeader
         name={userInfo.username}
         nameHandler={getInputData}
         sendData={sendData}
       />
+      <TrackUl>
+        <TrackLi>
+          <TrackButton
+            selected={changeInfo.track == 1}
+            onClick={clickTrack}
+            value="1"
+          >
+            파이썬
+          </TrackButton>
+        </TrackLi>
+        <TrackLi>
+          <TrackButton
+            selected={changeInfo.track == 3}
+            onClick={clickTrack}
+            value="3"
+          >
+            자바(전공)
+          </TrackButton>
+        </TrackLi>
+        <TrackLi>
+          <TrackButton
+            selected={changeInfo.track == 2}
+            onClick={clickTrack}
+            value="2"
+          >
+            자바(비전공)
+          </TrackButton>
+        </TrackLi>
+        <TrackLi>
+          <TrackButton
+            selected={changeInfo.track == 5}
+            onClick={clickTrack}
+            value="5"
+          >
+            모바일
+          </TrackButton>
+        </TrackLi>
+        <TrackLi>
+          <TrackButton
+            selected={changeInfo.track == 4}
+            onClick={clickTrack}
+            value="4"
+          >
+            임베디드
+          </TrackButton>
+        </TrackLi>
+      </TrackUl>
+      <CampusBox>
+        <SubtitleText className="title">수강 트랙</SubtitleText>
+      </CampusBox>
+
       <CampusBox>
         <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
+
         <Select
           title={userInfo.campus.title}
           options={regionOption}
           handler={getSignupRegion}
         />
         <p> 반</p>
+
         <Select
           title={changeInfo.part + "반"}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
+
       <CampusBox>
         <SubtitleText className="title"> 희망 포지션</SubtitleText>
         <Select
@@ -533,8 +561,16 @@ const Index = () => {
       </DetailBox>
       <DetailBox className="rank">
         <SubtitleText> 백준 랭크</SubtitleText>
-        <Select title={selectBj.tierName} options={Tier} handler={tierHandler} />
-        <Select title={selectBj.rankName} options={Rank} handler={rankHandler} />
+        <Select
+          title={selectBj.tierName}
+          options={Tier}
+          handler={tierHandler}
+        />
+        <Select
+          title={selectBj.rankName}
+          options={Rank}
+          handler={rankHandler}
+        />
       </DetailBox>
       <DetailBox className="rank">
         <SubtitleText> GitHub</SubtitleText>
@@ -568,6 +604,48 @@ const Index = () => {
 };
 
 export default Index;
+
+const TrackUl = styled.ul`
+  display: flex;
+  align-content: space-between;
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 24px;
+`;
+
+const TrackLi = styled.li`
+  display: flex;
+`;
+
+const TrackButton = styled.button<ClassButtonTypes>`
+  border: solid 1px #0062ff;
+  background-color: white;
+  border-radius: 5px;
+  color: #0062ff;
+  font-family: 'NanumSquareNeoRegular';
+  padding : 10px;
+  margin: 2px;
+  &:hover {
+    border: solid 1px white;
+      background-color: blue;
+      color: white;
+  }
+  ${(props) =>
+    props.selected &&
+    css`
+      border: solid 1px white;
+      background-color: #0062ff;
+      color: white;
+      &:hover {
+        border: solid 1px white;
+        background-color: #0062ff;
+        color: white;
+      }
+    `}
+    
+  }
+  
+`;
 
 const InputBox = styled.input`
   border: solid 2px var(--primary-color-light);

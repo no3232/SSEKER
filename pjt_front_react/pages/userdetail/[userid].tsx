@@ -9,46 +9,10 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import axios from "axios";
-import { skillObject } from "../../modules/types/dummy";
+import { skillObject, StackElement } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
-import { detailUserInfo, userInfo } from "../../modules/types/UserInfoTypes";
-
-interface StackElement {
-  id: number;
-  title: string;
-  category: number;
-}
-
-const defaultUserState: detailUserInfo = {
-  id: 0,
-  username: "",
-  name: "Ananymous",
-  campus: {
-    id: 0,
-    title: "",
-    partcount: 0,
-  },
-  part: 0,
-  skill: [],
-  github: "",
-  blog: "",
-  level: {
-    id: 0,
-    level: "",
-    color: "",
-  },
-  track: {
-    id: 0,
-    track: "",
-  },
-  language: [],
-  email: "",
-  introduce: "",
-  position: {
-    id: 0,
-    category: ""
-  },
-};
+import { detailUserInfo } from "../../modules/types/UserInfoTypes";
+import { defaultUserState } from "../../modules/list/dummy";
 
 const Index = () => {
   const router = useRouter();
@@ -67,36 +31,7 @@ const Index = () => {
       .catch((err) => console.log(err));
   }, [router.query.userid]);
 
-  const [realUser, setRealUser] = useState<detailUserInfo>({
-    id: 0,
-    username: "",
-    name: "Ananymous",
-    campus: {
-      id: 0,
-      title: "",
-      partcount: 0,
-    },
-    part: 0,
-    skill: [],
-    github: "",
-    blog: "",
-    level: {
-      id: 0,
-      level: "",
-      color: "",
-    },
-    track: {
-      id: 0,
-      track: "",
-    },
-    language: [],
-    email: "",
-    introduce: "",
-    position: {
-      id: 0,
-      category: ""
-    },
-  });
+  const [realUser, setRealUser] = useState<detailUserInfo>(defaultUserState);
 
   useEffect(() => {
     setRealUser(JSON.parse(localStorage.getItem("userinfo") || "{}"));
@@ -146,16 +81,25 @@ const Index = () => {
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
+      
       <DetailHeader name={userInfo.name} isUser={isUser} />
+      
+      <CampusBox>
+        <SubtitleText className="title">수강 트랙</SubtitleText>
+        <Campus>{userInfo.track.track}</Campus>
+      </CampusBox>
+
       <CampusBox>
         <SubtitleText className="title">소속캠퍼스</SubtitleText>
         <Campus>{userInfo.campus.title}</Campus>
         <Campus>{`${userInfo.campus.partcount}반`}</Campus>
       </CampusBox>
+      
       <CampusBox>
         <SubtitleText className="title">희망 포지션</SubtitleText>
         <Campus>{userInfo.position.category}</Campus>
       </CampusBox>
+      
       <DetailBox>
         <SubtitleText className="title">Skill</SubtitleText>
 

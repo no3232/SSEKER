@@ -162,3 +162,9 @@ export interface ContextUserInfoTypes {
     addUser: Function;
     removeUser: Function;
 }
+
+export interface StackElement {
+  id: number;
+  title: string;
+  category: number;
+}
