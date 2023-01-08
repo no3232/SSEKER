@@ -142,6 +142,6 @@ const DropDown = styled.div `
 
 const Box = styled.div `
     position: relative;
-    width: 150px;
+    width: 100%;
     height: fit-content;
 `

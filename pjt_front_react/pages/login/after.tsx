@@ -3,9 +3,17 @@ import styled from "styled-components";
 
 import LargeText from "../../common/LargeText";
 import MainButton from "../../common/MainButton";
+import { useEffect } from 'react';
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const LoginAfterPage = () => {
   const router = Router;
+
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      router.push('/login')
+    }
+  }, []);
   const moveToTeamList = () => {
     router.push("/team");
   };

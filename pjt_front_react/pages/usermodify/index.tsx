@@ -167,17 +167,17 @@ const Index = () => {
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
-      setClassOption({ 1: "1반", 2: "2반" });
+      setClassOption({ 1: "공통 1반", 2: "공통 2반" });
     } else if (region == 3) {
-      setClassOption({ 1: "1반", 2: "2반", 3: "3반" });
+      setClassOption({ 1: "공통 1반", 2: "공통 2반", 3: "공통 3반" });
     } else if (region == 5) {
       setClassOption({
-        1: "1반",
-        2: "2반",
-        3: "3반",
-        4: "4반",
-        5: "5반",
-        6: "6반",
+        1: "공통 1반",
+        2: "공통 2반",
+        3: "공통 3반",
+        4: "공통 4반",
+        5: "공통 5반",
+        6: "공통 6반",
       });
     } else if (region == 6) {
       setClassOption({ 1: "전국" });
@@ -310,7 +310,7 @@ const Index = () => {
                 } else {
                     return s;
                 }
-            )
+              })
 
             setLastList({...lastList, [type]:tmp})
         }

@@ -19,9 +19,13 @@ const SkillInfo = () => {
   const route = Router;
   const [signupPosition, setSignupPosition] = useState<number>();
   const [signupSkills, setSignupSkills] = useState<number[]>([]);
-  let username = {username: ""}
+  let user = {username: ""}
   useEffect(() => {
-    username = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    if (getKeyCookies("key") === undefined) {
+      route.push('/login')
+    } else {
+      user = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    }
   }, []);
 
   const positionOption = {
@@ -57,18 +61,34 @@ const SkillInfo = () => {
     }
   };
 
-  const moveToAfter = (event: SyntheticEvent) => {
+  const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
-      axios({
+    user = JSON.parse(localStorage.getItem("userinfo") || "{}");
+    console.log(user.username)
+      await axios({
         method: "PUT",
-        url: `https://ssekerapi.site/accounts/${username}`,
+        url: `https://ssekerapi.site/accounts/${user.username}`,
         // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
         headers: {
           Authorization: `Token ${getKeyCookies("key")}`,
         },
         data: { skill: signupSkills, position: signupPosition },
       }).catch();
-      route.push("/signup/after");
+      await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${user.username}`,
+      })
+        .then((response) => {
+          // console.log(response.data);
+          localStorage.setItem("userinfo", JSON.stringify(response.data));
+          // console.log(ctxUserinfo);
+          route.push("/login/after");
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
+        await route.push("/signup/after");
     }
   
 
