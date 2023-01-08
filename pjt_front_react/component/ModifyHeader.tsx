@@ -5,13 +5,15 @@ import styled from "styled-components";
 import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
-const ModifyHeader = ({name, path}: {name:string, path:string}) => {
+const ModifyHeader = ({name, path, nameHandler}: {name:string, path:string, nameHandler:Function}) => {
 
     return <TitleBox>
         <GmarketMedium/>
         <NanumSquareBold/>
         <ContentBox>
-            <InputBox placeholder={name?name:`이름을 입력하세요`}/>
+            <InputBox placeholder={name?name:`이름을 입력하세요`}
+                onChange={(e)=>nameHandler(e, 0)}
+            />
 
             <Link href={path}>
                 <Edit className="bx bx-check"/>

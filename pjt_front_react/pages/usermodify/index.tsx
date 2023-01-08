@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ import { skillList, skillObject } from "../../modules/types/dummy";
 import { defaultUserInfo, sendInfo } from "../../modules/types/UserInfoTypes";
 import { useRouter } from "next/router";
 
-const ExampleUser = {
+const ExampleUser: defaultUserInfo = {
   id: 0,
   username: "",
   campus: {
@@ -29,7 +29,7 @@ const ExampleUser = {
   blog: "",
   level: {
     id: 0,
-    BJlevel: "",
+    level: "",
     color: "",
   },
   track: {
@@ -41,16 +41,69 @@ const ExampleUser = {
   introduce: "",
 };
 
+const Rank: { [key: number]: string } = {
+  0: "I",
+  1: "II",
+  2: "III",
+  3: "IV",
+  4: "V",
+};
+
+const Tier: { [key: number]: string } = {
+  1: "Bronze",
+  2: "Silver",
+  3: "Gold",
+  4: "Platinum",
+  5: "Diamond",
+  6: "Ruby",
+  7: "Unrated",
+};
+
+const regionOption = {
+  6: "전국",
+  5: "서울",
+  3: "대전",
+  4: "부울경",
+  1: "구미",
+  2: "광주",
+};
+
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
-  const path = `/userdetail/${userInfo.username}`
+  const [selectRank, setSelectRank] = useState<number>(0);
+  const [selectTier, setSelectTier] = useState<number>(0);
+  const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
+
+  const [classOption, setClassOption] = useState<Object>({
+    1: "반을 선택 해 주세요",
+  });
+
+  const [changeInfo, setChangeInfo] = useState<sendInfo>({
+    campus: 0,
+    part: 0,
+    skill: [],
+    github: "",
+    blog: "",
+    level: "",
+    track: 0,
+    language: [],
+    introduce: "",
+    email: "0",
+    position: 0,
+  });
+
+  const path = `/userdetail/${userInfo.username}`;
+
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
-    // axios   .get(`https://ssekerapi.site/accounts/${username.username}`)
-    // .then((res) => {     const { data } = res;     console.log(data)
-    // setUserInfo(data);   })   .catch((err) => console.log(err)); 스킬 오브젝트 불러오기
     axios
       .get("https://ssekerapi.site/objects/skill-language")
       .then((res) => {
@@ -65,58 +118,25 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    setSignupRegion(userInfo.campus.id);
-    setSignupClass(userInfo.part);
+    setChangeInfo((prev) => {
+      return {
+        ...prev,
+        campus: userInfo.campus.id,
+        part: userInfo.part,
+        skill: [],
+        github: userInfo.github,
+        blog: userInfo.blog,
+        level: userInfo.level.level,
+        track: userInfo.track.id,
+        language: [],
+        introduce: userInfo.introduce,
+        email: userInfo.email,
+        position: 0,
+      };
+    }); //바뀐 값이 적용되지 않음
   }, [userInfo]);
 
-  // 랭크 수정 부분
-  const [selectRank, setSelectRank] = useState<number>(0);
-  const [selectTier, setSelectTier] = useState<number>(0);
-  const test = {
-    0: "I",
-    1: "II",
-    2: "III",
-    3: "IV",
-    4: "V",
-  };
-  const rank = {
-    // 1: [<Rank className='bx bxs-crown' color={"#a94e00"} />, "Bronze"], 2: [<Rank
-    // className='bx bxs-crown' color={"#365471"} />, "Silver"], 3: [<Rank
-    // className='bx bxs-crown' color={"#f4c46a"} />, "Gold"], 4: [<Rank
-    // className='bx bxs-crown' color={"#22e1a2"} />, "Platinum"], 5: [<Rank
-    // className='bx bxs-crown' color={"#05b6fc"} />, "Diamond"], 6: [<Rank
-    // className='bx bxs-crown' color={"#ff0766"} />, "Ruby"], 7: [<Rank
-    // className='bx bxs-crown' color={"#222222"} />, "Unrated"],
-    1: "Bronze",
-    2: "Silver",
-    3: "Gold",
-    4: "Platinum",
-    5: "Diamond",
-    6: "Ruby",
-    7: "Unrated",
-  };
-  // const rank = [   ["Bronze", "#a94e00"],   ["Silver", "#365471"],   ["Gold",
-  // "#f4c46a"],   ["Platinum", "#22e1a2"],   ["Diamond", "#05b6fc"],   ["Ruby",
-  // "#ff0766"],   ["Unrated", "#222222"], ];
-
-  const rankHandler = (rank: number) => {
-    setSelectRank(rank);
-    // console.log(selectRank)
-  };
-
-  const tierHandler = (tier: number) => {
-    setSelectTier(tier);
-    // console.log(selectTier)
-  };
-  const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
-    0: [],
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-  });
-  const [languages, setLanguages] = useState<number[]>([]);
-  const [skills, setSkills] = useState<number[]>([]);
+  console.log("바깥에서", changeInfo);
 
   useEffect(() => {
     setSkillList();
@@ -126,7 +146,7 @@ const Index = () => {
     let skillTmp: number[] = [];
 
     for (let i in lastList) {
-      const tmp = [];
+      const tmp: number[] = [];
 
       for (let j of lastList[i]) {
         if (j.selected) {
@@ -135,29 +155,33 @@ const Index = () => {
       }
 
       if (i === "0") {
-        setLanguages(tmp);
+        setChangeInfo((prev) => {
+          return { ...prev, language: tmp };
+        });
       } else {
         skillTmp = skillTmp.concat(tmp);
       }
     }
 
-    setSkills(skillTmp);
+    setChangeInfo((prev) => {
+      return { ...prev, skill: skillTmp };
+    });
   }, [lastList]);
 
-  const regionOption = {
-    6: "전국",
-    5: "서울",
-    3: "대전",
-    4: "부울경",
-    1: "구미",
-    2: "광주",
+  useEffect(() => {
+    setChangeInfo((prev) => {
+      return { ...prev, level: [Tier[selectTier], Rank[selectRank]].join(" ") };
+    });
+  }, [selectRank, selectTier]);
+
+  // 랭크 수정 부분
+  const rankHandler = (rank: number) => {
+    setSelectRank(rank);
   };
-  
-  const [signupRegion, setSignupRegion] = useState<number>(userInfo.campus.id);
-  const [signupClass, setSignupClass] = useState<number>(userInfo.part);
-  const [classOption, setClassOption] = useState<Object>({
-    1: "반을 선택 해 주세요",
-  });
+
+  const tierHandler = (tier: number) => {
+    setSelectTier(tier);
+  };
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
@@ -176,21 +200,17 @@ const Index = () => {
     } else if (region == 6) {
       setClassOption({ 1: "전국" });
     }
-    setSignupClass(1);
 
-    setSignupRegion(region);
-    // console.log(classOption);
+    setChangeInfo((prev) => {
+      return { ...prev, campus: Number(region), part: 1 };
+    });
   };
 
   const getSignupClass = (classoption: number) => {
-    // console.log(classoption)
-    setSignupClass(classoption);
+    setChangeInfo((prev) => {
+      return { ...prev, part: classoption };
+    });
   };
-
-  // useEffect(() => {   setSignupClass(1); }, [signupRegion]); const rankoptions:
-  // JSX.Element[] = rank.map(   (item: string[], index: number) => {     return (
-  // <RankBox key={index}>         <Rank className='bx bxs-crown' color={item[1]}
-  // /> {item[0]}       </RankBox>     );   } );   console.log(rankoptions)
 
   const setSkillList = () => {
     const mySkills: {
@@ -302,17 +322,17 @@ const Index = () => {
       }
     }
 
-    setLanguages(resetLangs);
-    setSkills(Array.from(resetSkill));
-
+    setChangeInfo((prev) => {
+      return {
+        ...prev,
+        language: [...resetLangs],
+        skill: [...Array.from(resetSkill)],
+      };
+    });
     setLastList(mySkills);
   };
 
-  const UpdateStackState = (
-    stackId: 0,
-    newState: boolean,
-    type: number
-  ) => {
+  const UpdateStackState = (stackId: 0, newState: boolean, type: number) => {
     if (stackId) {
       const tmp = lastList[type].map((s) => {
         if (s.id === stackId) {
@@ -332,30 +352,47 @@ const Index = () => {
     }
   };
 
-  const sendData = () => {
-    const Data:sendInfo = {
-        campus: 0,
-        part: 0,
-        skill: [],
-        github: "",
-        blog: "",
-        level: "",
-        track: 0,
-        language: [],
-        introduce: "",
-        email: "",
-        position: 0
+  const getInputData = (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
+    type: number
+  ) => {
+    const value = e.target.value;
+
+    switch (type) {
+      case 0:
+        setChangeInfo((prev) => {
+          return { ...prev, username: value };
+        });
+        break;
+      case 1:
+        setChangeInfo((prev) => {
+          return { ...prev, github: value };
+        });
+        break;
+      case 2:
+        setChangeInfo((prev) => {
+          return { ...prev, blog: value };
+        });
+        break;
+      case 3:
+        setChangeInfo((prev) => {
+          return { ...prev, introduce: value };
+        });
+        break;
     }
-  }
+  };
 
   return (
     <Container>
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
-      <ModifyHeader name={userInfo.username} path={path}/>
+      <ModifyHeader
+        name={userInfo.username}
+        path={path}
+        nameHandler={getInputData}
+      />
       <CampusBox>
-        
         <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p> 지역</p>
         <Select
@@ -365,18 +402,16 @@ const Index = () => {
         />
         <p> 반</p>
         <Select
-          title={signupClass + "반"}
+          title={changeInfo.part + "반"}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
       <DetailBox>
-        
         <SubtitleText className="title"> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 언어</SubtitleText>
           <Icons>
-            
             <StackSelect
               mySkills={lastList[0]}
               type={0}
@@ -387,7 +422,6 @@ const Index = () => {
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>
-            
             <StackSelect
               mySkills={lastList[1]}
               type={1}
@@ -398,7 +432,6 @@ const Index = () => {
         <SubBox>
           <SubtitleText> 백엔드</SubtitleText>
           <Icons>
-            
             <StackSelect
               mySkills={lastList[2]}
               type={2}
@@ -409,7 +442,6 @@ const Index = () => {
         <SubBox>
           <SubtitleText> UI / UX</SubtitleText>
           <Icons>
-            
             <StackSelect
               mySkills={lastList[3]}
               type={3}
@@ -420,7 +452,6 @@ const Index = () => {
         <SubBox>
           <SubtitleText> Devops</SubtitleText>
           <Icons>
-            
             <StackSelect
               mySkills={lastList[4]}
               type={4}
@@ -430,29 +461,28 @@ const Index = () => {
         </SubBox>
       </DetailBox>
       <DetailBox className="rank">
-        
         <SubtitleText> 백준 랭크</SubtitleText>
-        <Select title="티어 선택" options={rank} handler={rankHandler} />
-        {selectRank ? (
-          <Select title="랭크 선택" options={test} handler={tierHandler} />
+        <Select title="티어 선택" options={Tier} handler={tierHandler} />
+        {selectTier ? (
+          <Select title="랭크 선택" options={Rank} handler={rankHandler} />
         ) : null}
       </DetailBox>
       <DetailBox className="rank">
-        
         <SubtitleText> GitHub</SubtitleText>
         <InputBox
           placeholder={
             userInfo.github ? userInfo.github : "깃허브 주소를 입력해주세요"
           }
+          onChange={(e) => getInputData(e, 1)}
         />
       </DetailBox>
       <DetailBox className="rank">
-        
         <SubtitleText> Blog</SubtitleText>
         <InputBox
           placeholder={
             userInfo.blog ? userInfo.blog : "블로그 주소를 입력해주세요"
           }
+          onChange={(e) => getInputData(e, 2)}
         />
       </DetailBox>
       <DetailBox>
@@ -461,28 +491,14 @@ const Index = () => {
           placeholder={
             userInfo.introduce ? userInfo.introduce : "자기 소개를 넣어주세요"
           }
-        >
-          
-        </IntroBox>
+          onChange={(e) => getInputData(e, 3)}
+        ></IntroBox>
       </DetailBox>
     </Container>
   );
 };
 
 export default Index;
-
-const Rank = styled.i<{
-  color: string;
-}>`
-  color: ${(props) => props.color};
-  font-size: 25px;
-`;
-
-const RankBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1em;
-`;
 
 const InputBox = styled.input`
   border: solid 2px var(--primary-color-light);

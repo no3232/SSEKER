@@ -12,6 +12,12 @@ export interface level {
     color: string;
 }
 
+export interface level2 {
+    id: number;
+    level: string;
+    color: string;
+}
+
 export interface track {
     id: number;
     track: string;
@@ -42,7 +48,7 @@ export interface defaultUserInfo {
     skill: skillObject[];
     github: string;
     blog: string;
-    level: level;
+    level: level2;
     track: track;
     language: skillObject[];
     email: string;
