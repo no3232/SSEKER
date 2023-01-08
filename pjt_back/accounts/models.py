@@ -17,3 +17,4 @@ class User(AbstractUser):
     introduce = models.CharField(max_length=2000, blank=True, null=True) 
     position = models.ForeignKey(SkillCategory, blank=True, null=True, on_delete=models.CASCADE)
     comment = models.CharField(max_length=50, blank=True, null=True) 
+    generation = models.IntegerField(default=9)

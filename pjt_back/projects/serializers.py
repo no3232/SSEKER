@@ -28,6 +28,14 @@ class ParticipantSerializer(serializers.ModelSerializer):
         fields = ('id', 'manager', 'skillcategory',)
 
 
+class ParticipantDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Participant
+        fields = '__all__'
+        read_only_fields = ('manager', 'project',)
+
+
 class StatusSerializer(serializers.ModelSerializer):
     
     class Meta:
