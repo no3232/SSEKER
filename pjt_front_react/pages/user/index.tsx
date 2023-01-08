@@ -15,34 +15,8 @@ import StackSelect from "../../layout/StackSelect";
 import Select from "../../component/Select";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
+import { ExampleUser } from "../../modules/list/dummy";
 import Router from "next/router";
-
-const ExampleUser = {
-  id: 0,
-  username: "",
-  campus: {
-    id: 0,
-    title: "",
-    partcount: 0,
-  },
-  part: 0,
-  skill: [],
-  github: "",
-  blog: "",
-  level: {
-    id: 0,
-    level: "",
-    color: "",
-  },
-  track: {
-    id: 0,
-    track: "",
-  },
-  language: [],
-  email: "",
-  introduce: "",
-  position: 0,
-};
 
 const UserListPage = () => {
   const [userList, setUserList] = useState<listCardTypes[] | any>([]);
