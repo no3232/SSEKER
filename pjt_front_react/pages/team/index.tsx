@@ -76,7 +76,7 @@ const TeamListPage = () => {
       <TitleBox>
         <TitleText>프로젝트를 찾고 싶어요!</TitleText>
       </TitleBox>
-      <SearchBar />
+      {/* <SearchBar /> */}
       {/* <FilterIconBox onClick={openFilter}>
         {filterOpen ? (
           <i className='bx bx-x'></i>

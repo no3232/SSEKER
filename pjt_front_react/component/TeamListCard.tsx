@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from "styled-components";
 import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
@@ -5,7 +6,6 @@ import { EachTeamCardTypes } from "../modules/types/dummy";
 
 const TeamListCard = (props: EachTeamCardTypes) => {
   const statusObj:{[key: number]: string} = {1: "마감", 2: "모집중", 3:"모집예정"}
-
   const CardStack = (
     <>
       {props.stack.slice(0, 4).map((stack: any) => {
@@ -23,6 +23,7 @@ const TeamListCard = (props: EachTeamCardTypes) => {
   );
 
   return (
+    <Link href={`/teamdetail/${props.id}`}>
     <CardOutside>
       <CardMainside>
         <CardTitleside>
@@ -36,6 +37,7 @@ const TeamListCard = (props: EachTeamCardTypes) => {
         <CardButton className='bx bx-chevron-right'/>
       </CardButtonside>
     </CardOutside>
+    </Link>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 import DetailHeader from "../../component/DetailHeader";
@@ -10,7 +10,7 @@ import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold"
 import axios from "axios";
 import {skillObject} from "../../modules/types/dummy";
-import {UserInfoContext} from "../../modules/context/UserInfoContext";
+import {useRouter} from 'next/router';
 
 interface StackElement {
     "id" : number,
@@ -18,71 +18,71 @@ interface StackElement {
     "category" : number
 }
 
-const defaultUserState = {
-    id: 0,
-    username: "",
-    name: "Ananymous",
-    campus: { id: 0, title: "", partcount: 0 },
-    part: 0,
-    skill: [],
-    github: "",
-    blog: "",
-    level: { id: 0, BJlevel: "", color:"" },
-    track: { id: 0, track: "" },
-    language: [],
-    email: "",
-    introduce: "",
+const defaultTeamState = {
+  campus: { id: 0, title: "", partcount: 0 },
+  content: "",
+  fixed_count: 1,
+  founder: {id: 0, username: ""},
+  id: 0,
+  part: 0,
+  participant: [],
+  participant_count: 0,
+  skill: [],
+  status: { id: 0, status: "" },
+  title: "",
   };
 
 const Index = () => {
-    const [userInfo, setUserInfo] = useState(defaultUserState)
-    useEffect(() => {
-        if (localStorage.getItem("userinfo")) {
+    const router = useRouter();
 
-            setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}'))
-        }
-    }, [])
+    const [teamInfo, setTeamInfo] = useState(defaultTeamState)
+    
+    useEffect(() => {
+        axios
+      .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
+      .then((res) => {
+        const { data } = res;
+        console.log(data)
+        setTeamInfo(data);
+      })
+      .catch((err) => console.log(err));
+    }, [router.query.teamid])
+
     const skills = (category : string) => {
-        if (userInfo.skill.length === 0) {
+        if (teamInfo.skill.length === 0) {
             return "설정된 스킬이 없습니다"
         } else {
-            const lst = userInfo
+            const lst = teamInfo
                 .skill
                 .filter((item : skillObject) => {
                     return item.category == category
                 })
 
-            return lst.map(
-                (item : StackElement | any) => <StackIcon
-                    stack={item.title}
-                    key={item.id}
-                    clickable={false}
-                    textShow={true} />
-            )
+                
+            if (lst.length === 0) {
+                return "설정된 스킬이 없습니다"
+            } else {
+                return lst.map(
+                    (item : StackElement | any) => <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
+                )
+            }
         }
     }
 
+    const isUser = true
 
     return <Container>
-        <GlobalStyle/>
+       <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <DetailHeader name={userInfo.name} mattermost={`${userInfo.email}`}/>
+        <DetailHeader name={teamInfo.title} isUser={isUser}/>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
-            <Campus>{userInfo.campus.title}</Campus>
-            <Campus>{`${userInfo.campus.partcount}반`}</Campus>
+            <Campus>{teamInfo.campus.title}</Campus>
+            <Campus>{`${teamInfo.campus.partcount}반`}</Campus>
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
-
-            <SubBox>
-                <SubtitleText>언어</SubtitleText>
-
-                <Icons>
-                    {/* {language} */}
-                </Icons>
-            </SubBox>
 
             <SubBox>
                 <SubtitleText>프론트엔드</SubtitleText>
@@ -114,45 +114,9 @@ const Index = () => {
             </SubBox>
         </DetailBox>
 
-        <DetailBox className="rank">
-            <SubtitleText>백준 랭크</SubtitleText>
-
-            {
-                (userInfo.level === null || userInfo.level.id === 0)
-                    ? <RankBox>
-                            <Rank className="bx bxs-crown" color={"#000"}/>
-                            <RankName>Unrated</RankName>
-                        </RankBox>
-                    : <RankBox>
-                            <Rank className="bx bxs-crown" color={userInfo.level.color}/>
-                            {/* <RankName>{userInfo.level.level}</RankName> */}
-                        </RankBox>
-            }
-        </DetailBox>
-
-        <DetailBox className="rank">
-            <SubtitleText>GitHub</SubtitleText>
-
-            <RankBox>
-                <a href={userInfo.github}>
-                    <StackIcon stack={"GitHub"} clickable={false} textShow={true} />
-                </a>
-            </RankBox>
-        </DetailBox>
-
-        <DetailBox className="rank">
-            <SubtitleText>Blog</SubtitleText>
-
-            <RankBox>
-                <a href={userInfo.blog}>
-                    <StackIcon stack={"Blog"} clickable={false} textShow={true} />
-                </a>
-            </RankBox>
-        </DetailBox>
-
         <DetailBox>
             <SubtitleText>소개</SubtitleText>
-            <IntroBox>{userInfo.introduce}</IntroBox>
+            <IntroBox>{(teamInfo.content === null)?"설정된 자기소개가 없습니다":teamInfo.content}</IntroBox>
         </DetailBox>
     </Container>
 }
@@ -227,3 +191,6 @@ const Container = styled.div `
         gap: 1.5em;
     }
 `
+
+
+        

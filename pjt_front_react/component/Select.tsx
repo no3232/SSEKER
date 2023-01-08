@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 
@@ -8,17 +8,21 @@ const Select = ({title, options, handler} : Selection) => {
     const [active, setActive] = useState(false);
     const [main, setMain] = useState(title);
 
+    useEffect(() => {
+        setMain(title)
+    }, [title])
+
     const mainHandler = (item: any) => {
         setMain(options[item])
         if (typeof(handler) === "function")
             handler(item)
     }
-
     const opt: JSX.Element[] = Object.keys(options).map(
-        (item) => <Elem isActive={active} onClick={() => {mainHandler(item)}} key={options[item]}>
+        (item) => {
+            return<Elem isActive={active} onClick={() => {mainHandler(item)}} key={options[item]}>
             <SubElem></SubElem>
             {options[item]}
-        </Elem>
+        </Elem>}
     )
 
     const dropDownHandler = () => {
@@ -91,6 +95,7 @@ const Items = styled.div < {
     ? "visible"
     : "hidden"};
     transition: var(--trans-03);
+    z-index: 2;
 `
 
 const RightIcon = styled.span < {
@@ -121,6 +126,7 @@ const DropDown = styled.div `
     align-items: center;
     border-radius: 6px;
     cursor: pointer;
+    
 
     & .arrow {
         top: 2px;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import styled from "styled-components";
 
 import GmarketMedium from "../modules/fonts/GmarketSansMedium";
@@ -8,8 +8,10 @@ import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 import {DetailHeaderType} from "../modules/types/dummy";
 import Link from "next/link";
 
-const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
-    const router = useRouter().pathname;
+const DetailHeader = ({name, isUser} : DetailHeaderType) => {
+    const router = useRouter()
+        .pathname
+        .split('/')[1];
 
     return <TitleBox>
         <GmarketMedium/>
@@ -17,16 +19,26 @@ const DetailHeader = ({name, mattermost} : DetailHeaderType) => {
         <ContentBox>
             <Info>
                 <NameBox>
-                    {(name.length === 0)?"anonymous": name}
+                    {
+                        (name.length === 0)
+                            ? "anonymous"
+                            : name
+                    }
                 </NameBox>
-                {/* <IdBox>
-                    {mattermost?mattermost:"anonymous"}
-                </IdBox> */}
             </Info>
 
-            <Link href={(router === "/userdetail")? "/usermodify":"/teammodify"}>
-                <Edit className="bx bxs-edit-alt"/>
-            </Link>
+            {
+                isUser
+                    ? <Link
+                            href={{
+                                pathname: (router === "userdetail")
+                                    ? "/usermodify"
+                                    : "/teammodify"
+                            }}>
+                            <Edit className="bx bxs-edit-alt"/>
+                        </Link>
+                    : null
+            }
         </ContentBox>
     </TitleBox>
 }

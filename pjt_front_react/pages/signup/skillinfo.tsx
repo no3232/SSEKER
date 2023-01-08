@@ -1,31 +1,48 @@
 import styled from "styled-components";
 import Router from "next/router";
-import React, { SyntheticEvent, useState, useContext } from "react";
+import React, { SyntheticEvent, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 import TitleText from "../../common/TitleText";
 import SubtitleText from "../../common/SubtitleText";
 import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
-import Select from '../../component/Select';
-import { getKeyCookies } from '../../modules/cookie/keyCookies';
-import { UserInfoContext } from '../../modules/context/UserInfoContext';
+import Select from "../../component/Select";
+import { getKeyCookies } from "../../modules/cookie/keyCookies";
+import { UserInfoContext } from "../../modules/context/UserInfoContext";
 
 interface skillObjType {
-  [key: string]: number
+  [key: string]: number;
 }
 
 const SkillInfo = () => {
   const route = Router;
   const [signupPosition, setSignupPosition] = useState<number>();
   const [signupSkills, setSignupSkills] = useState<number[]>([]);
-  const ctxUserinfo = useContext(UserInfoContext);
+  let username = {username: ""}
+  useEffect(() => {
+    username = JSON.parse(localStorage.getItem("userinfo") || "{}");
+  }, []);
 
-  const positionOption = {1: "프론트엔드", 2: "백엔드", 3: "DevOps", 4: "UI&UX"}
+  const positionOption = {
+    1: "프론트엔드",
+    2: "백엔드",
+    3: "DevOps",
+    4: "UI&UX",
+  };
 
   const getSkill = (event: SyntheticEvent): void => {
     const eventTarget = event.target as HTMLElement;
-    const skillObj: skillObjType = {'vuejs': 1, 'react': 2, 'django': 8, 'spring': 9, 'linux': 10, 'Git': 16, 'XD': 14, 'figma': 13}
+    const skillObj: skillObjType = {
+      vuejs: 1,
+      react: 2,
+      django: 8,
+      spring: 9,
+      linux: 10,
+      Git: 16,
+      XD: 14,
+      figma: 13,
+    };
 
     if (signupSkills.includes(skillObj[eventTarget.innerText])) {
       const newSkillset = signupSkills.filter((skill) => {
@@ -42,23 +59,22 @@ const SkillInfo = () => {
 
   const moveToAfter = (event: SyntheticEvent) => {
     event.preventDefault();
-    
-    axios({
-      method: "PUT",
-      url: `https://ssekerapi.site/accounts/${ctxUserinfo.username}`,
-      // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
-      headers: {
-        Authorization: `Token ${getKeyCookies("key")}`,
-      },
-      data: { skill: signupSkills, position: signupPosition },
-    })
-      .catch();
-    route.push("/signup/after");
-  };
+      axios({
+        method: "PUT",
+        url: `https://ssekerapi.site/accounts/${username}`,
+        // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
+        headers: {
+          Authorization: `Token ${getKeyCookies("key")}`,
+        },
+        data: { skill: signupSkills, position: signupPosition },
+      }).catch();
+      route.push("/signup/after");
+    }
+  
 
   const getPosition = (position: number) => {
-    setSignupPosition(position)
-  }
+    setSignupPosition(position);
+  };
 
   return (
     <SkillBox>
@@ -69,7 +85,11 @@ const SkillInfo = () => {
         <SkillLabelText>
           <SubtitleText>선호 포지션</SubtitleText>
         </SkillLabelText>
-        <Select title="포지션 선택" options={positionOption} handler={getPosition} />
+        <Select
+          title='포지션 선택'
+          options={positionOption}
+          handler={getPosition}
+        />
         <SkillLabelText>
           <SubtitleText>프론트엔드</SubtitleText>
         </SkillLabelText>
@@ -78,7 +98,7 @@ const SkillInfo = () => {
             <StackIcon stack='vuejs' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='react' clickable={true} textShow={true}  />
+            <StackIcon stack='react' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -86,10 +106,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='django' clickable={true} textShow={true}  />
+            <StackIcon stack='django' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='spring' clickable={true} textShow={true}  />
+            <StackIcon stack='spring' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <SkillLabelText>
@@ -97,10 +117,10 @@ const SkillInfo = () => {
         </SkillLabelText>
         <IconBox>
           <div onClick={getSkill}>
-            <StackIcon stack='linux' clickable={true} textShow={true}  />
+            <StackIcon stack='linux' clickable={true} textShow={true} />
           </div>
           <div onClick={getSkill}>
-            <StackIcon stack='Git' clickable={true} textShow={true}  />
+            <StackIcon stack='Git' clickable={true} textShow={true} />
           </div>
         </IconBox>
         <SkillLabelText>

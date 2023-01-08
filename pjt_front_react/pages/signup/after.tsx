@@ -4,6 +4,7 @@ import styled from "styled-components";
 import LargeText from "../../common/LargeText";
 import SubtitleText from "../../common/SubtitleText";
 import MainButton from "../../common/MainButton";
+import Link from 'next/link';
 
 const SignupAfterPage = () => {
   const router = Router;
@@ -26,7 +27,7 @@ const SignupAfterPage = () => {
           아니요! 상세정보를 더 입력하고 싶어요!
         </SubtitleText>
         <SubtitleText>
-        <a href=''>정보 수정</a>
+        <Link href='/usermodify'>정보 수정</Link>
         </SubtitleText>
         <br />
         <MainButton onButtonClick={moveToUserList}>팀원 구하기!</MainButton>
