@@ -12,13 +12,17 @@ import { getKeyCookies, removeKeyCookies } from "../modules/cookie/keyCookies";
 
 const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
   const [isUserLogin, setIsUserLogin] = useState(false);
+  const [userName, setUserName] = useState("");
   const router = Router;
 
   useEffect(() => {
-    if (localStorage.getItem("userinfo")) {
+    const getInfo = localStorage.getItem("userinfo")
+
+    if (getInfo) {
+      setUserName(JSON.parse(getInfo).username)
       setIsUserLogin(true);
     } else {
-      setIsUserLogin(false)
+      setIsUserLogin(false);
     }
   }, [getKeyCookies("key")]);
 
@@ -27,19 +31,23 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
   };
 
   const logoutHandler = () => {
-    event?.preventDefault()
+    event?.preventDefault();
+    
     axios({
       method: "POST",
       url: "https://ssekerapi.site/dj-accounts/logout/",
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
       },
-    }).catch(error => console.log(error.response));
+    }).catch((error) => console.log(error.response));
+
     removeKeyCookies("key");
+
     localStorage.removeItem("userinfo");
-    setIsUserLogin(false)
+
+    setIsUserLogin(false);
     setMenuOpen((prev) => !prev);
-    router.push('/')
+    router.push("/");
   };
 
   return (
@@ -64,17 +72,21 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
           </Link>
         </MenuLi>
         <MenuLi>
-          <Link href={"/userdetail"} onClick={closeMenuList}>
+          <Link href={`/userdetail/${userName}`} onClick={closeMenuList}>
             마이페이지
           </Link>
         </MenuLi>
-        
-          <MenuLi>
-            {isUserLogin ? (<a onClick={logoutHandler} className="logout">로그아웃</a>) :
-            (<Link href={"/login"} onClick={closeMenuList}>
-            로그인
-            </Link>)}
-          </MenuLi>
+        <MenuLi>
+          {isUserLogin ? (
+            <a onClick={logoutHandler} className="logout">
+              로그아웃
+            </a>
+          ) : (
+            <Link href={"/login"} onClick={closeMenuList}>
+              로그인
+            </Link>
+          )}
+        </MenuLi>
         )
       </MenuUl>
     </Container>

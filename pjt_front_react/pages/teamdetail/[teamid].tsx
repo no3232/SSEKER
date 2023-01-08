@@ -36,6 +36,7 @@ const Index = () => {
     const router = useRouter();
 
     const [teamInfo, setTeamInfo] = useState(defaultTeamState)
+    
     useEffect(() => {
         axios
       .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
@@ -46,6 +47,7 @@ const Index = () => {
       })
       .catch((err) => console.log(err));
     }, [router.query.teamid])
+
     const skills = (category : string) => {
         if (teamInfo.skill.length === 0) {
             return "설정된 스킬이 없습니다"
@@ -56,22 +58,24 @@ const Index = () => {
                     return item.category == category
                 })
 
-            return lst.map(
-                (item : StackElement | any) => <StackIcon
-                    stack={item.title}
-                    key={item.id}
-                    clickable={false}
-                    textShow={true} />
-            )
+                
+            if (lst.length === 0) {
+                return "설정된 스킬이 없습니다"
+            } else {
+                return lst.map(
+                    (item : StackElement | any) => <StackIcon stack={item.title} key={item.id} clickable={false} textShow={true}/>
+                )
+            }
         }
     }
 
+    const isUser = true
 
     return <Container>
        <GlobalStyle/>
         <NanumSquareRegular/>
         <NanumSquareBold/>
-        <DetailHeader name={teamInfo.title} mattermost={""}/>
+        <DetailHeader name={teamInfo.title} isUser={isUser}/>
         <CampusBox>
             <SubtitleText className="title">소속캠퍼스</SubtitleText>
             <Campus>{teamInfo.campus.title}</Campus>
@@ -79,14 +83,6 @@ const Index = () => {
         </CampusBox>
         <DetailBox>
             <SubtitleText className="title">Skill</SubtitleText>
-
-            <SubBox>
-                <SubtitleText>언어</SubtitleText>
-
-                <Icons>
-                    {/* {language} */}
-                </Icons>
-            </SubBox>
 
             <SubBox>
                 <SubtitleText>프론트엔드</SubtitleText>
@@ -120,7 +116,7 @@ const Index = () => {
 
         <DetailBox>
             <SubtitleText>소개</SubtitleText>
-            <IntroBox>{teamInfo.content}</IntroBox>
+            <IntroBox>{(teamInfo.content === null)?"설정된 자기소개가 없습니다":teamInfo.content}</IntroBox>
         </DetailBox>
     </Container>
 }

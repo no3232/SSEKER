@@ -1,4 +1,4 @@
-import { skillObject } from "./dummy";
+import {skillObject} from "./dummy";
 
 export interface campusInfo {
     id: number;
@@ -47,4 +47,34 @@ export interface defaultUserInfo {
     language: skillObject[];
     email: string;
     introduce: string;
+}
+
+export interface detailUserInfo {
+    id: number,
+    username:string,
+    name: string,
+    campus: campusInfo,
+    part: number,
+    skill: skillObject[],
+    github: string,
+    blog: string,
+    level: level,
+    track: track,
+    language: skillObject[],
+    email: string,
+    introduce: string
+}
+
+export interface sendInfo {
+    campus: number,
+    part: number,
+    skill: number[],
+    github: string,
+    blog: string,
+    level: string,
+    track: number,
+    language: number[],
+    introduce: string,
+    email: string,
+    position: number
 }

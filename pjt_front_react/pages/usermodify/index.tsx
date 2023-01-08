@@ -12,7 +12,8 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
+import { defaultUserInfo, sendInfo } from "../../modules/types/UserInfoTypes";
+import { useRouter } from "next/router";
 
 const ExampleUser = {
   id: 0,
@@ -41,22 +42,15 @@ const ExampleUser = {
 };
 
 const Index = () => {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
-
+  const path = `/userdetail/${userInfo.username}`
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
-    // axios
-    //   .get(`https://ssekerapi.site/accounts/${username.username}`)
-    //   .then((res) => {
-    //     const { data } = res;
-    //     console.log(data)
-    //     // setUserInfo(data);
-    //   })
-    //   .catch((err) => console.log(err));
-
-    // 스킬 오브젝트 불러오기
+    // axios   .get(`https://ssekerapi.site/accounts/${username.username}`)
+    // .then((res) => {     const { data } = res;     console.log(data)
+    // setUserInfo(data);   })   .catch((err) => console.log(err)); 스킬 오브젝트 불러오기
     axios
       .get("https://ssekerapi.site/objects/skill-language")
       .then((res) => {
@@ -67,7 +61,7 @@ const Index = () => {
       .catch((err) => console.log(err));
 
     setUserInfo(JSON.parse(localStorage.getItem("userinfo") || "{}"));
-    setLoaded(true)
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -78,15 +72,21 @@ const Index = () => {
   // 랭크 수정 부분
   const [selectRank, setSelectRank] = useState<number>(0);
   const [selectTier, setSelectTier] = useState<number>(0);
-  const test = { 0: "I", 1: "II", 2: "III", 3: "IV", 4: "V" };
+  const test = {
+    0: "I",
+    1: "II",
+    2: "III",
+    3: "IV",
+    4: "V",
+  };
   const rank = {
-    // 1: [<Rank className='bx bxs-crown' color={"#a94e00"} />, "Bronze"],
-    // 2: [<Rank className='bx bxs-crown' color={"#365471"} />, "Silver"],
-    // 3: [<Rank className='bx bxs-crown' color={"#f4c46a"} />, "Gold"],
-    // 4: [<Rank className='bx bxs-crown' color={"#22e1a2"} />, "Platinum"],
-    // 5: [<Rank className='bx bxs-crown' color={"#05b6fc"} />, "Diamond"],
-    // 6: [<Rank className='bx bxs-crown' color={"#ff0766"} />, "Ruby"],
-    // 7: [<Rank className='bx bxs-crown' color={"#222222"} />, "Unrated"],
+    // 1: [<Rank className='bx bxs-crown' color={"#a94e00"} />, "Bronze"], 2: [<Rank
+    // className='bx bxs-crown' color={"#365471"} />, "Silver"], 3: [<Rank
+    // className='bx bxs-crown' color={"#f4c46a"} />, "Gold"], 4: [<Rank
+    // className='bx bxs-crown' color={"#22e1a2"} />, "Platinum"], 5: [<Rank
+    // className='bx bxs-crown' color={"#05b6fc"} />, "Diamond"], 6: [<Rank
+    // className='bx bxs-crown' color={"#ff0766"} />, "Ruby"], 7: [<Rank
+    // className='bx bxs-crown' color={"#222222"} />, "Unrated"],
     1: "Bronze",
     2: "Silver",
     3: "Gold",
@@ -95,15 +95,9 @@ const Index = () => {
     6: "Ruby",
     7: "Unrated",
   };
-  // const rank = [
-  //   ["Bronze", "#a94e00"],
-  //   ["Silver", "#365471"],
-  //   ["Gold", "#f4c46a"],
-  //   ["Platinum", "#22e1a2"],
-  //   ["Diamond", "#05b6fc"],
-  //   ["Ruby", "#ff0766"],
-  //   ["Unrated", "#222222"],
-  // ];
+  // const rank = [   ["Bronze", "#a94e00"],   ["Silver", "#365471"],   ["Gold",
+  // "#f4c46a"],   ["Platinum", "#22e1a2"],   ["Diamond", "#05b6fc"],   ["Ruby",
+  // "#ff0766"],   ["Unrated", "#222222"], ];
 
   const rankHandler = (rank: number) => {
     setSelectRank(rank);
@@ -114,42 +108,41 @@ const Index = () => {
     setSelectTier(tier);
     // console.log(selectTier)
   };
-    const [lastList, setLastList] = useState<{[key:number]:skillList[]}>({
-        0:[],
-        1:[],
-        2:[],
-        3:[],
-        4:[]
-    })
-    const [languages, setLanguages] = useState<number[]>([])
-    const [skills, setSkills] = useState<number[]>([])
+  const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
+  const [languages, setLanguages] = useState<number[]>([]);
+  const [skills, setSkills] = useState<number[]>([]);
 
+  useEffect(() => {
+    setSkillList();
+  }, [allSkills]);
 
-    useEffect(()=>{
-        setSkillList()
-    }, [allSkills])
-    
-    useEffect(()=> {
-        let skillTmp:number[] = []
+  useEffect(() => {
+    let skillTmp: number[] = [];
 
-        for (let i in lastList) {
-            const tmp = []
+    for (let i in lastList) {
+      const tmp = [];
 
-            for (let j of lastList[i]) {
-                if(j.selected) {
-                    tmp.push(j.id)
-                }
-            }
-
-            if(i === "0") {
-                setLanguages(tmp)
-            } else {
-                skillTmp = skillTmp.concat(tmp)
-            }
+      for (let j of lastList[i]) {
+        if (j.selected) {
+          tmp.push(j.id);
         }
+      }
 
-        setSkills(skillTmp)
-    }, [lastList])
+      if (i === "0") {
+        setLanguages(tmp);
+      } else {
+        skillTmp = skillTmp.concat(tmp);
+      }
+    }
+
+    setSkills(skillTmp);
+  }, [lastList]);
 
   const regionOption = {
     6: "전국",
@@ -159,6 +152,7 @@ const Index = () => {
     1: "구미",
     2: "광주",
   };
+  
   const [signupRegion, setSignupRegion] = useState<number>(userInfo.campus.id);
   const [signupClass, setSignupClass] = useState<number>(userInfo.part);
   const [classOption, setClassOption] = useState<Object>({
@@ -193,155 +187,183 @@ const Index = () => {
     setSignupClass(classoption);
   };
 
-  // useEffect(() => {
-  //   setSignupClass(1);
-  // }, [signupRegion]);
+  // useEffect(() => {   setSignupClass(1); }, [signupRegion]); const rankoptions:
+  // JSX.Element[] = rank.map(   (item: string[], index: number) => {     return (
+  // <RankBox key={index}>         <Rank className='bx bxs-crown' color={item[1]}
+  // /> {item[0]}       </RankBox>     );   } );   console.log(rankoptions)
 
-  // const rankoptions: JSX.Element[] = rank.map(
-  //   (item: string[], index: number) => {
-  //     return (
-  //       <RankBox key={index}>
-  //         <Rank className='bx bxs-crown' color={item[1]} /> {item[0]}
-  //       </RankBox>
-  //     );
-  //   }
-  // );
+  const setSkillList = () => {
+    const mySkills: {
+      [key: number]: skillList[];
+    } = {
+      0: [],
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+    };
 
-  //   console.log(rankoptions)
-
-    const setSkillList = () => {
-        const mySkills:{[key:number]:skillList[]} = {
-            0:[],
-            1:[],
-            2:[],
-            3:[],
-            4:[]
-        }
-
-        //가지고 있는 스킬 title만 추출하기
-        let mySkillList:string[] = [];
-        for (let i = 0; i < userInfo.skill.length; i++) {
-            mySkillList.push(userInfo.skill[i].title)
-        }
-    
-        for (let i = 0; i < userInfo.language.length; i++) {
-            mySkillList.push(userInfo.language[i].title)
-        }
-    
-        const resetSkill:Set<number> = new Set()
-        const resetLangs:number[] = []
-
-        for (const i in allSkills) {
-    
-            const SkillsCategory = parseInt(allSkills[i].category)
-            const title = allSkills[i].title
-            
-            if (mySkillList.includes(title)) {
-                let info = userInfo.skill.filter((item:skillObject)=> {
-                    resetSkill.add(item.id)
-                    return item.title === title
-                })
-    
-                if (info.length === 0) {
-                    info = userInfo.language.filter((item:skillObject)=> {
-                        resetLangs.push(item.id)
-                        return item.title === title
-                    })
-                }
-    
-                switch (SkillsCategory) {
-                    case 0:
-                        mySkills[0].push({...info[0], selected:true})
-                        break;
-                    case 1:
-                        mySkills[1].push({...info[0], selected:true})
-                        break;
-                    case 2:
-                        mySkills[2].push({...info[0], selected:true})
-                        break;
-                    case 3:
-                        mySkills[3].push({...info[0], selected:true})
-                        break;
-                    case 4:
-                        mySkills[4].push({...info[0], selected:true})
-                        break;
-                }
-            } else {
-                const info:skillObject = allSkills[i]
-                switch (SkillsCategory) {
-                    case 0:
-                        mySkills[0].push({...info, selected:false})
-                        break;
-                    case 1:
-                        mySkills[1].push({...info, selected:false})
-                        break;
-                    case 2:
-                        mySkills[2].push({...info, selected:false})
-                        break;
-                    case 3:
-                        mySkills[3].push({...info, selected:false})
-                        break;
-                    case 4:
-                        mySkills[4].push({...info, selected:false})
-                        break;
-                }
-            }
-
-        }
-    
-        setLanguages(resetLangs)
-        setSkills(Array.from(resetSkill))
-
-        setLastList(mySkills)
+    //가지고 있는 스킬 title만 추출하기
+    let mySkillList: string[] = [];
+    for (let i = 0; i < userInfo.skill.length; i++) {
+      mySkillList.push(userInfo.skill[i].title);
     }
 
-    console.log("-----")
-    console.log(languages)
-    console.log(skills)
-
-    const UpdateStackState = (stackId:number, newState:boolean, type: number) => {
-        if (stackId) {
-            const tmp = lastList[type].map(s => {
-                if (s.id === stackId) {
-                    return {
-                        ...s,
-                        selected: newState
-                    }
-                } else {
-                    return s;
-                }
-            }
-            )
-
-            setLastList({...lastList, [type]:tmp})
-        }
+    for (let i = 0; i < userInfo.language.length; i++) {
+      mySkillList.push(userInfo.language[i].title);
     }
 
-  const submitHandler = () => {
-    console.log(signupClass, signupRegion);
+    const resetSkill: Set<number> = new Set();
+    const resetLangs: number[] = [];
+
+    for (const i in allSkills) {
+      const SkillsCategory = parseInt(allSkills[i].category);
+      const title = allSkills[i].title;
+
+      if (mySkillList.includes(title)) {
+        let info = userInfo.skill.filter((item: skillObject) => {
+          resetSkill.add(item.id);
+          return item.title === title;
+        });
+
+        if (info.length === 0) {
+          info = userInfo.language.filter((item: skillObject) => {
+            resetLangs.push(item.id);
+            return item.title === title;
+          });
+        }
+
+        switch (SkillsCategory) {
+          case 0:
+            mySkills[0].push({
+              ...info[0],
+              selected: true,
+            });
+            break;
+          case 1:
+            mySkills[1].push({
+              ...info[0],
+              selected: true,
+            });
+            break;
+          case 2:
+            mySkills[2].push({
+              ...info[0],
+              selected: true,
+            });
+            break;
+          case 3:
+            mySkills[3].push({
+              ...info[0],
+              selected: true,
+            });
+            break;
+          case 4:
+            mySkills[4].push({
+              ...info[0],
+              selected: true,
+            });
+            break;
+        }
+      } else {
+        const info: skillObject = allSkills[i];
+        switch (SkillsCategory) {
+          case 0:
+            mySkills[0].push({
+              ...info,
+              selected: false,
+            });
+            break;
+          case 1:
+            mySkills[1].push({
+              ...info,
+              selected: false,
+            });
+            break;
+          case 2:
+            mySkills[2].push({
+              ...info,
+              selected: false,
+            });
+            break;
+          case 3:
+            mySkills[3].push({
+              ...info,
+              selected: false,
+            });
+            break;
+          case 4:
+            mySkills[4].push({
+              ...info,
+              selected: false,
+            });
+            break;
+        }
+      }
+    }
+
+    setLanguages(resetLangs);
+    setSkills(Array.from(resetSkill));
+
+    setLastList(mySkills);
   };
 
+  const UpdateStackState = (
+    stackId: 0,
+    newState: boolean,
+    type: number
+  ) => {
+    if (stackId) {
+      const tmp = lastList[type].map((s) => {
+        if (s.id === stackId) {
+          return {
+            ...s,
+            selected: newState,
+          };
+        } else {
+          return s;
+        }
+      });
+
+      setLastList({
+        ...lastList,
+        [type]: tmp,
+      });
+    }
+  };
+
+  const sendData = () => {
+    const Data:sendInfo = {
+        campus: 0,
+        part: 0,
+        skill: [],
+        github: "",
+        blog: "",
+        level: "",
+        track: 0,
+        language: [],
+        introduce: "",
+        email: "",
+        position: 0
+    }
+  }
 
   return (
     <Container>
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
-      <button onClick={submitHandler}>123123</button>
-      <ModifyHeader name={userInfo.username} />
+      <ModifyHeader name={userInfo.username} path={path}/>
       <CampusBox>
-        <SubtitleText className='title'>매터모스트 아이디</SubtitleText>
-        <InputBox placeholder={userInfo.email} />
-      </CampusBox>
-      <CampusBox>
-        <SubtitleText className='title'>소속캠퍼스</SubtitleText>
-        <p>지역</p>
+        
+        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
+        <p> 지역</p>
         <Select
           title={userInfo.campus.title}
           options={regionOption}
           handler={getSignupRegion}
         />
-        <p>반</p>
+        <p> 반</p>
         <Select
           title={signupClass + "반"}
           options={classOption}
@@ -349,88 +371,105 @@ const Index = () => {
         />
       </CampusBox>
       <DetailBox>
-        <SubtitleText className='title'>Skill</SubtitleText>
+        
+        <SubtitleText className="title"> Skill</SubtitleText>
         <SubBox>
-          <SubtitleText>언어</SubtitleText>
-
+          <SubtitleText> 언어</SubtitleText>
           <Icons>
-              <StackSelect mySkills={lastList[0]} type={0} UpdateStackState={UpdateStackState} />
+            
+            <StackSelect
+              mySkills={lastList[0]}
+              type={0}
+              UpdateStackState={UpdateStackState}
+            />
           </Icons>
         </SubBox>
-
         <SubBox>
-          <SubtitleText>프론트엔드</SubtitleText>
-
-                <Icons>
-                    <StackSelect mySkills={lastList[1]} type={1} UpdateStackState={UpdateStackState} />
-                </Icons>
-            </SubBox>
-            <SubBox>
-                <SubtitleText>백엔드</SubtitleText>
-
-                <Icons>
-                    <StackSelect mySkills={lastList[2]} type={2} UpdateStackState={UpdateStackState} />
-                </Icons>
-            </SubBox>
-            <SubBox>
-                <SubtitleText>UI/UX</SubtitleText>
-
-                <Icons>
-                    <StackSelect mySkills={lastList[3]} type={3} UpdateStackState={UpdateStackState}/>
-                </Icons>
-            </SubBox>
-            <SubBox>
-                <SubtitleText>Devops</SubtitleText>
-
-                <Icons>
-                    <StackSelect mySkills={lastList[4]} type={4} UpdateStackState={UpdateStackState} />
-                </Icons>
-            </SubBox>
-        </DetailBox>
-
-        <DetailBox className='rank'>
-        <SubtitleText>백준 랭크</SubtitleText>
-
-        <Select title='티어 선택' options={rank} handler={rankHandler} />
-        {selectRank ? (
-          <Select title='랭크 선택' options={test} handler={tierHandler} />
-        ) : null}
-        
+          <SubtitleText> 프론트엔드</SubtitleText>
+          <Icons>
+            
+            <StackSelect
+              mySkills={lastList[1]}
+              type={1}
+              UpdateStackState={UpdateStackState}
+            />
+          </Icons>
+        </SubBox>
+        <SubBox>
+          <SubtitleText> 백엔드</SubtitleText>
+          <Icons>
+            
+            <StackSelect
+              mySkills={lastList[2]}
+              type={2}
+              UpdateStackState={UpdateStackState}
+            />
+          </Icons>
+        </SubBox>
+        <SubBox>
+          <SubtitleText> UI / UX</SubtitleText>
+          <Icons>
+            
+            <StackSelect
+              mySkills={lastList[3]}
+              type={3}
+              UpdateStackState={UpdateStackState}
+            />
+          </Icons>
+        </SubBox>
+        <SubBox>
+          <SubtitleText> Devops</SubtitleText>
+          <Icons>
+            
+            <StackSelect
+              mySkills={lastList[4]}
+              type={4}
+              UpdateStackState={UpdateStackState}
+            />
+          </Icons>
+        </SubBox>
       </DetailBox>
-
-      <DetailBox className='rank'>
-        <SubtitleText>GitHub</SubtitleText>
-
+      <DetailBox className="rank">
+        
+        <SubtitleText> 백준 랭크</SubtitleText>
+        <Select title="티어 선택" options={rank} handler={rankHandler} />
+        {selectRank ? (
+          <Select title="랭크 선택" options={test} handler={tierHandler} />
+        ) : null}
+      </DetailBox>
+      <DetailBox className="rank">
+        
+        <SubtitleText> GitHub</SubtitleText>
         <InputBox
           placeholder={
             userInfo.github ? userInfo.github : "깃허브 주소를 입력해주세요"
           }
         />
       </DetailBox>
-
-      <DetailBox className='rank'>
-        <SubtitleText>Blog</SubtitleText>
-
+      <DetailBox className="rank">
+        
+        <SubtitleText> Blog</SubtitleText>
         <InputBox
           placeholder={
             userInfo.blog ? userInfo.blog : "블로그 주소를 입력해주세요"
           }
         />
       </DetailBox>
-
       <DetailBox>
-        <SubtitleText>소개</SubtitleText>
+        <SubtitleText> 소개</SubtitleText>
         <IntroBox
           placeholder={
             userInfo.introduce ? userInfo.introduce : "자기 소개를 넣어주세요"
           }
-        ></IntroBox>
+        >
+          
+        </IntroBox>
       </DetailBox>
     </Container>
   );
 };
 
-export default Index
+export default Index;
 
 const Rank = styled.i<{
   color: string;

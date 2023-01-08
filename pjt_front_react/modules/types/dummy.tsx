@@ -15,7 +15,7 @@ export interface Stack {
 
 export interface DetailHeaderType {
     name: string;
-    mattermost: string;
+    isUser: boolean
 }
 
 export interface iconList {
