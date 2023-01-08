@@ -159,6 +159,9 @@ const SkillBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`

@@ -78,6 +78,16 @@ const LoginMainPage = () => {
     route.push("/signup");
   };
 
+  // 크로스 브라우징 높이, 넓이 계산
+  let vh = 0;
+  let vw = 0;
+  useEffect(() => {
+    vh = window.innerHeight * 0.01;
+    vw = window.innerWidth * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    document.documentElement.style.setProperty("--vw", `${vw}px`);
+  }, []);
+
   return (
     <LoginBox>
       <TitleBox>
@@ -116,6 +126,9 @@ const LoginBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`
