@@ -53,6 +53,7 @@ export interface defaultUserInfo {
     language: skillObject[];
     email: string;
     introduce: string;
+    position: number;
 }
 
 export interface detailUserInfo {
@@ -72,15 +73,15 @@ export interface detailUserInfo {
 }
 
 export interface sendInfo {
-    campus: number,
-    part: number,
-    skill: number[],
-    github: string,
-    blog: string,
-    level: string,
-    track: number,
-    language: number[],
-    introduce: string,
-    email: string,
-    position: number
+    campus: number|null,
+    part: number|null,
+    skill: number[]|null,
+    github: string|null,
+    blog: string|null,
+    level: number|null,
+    track: number|null,
+    language: number[]|null,
+    introduce: string|null,
+    email: string|null,
+    position: number|null
 }

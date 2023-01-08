@@ -1,4 +1,9 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  MouseEventHandler,
+} from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -14,6 +19,7 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import { skillList, skillObject } from "../../modules/types/dummy";
 import { defaultUserInfo, sendInfo } from "../../modules/types/UserInfoTypes";
 import { useRouter } from "next/router";
+import { getKeyCookies } from "../../modules/cookie/keyCookies";
 
 const ExampleUser: defaultUserInfo = {
   id: 0,
@@ -39,6 +45,7 @@ const ExampleUser: defaultUserInfo = {
   language: [],
   email: "",
   introduce: "",
+  position: 0
 };
 
 const Rank: { [key: number]: string } = {
@@ -92,7 +99,7 @@ const Index = () => {
     skill: [],
     github: "",
     blog: "",
-    level: "",
+    level: 0,
     track: 0,
     language: [],
     introduce: "",
@@ -126,12 +133,12 @@ const Index = () => {
         skill: [],
         github: userInfo.github,
         blog: userInfo.blog,
-        level: userInfo.level.level,
+        level: userInfo.level.id,
         track: userInfo.track.id,
         language: [],
         introduce: userInfo.introduce,
         email: userInfo.email,
-        position: 0,
+        position: userInfo.position,
       };
     }); //바뀐 값이 적용되지 않음
   }, [userInfo]);
@@ -170,7 +177,7 @@ const Index = () => {
 
   useEffect(() => {
     setChangeInfo((prev) => {
-      return { ...prev, level: [Tier[selectTier], Rank[selectRank]].join(" ") };
+      return { ...prev, level:0 };
     });
   }, [selectRank, selectTier]);
 
@@ -382,6 +389,24 @@ const Index = () => {
     }
   };
 
+  const sendData: MouseEventHandler<HTMLElement> = () => {
+    console.log("AXIOS", changeInfo)
+    axios({
+      method: "PUT",
+      url: `https://ssekerapi.site/accounts/${userInfo.username}`,
+      headers: {
+        Authorization: `Token ${getKeyCookies("key")}`,
+      },
+      data: {...changeInfo},
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Container>
       <GlobalStyle />
@@ -391,6 +416,7 @@ const Index = () => {
         name={userInfo.username}
         path={path}
         nameHandler={getInputData}
+        sendData={sendData}
       />
       <CampusBox>
         <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
