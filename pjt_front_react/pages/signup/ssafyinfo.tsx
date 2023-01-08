@@ -9,7 +9,6 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import { UserInfoContext } from '../../modules/context/UserInfoContext';
 import { KeyContext } from '../../modules/context/KeyContext';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
 

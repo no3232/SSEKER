@@ -33,7 +33,7 @@ const ExampleUser = {
   blog: "",
   level: {
     id: 0,
-    BJlevel: "",
+    level: "",
     color: "",
   },
   track: {
@@ -43,6 +43,7 @@ const ExampleUser = {
   language: [],
   email: "",
   introduce: "",
+  position: 0
 };
 
 const TeamListPage = () => {

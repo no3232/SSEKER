@@ -6,7 +6,6 @@ import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import axios from "axios";
-import { UserInfoContext } from "../../modules/context/UserInfoContext";
 import { KeyContext } from "../../modules/context/KeyContext";
 import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
 
@@ -15,8 +14,6 @@ const SignupPage = () => {
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupPasswordConfirm, setSignupPasswordConfirm] = useState("");
-  const ctxUserinfo = useContext(UserInfoContext);
-  const ctxKeyinfo = useContext(KeyContext);
 
   useEffect(() => {
 

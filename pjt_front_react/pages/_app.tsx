@@ -4,10 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import Menu from "../common/Menu";
 import MenuBox from "../component/MenuBox";
-import {
-  UserInfoContext,
-  UserInfoProvider,
-} from "../modules/context/UserInfoContext";
+
 import { getKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
 import { Router, useRouter } from "next/router";
@@ -54,9 +51,8 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
       )}
 
-      <UserInfoProvider>
+      
         <Component {...pageProps} />
-      </UserInfoProvider>
     </>
   );
 }
