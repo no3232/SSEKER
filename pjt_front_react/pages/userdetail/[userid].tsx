@@ -82,7 +82,7 @@ const Index = () => {
       <NanumSquareRegular />
       <NanumSquareBold />
       
-      <DetailHeader name={userInfo.name} isUser={isUser} />
+      <DetailHeader name={userInfo.name} isUser={isUser} id={null} />
       
       <CampusBox>
         <SubtitleText className="title">수강 트랙</SubtitleText>

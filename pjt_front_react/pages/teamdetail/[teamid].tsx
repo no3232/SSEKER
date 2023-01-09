@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import UserSearchBar from '../../component/userSearchBar';
 import TeamMemberList from '../../component/TeamMemberCard';
 
+
 interface StackElement {
   id: number;
   title: string;
@@ -34,31 +35,6 @@ const defaultTeamState = {
   title: "",
 };
 
-const DummyParticipant: TeamMember[] = [
-    {
-        "id": 2,
-        "manager": {
-            "id": 8,
-            "username": "test4"
-        },
-        "skillcategory": {
-            "id": 4,
-            "category": "Devops"
-        }
-    },
-    {
-        "id": 3,
-        "manager": {
-            "id": 6,
-            "username": "test5"
-        },
-        "skillcategory": {
-            "id": 1,
-            "category": "Frontend"
-        }
-    }
-  ]
-
 const Index = () => {
   const router = useRouter();
 
@@ -70,7 +46,6 @@ const Index = () => {
         .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
         .then((res) => {
           const { data } = res;
-        //   console.log(data);
           setTeamInfo(data);
         })
         .catch((err) => console.log(err));
@@ -112,11 +87,13 @@ const Index = () => {
       <DetailHeader name={teamInfo.title} isUser={isUser} />
       <CampusBox>
         <SubtitleText className='title'>소속캠퍼스</SubtitleText>
+
         <Campus>{teamInfo.campus.title}</Campus>
         <Campus>{`${teamInfo.campus.partcount}반`}</Campus>
       </CampusBox>
       <DetailBox>
         <SubtitleText className='title'>Skill</SubtitleText>
+
 
         <SubBox>
           <SubtitleText>프론트엔드</SubtitleText>
@@ -202,6 +179,7 @@ const Campus = styled.div`
 const DetailBox = styled.div`
   margin: 2em;
 `;
+
 
 const CampusBox = styled.div`
   display: flex;

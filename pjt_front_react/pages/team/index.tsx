@@ -252,6 +252,7 @@ const TeamListPage = () => {
     1: "구미",
     2: "광주",
   };
+  
   const [classOption, setClassOption] = useState<Object>({
     1: "반을 선택 해 주세요",
   });

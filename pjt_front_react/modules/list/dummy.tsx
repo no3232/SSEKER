@@ -1,4 +1,5 @@
 import { defaultUserInfo, detailUserInfo } from "../types/UserInfoTypes";
+import { sendInfo } from "../types/TeamInfoTypes";
 
 export const defaultUserState: detailUserInfo = {
     id: 0,
@@ -95,3 +96,36 @@ export const positionOption = {
   4: "DevOps",
   5: "선택 안함",
 };
+
+export const ExampleTeam = {
+  campus: {
+    id: 0,
+    partcount: 0,
+    title: ""
+  },
+  content: "",
+  fixed_count: 0,
+  founder : {
+    id: 0,
+    username: ""
+  },
+  id: 0,
+  part: 0,
+  participant: [],
+  participant_count: 0,
+  skill: [],
+  status: {
+    id: 0,
+    status: ""
+  },
+  title: "",
+}
+
+export const ExampleData:sendInfo = {
+  campus: 0,
+  status: 0,
+  title: "",
+  content: "",
+  skill: [],
+  fixed_count: 0
+}
