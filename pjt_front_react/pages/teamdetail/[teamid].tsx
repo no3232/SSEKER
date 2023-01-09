@@ -82,9 +82,8 @@ const Index = () => {
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
-      <UserSearchBar />
-      <TeamMemberList {...DummyParticipant}/>
-      <DetailHeader name={teamInfo.title} isUser={isUser} />
+      {/* <UserSearchBar /> */}
+      <DetailHeader name={teamInfo.title} isUser={isUser} id={null}/>
       <CampusBox>
         <SubtitleText className='title'>소속캠퍼스</SubtitleText>
 
@@ -92,6 +91,7 @@ const Index = () => {
         <Campus>{`${teamInfo.campus.partcount}반`}</Campus>
       </CampusBox>
       <DetailBox>
+      {/* <TeamMemberList {...DummyParticipant}/> */}
         <SubtitleText className='title'>Skill</SubtitleText>
 
 
