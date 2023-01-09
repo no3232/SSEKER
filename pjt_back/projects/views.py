@@ -1,5 +1,5 @@
 from .models import Project, Applicant, Participant
-from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, ParticipantDetailSerializer
+from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, ParticipantDetailSerializer, UpdateProjectSerializer
 from objects.models import Campus, SkillCategory
 from accounts.models import User
 
@@ -60,9 +60,12 @@ def project_detail(request, project_id=None):
         if request.method == 'GET':
             serializer = ProjectSerializer(project)
         elif request.method == 'PUT':
-            serializer = ProjectSerializer(project, data=request.data)
+            serializer = UpdateProjectSerializer(project, data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(founder=request.user)
+            else:
+                print(serializer.errors)
+                return Response()
         elif request.method == 'DELETE':
             project.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)

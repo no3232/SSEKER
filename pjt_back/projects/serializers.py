@@ -57,6 +57,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         read_only_fields = ('founder', 'participant')
 
 
+class UpdateProjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+        read_only_fields = ('founder', 'participant')
+        
+
 class ProjectListSerializer(serializers.ModelSerializer):
     participant_count = serializers.IntegerField(source='participant.count', read_only=True)
     skill = SkillSerializer(many=True)
