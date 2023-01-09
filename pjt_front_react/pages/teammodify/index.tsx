@@ -27,6 +27,7 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
+import UserSearchBar from '../../component/userSearchBar';
 
 const Index = () => {
   const router = useRouter();
@@ -411,6 +412,9 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+      </DetailBox>
+      <DetailBox>
+        <UserSearchBar />
       </DetailBox>
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>

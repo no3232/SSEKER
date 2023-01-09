@@ -108,7 +108,7 @@ const UserListPage = () => {
       }
     });
   }, [skills, signupRegion, signupClass]);
-
+  console.log(pageNum)
   // 인피니티 스크롤 스크롤링
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
