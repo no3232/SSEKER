@@ -16,6 +16,7 @@ export interface Stack {
 export interface DetailHeaderType {
     name: string;
     isUser: boolean
+    id: number|null
 }
 
 export interface iconList {
