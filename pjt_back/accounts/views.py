@@ -40,12 +40,13 @@ def filtering_peoples(request):
 
     filter_count = 20
     count = int(count)
+    peoples_count = len(peoples)
     peoples = peoples[(count-1)*filter_count:count*filter_count]
-    return peoples
+    return peoples, peoples_count
 
 @api_view(['GET'])
 def peoples(request):
-    peoples = filtering_peoples(request)
+    peoples, peoples_count = filtering_peoples(request)
     peoples_json = []
     for people in peoples:
         position = people.position
@@ -74,7 +75,6 @@ def peoples(request):
         }
         peoples_json.append(people)
 
-    peoples_count = len(peoples)
     peoples = peoples_json
     context = {
         'peoples_count': peoples_count,
