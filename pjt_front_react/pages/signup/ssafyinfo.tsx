@@ -18,7 +18,7 @@ const SsafyInfo = () => {
   const [signupRegion, setSignupRegion] = useState<number>();
   const [signupClass, setSignupClass] = useState<number>();
   const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
-  let user = {username: ""};
+  let user = {id: ""};
 
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
@@ -72,7 +72,7 @@ const SsafyInfo = () => {
     user = JSON.parse(localStorage.getItem("userinfo") || "{}");
     await axios({
       method: 'PUT',
-      url: `https://ssekerapi.site/accounts/${user.username}`,
+      url: `https://ssekerapi.site/accounts/${user.id}`,
       // url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
@@ -81,7 +81,7 @@ const SsafyInfo = () => {
       .catch()
     await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
       })
         .then((response) => {
           // console.log(response.data);

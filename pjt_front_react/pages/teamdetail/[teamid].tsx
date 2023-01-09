@@ -9,8 +9,11 @@ import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import axios from "axios";
-import { skillObject } from "../../modules/types/dummy";
+import { skillObject, TeamMember } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
+import UserSearchBar from '../../component/userSearchBar';
+import TeamMemberList from '../../component/TeamMemberCard';
+
 
 interface StackElement {
   id: number;
@@ -79,14 +82,18 @@ const Index = () => {
       <GlobalStyle />
       <NanumSquareRegular />
       <NanumSquareBold />
-      <DetailHeader name={teamInfo.title} isUser={isUser} id={teamInfo.id} />
+      <UserSearchBar />
+      <TeamMemberList {...DummyParticipant}/>
+      <DetailHeader name={teamInfo.title} isUser={isUser} />
       <CampusBox>
-        <SubtitleText className="title">소속캠퍼스</SubtitleText>
+        <SubtitleText className='title'>소속캠퍼스</SubtitleText>
+
         <Campus>{teamInfo.campus.title}</Campus>
         <Campus>{`${teamInfo.campus.partcount}반`}</Campus>
       </CampusBox>
       <DetailBox>
-        <SubtitleText className="title">Skill</SubtitleText>
+        <SubtitleText className='title'>Skill</SubtitleText>
+
 
         <SubBox>
           <SubtitleText>프론트엔드</SubtitleText>
@@ -172,6 +179,7 @@ const Campus = styled.div`
 const DetailBox = styled.div`
   margin: 2em;
 `;
+
 
 const CampusBox = styled.div`
   display: flex;

@@ -1,49 +1,37 @@
 import Link from 'next/link';
 import styled from "styled-components";
-import StackIcon from "../common/StackIcon";
 import TitleText from "../common/TitleText";
-import { EachUserCardTypes } from "../modules/types/dummy";
+import { TeamMember } from "../modules/types/dummy";
 
-const UserListCard = (props: EachUserCardTypes) => {
+const TeamMemberList = (props: TeamMember[]) => {
   // console.log(props)
-  const CardStack = (
-    <>
-      {props.stack.slice(0, 4).map((stack: any) => {
-        // console.log(stack.title)
-        return (
-          <StackIcon
-            key={stack.title}
-            stack={stack.title}
-            clickable={false}
-            textShow={false}
-          />
-        );
-      })}
-    </>
-  );
 
-  return (
-    <Link href={`/userdetail/${props.id}`}>
+  const CardList = Object.values(props).map((person) => {
+    return (<Link href={`/userdetail/${person.manager.id}`} key={person.manager.username}>
     <CardOutside>
       <CardMainside>
         <CardTitleside>
-          <TitleText>{props.title}</TitleText>
+          <TitleText>{person.manager.username}</TitleText>
           <CardStatusside>
-            {props.class}
-            {props.part}반
+          {person.skillcategory.category}
           </CardStatusside>
         </CardTitleside>
-        <CardStackside>{CardStack}{props.stack.length > 4 && <span>+ {props.stack.length - 4}</span>}</CardStackside>
       </CardMainside>
       <CardButtonside>
         <CardButton className='bx bx-chevron-right' />
       </CardButtonside>
     </CardOutside>
-    </Link>
+    </Link>)
+  })
+
+  return (
+    <>
+    {CardList}
+    </>
   );
 };
 
-export default UserListCard;
+export default TeamMemberList;
 
 const CardOutside = styled.div`
   display: flex;
