@@ -7,12 +7,10 @@ import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 const ModifyHeader = ({
   name,
-  path,
   nameHandler,
   sendData,
 }: {
   name: string;
-  path: string;
   nameHandler: Function;
   sendData: Function;
 }) => {
@@ -26,9 +24,7 @@ const ModifyHeader = ({
           onChange={(e) => nameHandler(e, 0)}
         />
 
-        {/* <Link href={path}> */}
           <Edit className="bx bx-check" onClick={()=>{sendData()}} />
-        {/* </Link> */}
       </ContentBox>
     </TitleBox>
   );

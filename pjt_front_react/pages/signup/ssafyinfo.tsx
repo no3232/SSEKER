@@ -9,7 +9,6 @@ import InputStyle from "../../component/InputStyle";
 import SubtitleText from "../../common/SubtitleText";
 import ClassButtonTypes from "../../modules/types/classSelectButton"
 import Select from '../../component/Select';
-import { KeyContext } from '../../modules/context/KeyContext';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const SsafyInfo = () => {
@@ -19,7 +18,7 @@ const SsafyInfo = () => {
   const [signupRegion, setSignupRegion] = useState<number>();
   const [signupClass, setSignupClass] = useState<number>();
   const [classOption, setClassOption] = useState<Object>({1: "반을 선택 해 주세요"})
-  let user = {username: ""};
+  let user = {id: ""};
 
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
@@ -73,7 +72,7 @@ const SsafyInfo = () => {
     user = JSON.parse(localStorage.getItem("userinfo") || "{}");
     await axios({
       method: 'PUT',
-      url: `https://ssekerapi.site/accounts/${user.username}`,
+      url: `https://ssekerapi.site/accounts/${user.id}`,
       // url: `https://ssekerapi.site/accounts/ssafy123@ssafy.com`,
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
@@ -82,7 +81,7 @@ const SsafyInfo = () => {
       .catch()
     await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
       })
         .then((response) => {
           // console.log(response.data);
@@ -96,6 +95,8 @@ const SsafyInfo = () => {
         });
     await route.push("/signup/skillinfo");
   };
+
+  
 
   return (
     <SsafyInfoBox>
@@ -177,6 +178,9 @@ const SsafyInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`
@@ -201,6 +205,7 @@ const TrackUl = styled.ul`
   margin-top: 10px;
   margin-bottom: 24px;
 `;
+
 const TrackLi = styled.li`
   display: flex;
 `;

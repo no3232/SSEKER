@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Router from "next/router";
-import React, { SyntheticEvent, useState, useContext, useEffect } from "react";
+import React, { SyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 
 import TitleText from "../../common/TitleText";
@@ -9,6 +9,7 @@ import MainButton from "../../common/MainButton";
 import StackIcon from "../../common/StackIcon";
 import Select from "../../component/Select";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
+import { positionOption } from "../../modules/list/dummy";
 
 interface skillObjType {
   [key: string]: number;
@@ -18,7 +19,7 @@ const SkillInfo = () => {
   const route = Router;
   const [signupPosition, setSignupPosition] = useState<number>();
   const [signupSkills, setSignupSkills] = useState<number[]>([]);
-  let user = {username: ""}
+  let user = {id: ""}
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
       route.push('/login')
@@ -26,13 +27,6 @@ const SkillInfo = () => {
       user = JSON.parse(localStorage.getItem("userinfo") || "{}");
     }
   }, []);
-
-  const positionOption = {
-    1: "프론트엔드",
-    2: "백엔드",
-    3: "DevOps",
-    4: "UI&UX",
-  };
 
   const getSkill = (event: SyntheticEvent): void => {
     const eventTarget = event.target as HTMLElement;
@@ -63,10 +57,9 @@ const SkillInfo = () => {
   const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
     user = JSON.parse(localStorage.getItem("userinfo") || "{}");
-    console.log(user.username)
       await axios({
         method: "PUT",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
         // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
         headers: {
           Authorization: `Token ${getKeyCookies("key")}`,
@@ -75,7 +68,7 @@ const SkillInfo = () => {
       }).catch();
       await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
       })
         .then((response) => {
           // console.log(response.data);
@@ -165,6 +158,9 @@ const SkillBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`

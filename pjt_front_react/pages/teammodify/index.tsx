@@ -12,37 +12,31 @@ import SubtitleText from "../../common/SubtitleText";
 import Select from "../../component/Select";
 import StackSelect from "../../layout/StackSelect";
 
-import ClassButtonTypes from "../../modules/types/classSelectButton";
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import { skillList, skillObject } from "../../modules/types/dummy";
-import { defaultUserInfo, sendInfo } from "../../modules/types/UserInfoTypes";
+import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
+import { sendInfo } from "../../modules/types/TeamInfoTypes";
 import { useRouter } from "next/router";
 import { getKeyCookies } from "../../modules/cookie/keyCookies";
 import {
   ExampleUser,
-  Rank,
-  Tier,
   regionOption,
-  positionOption,
+  ExampleTeam,
+  ExampleData,
 } from "../../modules/list/dummy";
+import { TeamInfo } from "../../modules/types/TeamInfoTypes";
+import UserSearchBar from '../../component/userSearchBar';
 
 const Index = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
-  // const [changeInfo.track, setchangeInfo.track] = useState<number>();
-  const [selectBj, setSelectBj] = useState({
-    rankId: 0,
-    tierId: 0,
-    rankName: "랭크 선택",
-    tierName: "티어 선택",
-  });
+  const [teamInfo, setTeamInfo] = useState<TeamInfo>(ExampleTeam);
 
   const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
-    0: [],
     1: [],
     2: [],
     3: [],
@@ -53,21 +47,7 @@ const Index = () => {
     1: "반을 선택 해 주세요",
   });
 
-  const [changeInfo, setChangeInfo] = useState<sendInfo>({
-    campus: 0,
-    part: 0,
-    skill: [],
-    github: "",
-    blog: "",
-    level: 0,
-    track: 0,
-    language: [],
-    introduce: "",
-    email: "0",
-    position: 0,
-  });
-
-  const path = `/userdetail/${userInfo.id}`;
+  const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
 
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
@@ -85,40 +65,63 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    const levelId = userInfo.level.id;
-    const rank = 5 - (levelId % 5);
-    const tier = Math.floor(levelId / 5) + 1;
+    const teamID = router.query.id;
 
+    if (teamID !== undefined) {
+      axios
+        .get(`https://ssekerapi.site/projects/project/${teamID}`)
+        .then((res) => {
+          const { data } = res;
+          const {
+            campus,
+            content,
+            fixed_count,
+            founder,
+            id,
+            part,
+            participant,
+            participant_count,
+            skill,
+            status,
+            title,
+          } = data;
+
+          setTeamInfo(() => {
+            return {
+              campus: { ...campus },
+              content: content,
+              fixed_count: fixed_count,
+              founder: { ...founder },
+              id: id,
+              part: part,
+              participant: [...participant],
+              participant_count: participant_count,
+              skill: [...skill],
+              status: { ...status },
+              title: title,
+            };
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [router.query.id]);
+
+  useEffect(() => {
     setChangeInfo((prev) => {
       return {
         ...prev,
-        campus: userInfo.campus.id,
-        part: userInfo.part,
-        skill: [],
-        github: userInfo.github,
-        blog: userInfo.blog,
-        level: rank * 5 - tier,
-        track: userInfo.track.id,
-        language: [],
-        introduce: userInfo.introduce,
-        email: userInfo.email,
-        position: userInfo.position.id,
+        campus: teamInfo.campus.id,
+        status: teamInfo.status.id,
+        title: teamInfo.title,
+        content: teamInfo.content,
+        fixed_count: teamInfo.fixed_count,
       };
     });
 
-    setSelectBj(() => {
-      return {
-        rankId: rank,
-        tierId: tier,
-        rankName: Rank[rank],
-        tierName: Tier[tier],
-      };
-    });
-  }, [userInfo]);
-
-  useEffect(() => {
     setSkillList();
-  }, [allSkills]);
+  }, [teamInfo]);
 
   useEffect(() => {
     let skillTmp: number[] = [];
@@ -132,38 +135,13 @@ const Index = () => {
         }
       }
 
-      if (i === "0") {
-        setChangeInfo((prev) => {
-          return { ...prev, language: tmp };
-        });
-      } else {
-        skillTmp = skillTmp.concat(tmp);
-      }
+      skillTmp = skillTmp.concat(tmp);
     }
 
     setChangeInfo((prev) => {
-      return { ...prev, skill: skillTmp };
+      return { ...prev, skill: [...skillTmp] };
     });
   }, [lastList]);
-
-  useEffect(() => {
-    setChangeInfo((prev) => {
-      return { ...prev, level: selectBj.tierId * 5 - selectBj.rankId };
-    });
-  }, [selectBj]);
-
-  // 랭크 수정 부분
-  const rankHandler = (rank: number) => {
-    setSelectBj((prev) => {
-      return { ...prev, rankId: rank, rankName: Rank[rank] };
-    });
-  };
-
-  const tierHandler = (tier: number) => {
-    setSelectBj((prev) => {
-      return { ...prev, tierId: tier, tierName: Tier[tier] };
-    });
-  };
 
   const getSignupRegion = (region: number) => {
     if (region == 1 || region == 2 || region == 4) {
@@ -195,10 +173,9 @@ const Index = () => {
   };
 
   const setSkillList = () => {
-    const mySkills: {
+    const teamSkills: {
       [key: number]: skillList[];
     } = {
-      0: [],
       1: [],
       2: [],
       3: [],
@@ -206,63 +183,45 @@ const Index = () => {
     };
 
     //가지고 있는 스킬 title만 추출하기
-    let mySkillList: string[] = [];
-    
-    for (let i = 0; i < userInfo.skill.length; i++) {
-      mySkillList.push(userInfo.skill[i].title);
-    }
+    let teamSkillList: string[] = [];
 
-    for (let i = 0; i < userInfo.language.length; i++) {
-      mySkillList.push(userInfo.language[i].title);
+    for (let i = 0; i < teamInfo.skill.length; i++) {
+      teamSkillList.push(teamInfo.skill[i].title);
     }
 
     const resetSkill: Set<number> = new Set();
-    const resetLangs: number[] = [];
 
     for (const i in allSkills) {
       const SkillsCategory = parseInt(allSkills[i].category);
       const title = allSkills[i].title;
 
-      if (mySkillList.includes(title)) {
-        let info = userInfo.skill.filter((item: skillObject) => {
+      if (teamSkillList.includes(title)) {
+        let info = teamInfo.skill.filter((item: skillObject) => {
           resetSkill.add(item.id);
           return item.title === title;
         });
 
-        if (info.length === 0) {
-          info = userInfo.language.filter((item: skillObject) => {
-            resetLangs.push(item.id);
-            return item.title === title;
-          });
-        }
-
         switch (SkillsCategory) {
-          case 0:
-            mySkills[0].push({
-              ...info[0],
-              selected: true,
-            });
-            break;
           case 1:
-            mySkills[1].push({
+            teamSkills[1].push({
               ...info[0],
               selected: true,
             });
             break;
           case 2:
-            mySkills[2].push({
+            teamSkills[2].push({
               ...info[0],
               selected: true,
             });
             break;
           case 3:
-            mySkills[3].push({
+            teamSkills[3].push({
               ...info[0],
               selected: true,
             });
             break;
           case 4:
-            mySkills[4].push({
+            teamSkills[4].push({
               ...info[0],
               selected: true,
             });
@@ -271,32 +230,26 @@ const Index = () => {
       } else {
         const info: skillObject = allSkills[i];
         switch (SkillsCategory) {
-          case 0:
-            mySkills[0].push({
-              ...info,
-              selected: false,
-            });
-            break;
           case 1:
-            mySkills[1].push({
+            teamSkills[1].push({
               ...info,
               selected: false,
             });
             break;
           case 2:
-            mySkills[2].push({
+            teamSkills[2].push({
               ...info,
               selected: false,
             });
             break;
           case 3:
-            mySkills[3].push({
+            teamSkills[3].push({
               ...info,
               selected: false,
             });
             break;
           case 4:
-            mySkills[4].push({
+            teamSkills[4].push({
               ...info,
               selected: false,
             });
@@ -308,11 +261,11 @@ const Index = () => {
     setChangeInfo((prev) => {
       return {
         ...prev,
-        language: [...resetLangs],
         skill: [...Array.from(resetSkill)],
       };
     });
-    setLastList(mySkills);
+
+    setLastList(teamSkills);
   };
 
   const UpdateStackState = (stackId: 0, newState: boolean, type: number) => {
@@ -344,31 +297,19 @@ const Index = () => {
     switch (type) {
       case 0:
         setChangeInfo((prev) => {
-          return { ...prev, username: value };
+          return { ...prev, title: value };
         });
-        break;
       case 1:
         setChangeInfo((prev) => {
-          return { ...prev, github: value };
+          return { ...prev, content: value };
         });
-        break;
-      case 2:
-        setChangeInfo((prev) => {
-          return { ...prev, blog: value };
-        });
-        break;
-      case 3:
-        setChangeInfo((prev) => {
-          return { ...prev, introduce: value };
-        });
-        break;
     }
   };
 
   const sendData: MouseEventHandler<HTMLElement> = async () => {
     const putMethod = await axios({
       method: "PUT",
-      url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+      url: `https://ssekerapi.site/projects/project/${teamInfo.id}`,
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
       },
@@ -379,7 +320,7 @@ const Index = () => {
       })
       .catch((err) => {
         console.log(err);
-        alert("잘못된 형식입니다.")
+        alert("잘못된 형식입니다.");
       });
 
     if (putMethod === 200) {
@@ -391,28 +332,12 @@ const Index = () => {
           const { data } = res;
           localStorage.setItem("userinfo", JSON.stringify(data));
 
-          router.push(path);
+          router.push(`/teamdetail/${teamInfo.id}`);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  };
-
-  const getPosition = (item: any) => {
-    console.log(item);
-
-    setChangeInfo((prev) => {
-      return { ...prev, position: item };
-    });
-  };
-
-  const clickTrack = (event: any) => {
-    event.preventDefault();
-
-    setChangeInfo((prev) => {
-      return { ...prev, track: event.target.value };
-    });
   };
 
   return (
@@ -422,100 +347,31 @@ const Index = () => {
       <NanumSquareBold />
 
       <ModifyHeader
-        name={userInfo.username}
+        name={teamInfo.title}
         nameHandler={getInputData}
         sendData={sendData}
       />
-      <CampusBox>
-        <SubtitleText className="title">수강 트랙</SubtitleText>
-      <TrackUl>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 1}
-            onClick={clickTrack}
-            value="1"
-          >
-            파이썬
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 3}
-            onClick={clickTrack}
-            value="3"
-          >
-            자바(전공)
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 2}
-            onClick={clickTrack}
-            value="2"
-          >
-            자바(비전공)
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 5}
-            onClick={clickTrack}
-            value="5"
-          >
-            모바일
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 4}
-            onClick={clickTrack}
-            value="4"
-          >
-            임베디드
-          </TrackButton>
-        </TrackLi>
-      </TrackUl>
-      </CampusBox>
-
       <CampusBox>
         <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
 
         <Select
-          title={userInfo.campus.title}
+          title={teamInfo.campus.title}
           options={regionOption}
           handler={getSignupRegion}
         />
         <p> 반</p>
 
         <Select
-          title={changeInfo.part + "반"}
+          title={teamInfo.part + "반"}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
 
-      <CampusBox>
-        <SubtitleText className="title"> 희망 포지션</SubtitleText>
-        <Select
-          title={userInfo.position.category}
-          options={positionOption}
-          handler={getPosition}
-        />
-      </CampusBox>
       <DetailBox>
         <SubtitleText className="title"> Skill</SubtitleText>
-        <SubBox>
-          <SubtitleText> 언어</SubtitleText>
-          <Icons>
-            <StackSelect
-              mySkills={lastList[0]}
-              type={0}
-              UpdateStackState={UpdateStackState}
-            />
-          </Icons>
-        </SubBox>
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>
@@ -557,44 +413,16 @@ const Index = () => {
           </Icons>
         </SubBox>
       </DetailBox>
-      <DetailBox className="rank">
-        <SubtitleText> 백준 랭크</SubtitleText>
-        <Select
-          title={selectBj.tierName}
-          options={Tier}
-          handler={tierHandler}
-        />
-        <Select
-          title={selectBj.rankName}
-          options={Rank}
-          handler={rankHandler}
-        />
-      </DetailBox>
-      <DetailBox className="rank">
-        <SubtitleText> GitHub</SubtitleText>
-        <InputBox
-          placeholder={
-            userInfo.github ? userInfo.github : "깃허브 주소를 입력해주세요"
-          }
-          onChange={(e) => getInputData(e, 1)}
-        />
-      </DetailBox>
-      <DetailBox className="rank">
-        <SubtitleText> Blog</SubtitleText>
-        <InputBox
-          placeholder={
-            userInfo.blog ? userInfo.blog : "블로그 주소를 입력해주세요"
-          }
-          onChange={(e) => getInputData(e, 2)}
-        />
+      <DetailBox>
+        <UserSearchBar />
       </DetailBox>
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>
         <IntroBox
           placeholder={
-            userInfo.introduce ? userInfo.introduce : "자기 소개를 넣어주세요"
+            teamInfo.content ? teamInfo.content : "자기 소개를 넣어주세요"
           }
-          onChange={(e) => getInputData(e, 3)}
+          onChange={(e) => getInputData(e, 2)}
         ></IntroBox>
       </DetailBox>
     </Container>
@@ -602,48 +430,6 @@ const Index = () => {
 };
 
 export default Index;
-
-const TrackUl = styled.ul`
-  display: flex;
-  align-content: space-between;
-  list-style: none;
-  margin-top: 10px;
-  margin-bottom: 24px;
-`;
-
-const TrackLi = styled.li`
-  display: flex;
-`;
-
-const TrackButton = styled.button<ClassButtonTypes>`
-  border: solid 1px #0062ff;
-  background-color: white;
-  border-radius: 5px;
-  color: #0062ff;
-  font-family: 'NanumSquareNeoRegular';
-  padding : 10px;
-  margin: 2px;
-  &:hover {
-    border: solid 1px white;
-      background-color: blue;
-      color: white;
-  }
-  ${(props) =>
-    props.selected &&
-    css`
-      border: solid 1px white;
-      background-color: #0062ff;
-      color: white;
-      &:hover {
-        border: solid 1px white;
-        background-color: #0062ff;
-        color: white;
-      }
-    `}
-    
-  }
-  
-`;
 
 const InputBox = styled.input`
   border: solid 2px var(--primary-color-light);

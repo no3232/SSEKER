@@ -18,33 +18,7 @@ import StackSelect from '../../layout/StackSelect';
 import Select from '../../component/Select';
 import { getKeyCookies } from '../../modules/cookie/keyCookies';
 import Router from 'next/router';
-
-const ExampleUser = {
-  id: 0,
-  username: "",
-  campus: {
-    id: 0,
-    title: "",
-    partcount: 0,
-  },
-  part: 0,
-  skill: [],
-  github: "",
-  blog: "",
-  level: {
-    id: 0,
-    level: "",
-    color: "",
-  },
-  track: {
-    id: 0,
-    track: "",
-  },
-  language: [],
-  email: "",
-  introduce: "",
-  position: 0
-};
+import { ExampleUser } from "../../modules/list/dummy";
 
 const TeamListPage = () => {
   const [teamData, setTeamData] = useState<teamData | any>([]);
@@ -278,6 +252,7 @@ const TeamListPage = () => {
     1: "구미",
     2: "광주",
   };
+  
   const [classOption, setClassOption] = useState<Object>({
     1: "반을 선택 해 주세요",
   });

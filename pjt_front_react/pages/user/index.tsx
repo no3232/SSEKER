@@ -14,35 +14,9 @@ import SubtitleText from "../../common/SubtitleText";
 import StackSelect from "../../layout/StackSelect";
 import Select from "../../component/Select";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
-import { getKeyCookies } from '../../modules/cookie/keyCookies';
-import Router from 'next/router';
-
-const ExampleUser = {
-  id: 0,
-  username: "",
-  campus: {
-    id: 0,
-    title: "",
-    partcount: 0,
-  },
-  part: 0,
-  skill: [],
-  github: "",
-  blog: "",
-  level: {
-    id: 0,
-    level: "",
-    color: "",
-  },
-  track: {
-    id: 0,
-    track: "",
-  },
-  language: [],
-  email: "",
-  introduce: "",
-  position: 0,
-};
+import { getKeyCookies } from "../../modules/cookie/keyCookies";
+import { ExampleUser } from "../../modules/list/dummy";
+import Router from "next/router";
 
 const UserListPage = () => {
   const [userList, setUserList] = useState<listCardTypes[] | any>([]);
@@ -63,7 +37,7 @@ const UserListPage = () => {
   const router = Router;
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
-      router.push('/login')
+      router.push("/login");
     } else {
       setUserInfo(JSON.parse(localStorage.getItem("userinfo") || "{}"));
     }
@@ -106,12 +80,13 @@ const UserListPage = () => {
 
   // 필터링
   useEffect(() => {
-    
     setUserList([]);
+
     setPageNum({
       page: 1,
       totalPage: 1,
     });
+    
     axios({
       method: "GET",
       url: `https://ssekerapi.site/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
@@ -122,8 +97,10 @@ const UserListPage = () => {
             const peopleList = Object.values(response.data.peoples);
             return [...peopleList];
           }
+          
           return [...prev];
         });
+
         setPageNum((prev) => ({
           page: 1,
           totalPage: Math.ceil(response.data.peoples_count / 20),
@@ -131,10 +108,11 @@ const UserListPage = () => {
       }
     });
   }, [skills, signupRegion, signupClass]);
-
+  console.log(pageNum)
   // 인피니티 스크롤 스크롤링
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
+      console.log(pageNum)
       if (entry.isIntersecting) {
         setPageNum((prev) => {
           if (prev.totalPage > prev.page) {
@@ -324,35 +302,34 @@ const UserListPage = () => {
       <SearchBar />
       <FilterBox>
         {filterOpen ? (
-          <i className='bx bx-x' onClick={openFilter}></i>
+          <i className="bx bx-x" onClick={openFilter}></i>
         ) : (
-          <i className='bx bx-filter' onClick={openFilter}></i>
+          <i className="bx bx-filter" onClick={openFilter}></i>
         )}
       </FilterBox>
       {filterOpen && (
         <DetailBox>
-          <SubtitleText className='title'>소속캠퍼스</SubtitleText>
+          <SubtitleText className="title">소속캠퍼스</SubtitleText>
           <RegionBox>
-
-          <div>
-            <p>지역</p>
-          <Select
-            title={regionOption[parseInt(signupRegion)]}
-            options={regionOption}
-            handler={getSignupRegion}
-          />
-          </div>
-          <div>
-            <p>반</p>
-          <Select
-            title={signupClass + "반"}
-            options={classOption}
-            handler={getSignupClass}
-          />
-          </div>
+            <div>
+              <p>지역</p>
+              <Select
+                title={regionOption[parseInt(signupRegion)]}
+                options={regionOption}
+                handler={getSignupRegion}
+              />
+            </div>
+            <div>
+              <p>반</p>
+              <Select
+                title={signupClass + "반"}
+                options={classOption}
+                handler={getSignupClass}
+              />
+            </div>
           </RegionBox>
-          
-          <SubtitleText className='title'>Skill</SubtitleText>
+
+          <SubtitleText className="title">Skill</SubtitleText>
           {/* <SubBox>
             <SubtitleText>언어</SubtitleText>
 
@@ -411,7 +388,11 @@ const UserListPage = () => {
           </SubBox>
         </DetailBox>
       )}
-      {userList.length > 0 ? <UserCardList {...userList} /> : <SubtitleText>데이터가 없습니다</SubtitleText>}
+      {userList.length > 0 ? (
+        <UserCardList {...userList} />
+      ) : (
+        <SubtitleText>데이터가 없습니다</SubtitleText>
+      )}
       <Spinner ref={setTarget}></Spinner>
     </UserBox>
   );
@@ -425,14 +406,14 @@ const RegionBox = styled.div`
     width: 50%;
     padding: 10px;
   }
-`
+`;
 
 const DetailBox = styled.div`
   margin: 2em;
   background-color: #e0edff;
   border-radius: 8px;
   padding: 24px 20px;
-  transition: var(--trans-03)
+  transition: var(--trans-03);
 `;
 
 const SubBox = styled.div`

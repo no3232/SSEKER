@@ -16,6 +16,7 @@ export interface Stack {
 export interface DetailHeaderType {
     name: string;
     isUser: boolean
+    id: number|null
 }
 
 export interface iconList {
@@ -161,4 +162,22 @@ export interface ContextUserInfoTypes {
     introduce: string;
     addUser: Function;
     removeUser: Function;
+}
+
+export interface StackElement {
+  id: number;
+  title: string;
+  category: number;
+}
+
+export interface TeamMember {
+    id: number;
+    manager: {
+        id: number;
+        username: string;
+    };
+    skillcategory: {
+        id: number;
+        category: string
+    }
 }
