@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
           Authorization: `Token ${getKeyCookies("key")}`,
         },
       }).then((response) => {
-        key = response.data.username;
+        key = response.data.pk;
         axios({
           method: "GET",
           url: `https://ssekerapi.site/accounts/${key}`,

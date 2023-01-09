@@ -112,6 +112,7 @@ const UserListPage = () => {
   // 인피니티 스크롤 스크롤링
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
+      console.log(pageNum)
       if (entry.isIntersecting) {
         setPageNum((prev) => {
           if (prev.totalPage > prev.page) {

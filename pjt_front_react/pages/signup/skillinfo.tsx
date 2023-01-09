@@ -19,7 +19,7 @@ const SkillInfo = () => {
   const route = Router;
   const [signupPosition, setSignupPosition] = useState<number>();
   const [signupSkills, setSignupSkills] = useState<number[]>([]);
-  let user = {username: ""}
+  let user = {id: ""}
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
       route.push('/login')
@@ -57,10 +57,9 @@ const SkillInfo = () => {
   const moveToAfter = async (event: SyntheticEvent) => {
     event.preventDefault();
     user = JSON.parse(localStorage.getItem("userinfo") || "{}");
-    console.log(user.username)
       await axios({
         method: "PUT",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
         // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
         headers: {
           Authorization: `Token ${getKeyCookies("key")}`,
@@ -69,7 +68,7 @@ const SkillInfo = () => {
       }).catch();
       await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${user.username}`,
+        url: `https://ssekerapi.site/accounts/${user.id}`,
       })
         .then((response) => {
           // console.log(response.data);

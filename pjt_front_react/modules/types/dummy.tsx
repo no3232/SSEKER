@@ -168,3 +168,15 @@ export interface StackElement {
   title: string;
   category: number;
 }
+
+export interface TeamMember {
+    id: number;
+    manager: {
+        id: number;
+        username: string;
+    };
+    skillcategory: {
+        id: number;
+        category: string
+    }
+}
