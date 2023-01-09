@@ -1,18 +1,16 @@
 from .models import User
-
-
-
-from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, RecommendUserListSerializer
-
 from objects.models import Campus, SkillCategory
 from objects.serializers import SkillSerializer, CampusSerializer
+from .serializers import UserSerializer, UserUpdateSerializer, UserUpdateSkillSerializer, UserUpdateLanguageSerializer, UserUpdateEtcSerializer, UserSearchSerializer, RecommendUserListSerializer
 
 from django.http import JsonResponse
 
+import requests
 from urllib.parse import unquote
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+
 
 def filtering_peoples(request):
     campus  = request.GET.get('campus')
@@ -76,7 +74,7 @@ def peoples(request):
         }
         peoples_json.append(people)
 
-    peoples_count = len(User.objects.all()) - 1
+    peoples_count = len(peoples)
     peoples = peoples_json
     context = {
         'peoples_count': peoples_count,
@@ -85,10 +83,10 @@ def peoples(request):
     return JsonResponse(context)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def people_detail(request, username):
+def people_detail(request, user_id):
     user = request.user
     if request.method == 'GET':
-        user = User.objects.get(username=username)
+        user = User.objects.get(id=user_id)
         serializer = UserSerializer(user)
         return Response(serializer.data ,status=status.HTTP_200_OK)
     elif request.method == 'PUT':

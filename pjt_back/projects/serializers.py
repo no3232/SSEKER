@@ -28,6 +28,14 @@ class ParticipantSerializer(serializers.ModelSerializer):
         fields = ('id', 'manager', 'skillcategory',)
 
 
+class ParticipantDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Participant
+        fields = '__all__'
+        read_only_fields = ('manager', 'project',)
+
+
 class StatusSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -48,6 +56,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('founder', 'participant')
 
+
+class UpdateProjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+        read_only_fields = ('founder', 'participant')
+        
 
 class ProjectListSerializer(serializers.ModelSerializer):
     participant_count = serializers.IntegerField(source='participant.count', read_only=True)
