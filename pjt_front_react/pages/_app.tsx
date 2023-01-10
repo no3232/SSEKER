@@ -31,7 +31,6 @@ export default function App({ Component, pageProps }: AppProps) {
         }).then(async (response) => {
           localStorage.setItem("userinfo", JSON.stringify(response.data));
           // console.log(JSON.parse(localStorage.getItem("userinfo") || '{}'))
-          return;
         });
       });
     }
