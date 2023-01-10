@@ -1,46 +1,91 @@
 import axios from "axios";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
+import { TeamMember } from "../modules/types/dummy";
 
 interface searchUser {
   name: string;
   campus: number;
   part: number;
-  username: string;
+  id: number;
 }
 
+const skillCategory:{[key: number]: {id: number, category: string}} = {
+  1: {
+      "id": 1,
+      "category": "Frontend"
+  },
+  2: {
+      "id": 2,
+      "category": "Backend"
+  },
+  3: {
+      "id": 3,
+      "category": "UI&UX"
+  },
+  4: {
+      "id": 4,
+      "category": "Devops"
+  }
+}
 
-const UserSearchBar = () => {
+const UserSearchBar = ({
+  userList,
+  skillId,
+  selectHandler,
+  removeHandler
+}: {
+  userList: TeamMember[];
+  skillId: number;
+  selectHandler: Function;
+  removeHandler: Function;
+}) => {
   const [listOpen, setListOpen] = useState(false);
   const [searchList, setSearchList] = useState([]);
-  const [selectPeople, setSelectPeople] = useState<searchUser[]>([]);
+  const searchInput = useRef<HTMLInputElement>(null);
+  useEffect(()=>{console.log(userList)},[userList])
+  
+  const SelectPeopleList = userList.map((person: TeamMember, index) => {
+    return (
+      <PersonBox key={index}>
+        {person.manager.username}
+        <i className='bx bx-x' onClick={()=>innerRemoveHandler(person)}></i>
+      </PersonBox>
+    );
+  });
 
-  const SelectPeopleList = selectPeople.map((person: searchUser) => {
-    return <PersonBox>{person.name} <i className='bx bx-x' onClick={()=>removeHandler(person)}></i></PersonBox>
-  })
-
-  const selectHandler = (person: searchUser) => {
-    if (!selectPeople.includes(person)) {
-      setSelectPeople((prev) => {return [...prev, person]})
+  const innerSelectHandler = (person: searchUser) => {
+    const newMember = {
+      manager: {
+        id: person.id,
+        username: person.name
+      },
+      skillcategory: skillCategory[skillId]
     }
-  }
+    selectHandler(newMember)
+    searchInput.current!.value = ""
+    setListOpen(false)
+    setSearchList([])
+  };
 
-  const removeHandler = (person: searchUser) => {
-    setSelectPeople((prev) => {
-      const newUserList = prev.filter((p: searchUser) => {
-        if (p.username === person.username) {
-          return false
-        }
-        return true
-      })
+  const innerRemoveHandler = (person: TeamMember) => {
+    const newMember = {
+      manager: person.manager,
+      skillcategory: skillCategory[skillId]
+    }
+    removeHandler(newMember)
+  };
 
-      return newUserList})
-  }
-
-  const regionOption: {[key: number]: string} = {6: "전국", 5: '서울', 3: '대전', 4: '부울경', 1: '구미', 2: '광주'}
-
+  const regionOption: { [key: number]: string } = {
+    6: "전국",
+    5: "서울",
+    3: "대전",
+    4: "부울경",
+    1: "구미",
+    2: "광주",
+  };
 
   const Searching = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== "") {
@@ -52,13 +97,15 @@ const UserSearchBar = () => {
       });
     }
   };
-  const SearchListItems = searchList.map((person: searchUser) => {
-      return (
-        <div>
-          <li onClick={()=>selectHandler(person)}>{person.name} {regionOption[person.campus]} {person.part + '반'}</li>
-        </div>
-      )
-    })
+  const SearchListItems = searchList.map((person: searchUser, index) => {
+    return (
+      <div key={index}>
+        <li onClick={()=>innerSelectHandler(person)}>
+          {person.name} {regionOption[person.campus]} {person.part + "반"}
+        </li>
+      </div>
+    );
+  });
 
   const Opening = () => {
     setListOpen(true);
@@ -67,29 +114,28 @@ const UserSearchBar = () => {
     setListOpen(false);
   };
   return (
-    <SearchContainer >
+    <SearchContainer>
       {listOpen && <Box onClick={Closing}></Box>}
       <GlobalStyle />
 
-        {SelectPeopleList}
-
+      {SelectPeopleList}
 
       <SearchInputWrapper>
         <SearchInput
-          className="searchInput"
-          type="text"
-          placeholder="focus here to search"
+          className='searchInput'
+          type='text'
+          placeholder='focus here to search'
           onFocus={Opening}
           onChange={Searching}
+          ref={searchInput}
         />
-        <SearchInputIcon className="bx bx-search"></SearchInputIcon>
+        <SearchInputIcon className='bx bx-search'></SearchInputIcon>
         {listOpen && SearchListItems.length !== 0 && (
-        <SearchResultList className="searchList">
-          {SearchListItems}
-        </SearchResultList>
-      )}
+          <SearchResultList className='searchList'>
+            {SearchListItems}
+          </SearchResultList>
+        )}
       </SearchInputWrapper>
-      
     </SearchContainer>
   );
 };
@@ -101,7 +147,7 @@ const PersonBox = styled.div`
   > i {
     color: red;
   }
-`
+`;
 
 const Box = styled.div`
   position: fixed;
@@ -112,7 +158,7 @@ const Box = styled.div`
   z-index: 1;
   background-color: grey;
   opacity: 0.5;
-`
+`;
 
 const SearchResultList = styled.ul`
   width: 100%;
@@ -124,7 +170,7 @@ const SearchResultList = styled.ul`
     text-decoration: none;
   }
   > div {
-    padding: 4px 5px
+    padding: 4px 5px;
   }
 `;
 

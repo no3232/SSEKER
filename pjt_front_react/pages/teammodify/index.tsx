@@ -15,7 +15,12 @@ import StackSelect from "../../layout/StackSelect";
 import GlobalStyle from "../../modules/GlobalStyle/GlobalStyle";
 import NanumSquareRegular from "../../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
-import { skillList, skillObject } from "../../modules/types/dummy";
+import {
+  skillList,
+  skillObject,
+  teamData,
+  TeamMember,
+} from "../../modules/types/dummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
 import { sendInfo } from "../../modules/types/TeamInfoTypes";
 import { useRouter } from "next/router";
@@ -27,7 +32,7 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
-import UserSearchBar from '../../component/userSearchBar';
+import UserSearchBar from "../../component/userSearchBar";
 
 const Index = () => {
   const router = useRouter();
@@ -339,7 +344,65 @@ const Index = () => {
         });
     }
   };
+  // -----------------------------------------------
+  const [participantList, setParticipantList] =
+    useState<TeamMember[]>(Dummyparticipant);
+  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
+  useEffect(() => {
+    setPartObj((prev) => {
+      const newObj: { [key: number]: TeamMember[] } = {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+      };
+      participantList.map((person) => {
+        if (person.skillcategory.id === 1) {
+          newObj[1].push(person);
+        } else if (person.skillcategory.id === 2) {
+          newObj[2].push(person);
+        } else if (person.skillcategory.id === 3) {
+          newObj[3].push(person);
+        } else if (person.skillcategory.id === 4) {
+          newObj[4].push(person);
+        }
+      });
+      return newObj;
+    });
+  }, [participantList]);
 
+  const selectHandler = (props: TeamMember) => {
+    let overlap = false;
+
+    participantList.map((person) => {
+      if (person.manager.id === props.manager.id) {
+        (overlap = true)
+      }
+    });
+    if (!overlap) {
+      setParticipantList((prev) => {
+        return [...prev, props];
+      });
+    } else {
+      alert("이미 추가된 유저입니다.")
+    }
+  };
+  const removeHandler = (props: TeamMember) => {
+    console.log(props);
+    setParticipantList((prev) => {
+      return prev.filter((person) => {
+        if (person.manager.id === props.manager.id) {
+          return false;
+        }
+        return true;
+      });
+    });
+  };
   return (
     <Container>
       <GlobalStyle />
@@ -352,7 +415,7 @@ const Index = () => {
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
+        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
 
@@ -371,7 +434,7 @@ const Index = () => {
       </CampusBox>
 
       <DetailBox>
-        <SubtitleText className="title"> Skill</SubtitleText>
+        <SubtitleText className='title'> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>
@@ -414,7 +477,34 @@ const Index = () => {
         </SubBox>
       </DetailBox>
       <DetailBox>
-        <UserSearchBar />
+        <SubtitleText> 프론트엔드</SubtitleText>
+        <UserSearchBar
+          skillId={1}
+          userList={partObj[1]}
+          selectHandler={selectHandler}
+          removeHandler={removeHandler}
+        />
+        <SubtitleText> 백엔드</SubtitleText>
+        <UserSearchBar
+          skillId={2}
+          userList={partObj[2]}
+          selectHandler={selectHandler}
+          removeHandler={removeHandler}
+        />
+        <SubtitleText> DevOps</SubtitleText>
+        <UserSearchBar
+          skillId={3}
+          userList={partObj[3]}
+          selectHandler={selectHandler}
+          removeHandler={removeHandler}
+        />
+        <SubtitleText> UI/UX</SubtitleText>
+        <UserSearchBar
+          skillId={4}
+          userList={partObj[4]}
+          selectHandler={selectHandler}
+          removeHandler={removeHandler}
+        />
       </DetailBox>
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>
@@ -478,3 +568,28 @@ const Container = styled.div`
     gap: 1.5em;
   }
 `;
+
+const Dummyparticipant: Array<TeamMember> = [
+  {
+    id: 2,
+    manager: {
+      id: 2,
+      username: "test4",
+    },
+    skillcategory: {
+      id: 4,
+      category: "Devops",
+    },
+  },
+  {
+    id: 3,
+    manager: {
+      id: 1,
+      username: "test5",
+    },
+    skillcategory: {
+      id: 1,
+      category: "Frontend",
+    },
+  },
+];

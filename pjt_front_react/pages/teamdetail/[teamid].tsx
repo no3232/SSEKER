@@ -11,7 +11,6 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import axios from "axios";
 import { skillObject, TeamMember } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
-import UserSearchBar from "../../component/userSearchBar";
 import TeamMemberList from "../../component/TeamMemberCard";
 
 const Dummyparticipant = [
