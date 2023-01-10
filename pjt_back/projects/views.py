@@ -104,21 +104,27 @@ def apply_project(request):
 
 @api_view(['POST', 'PUT', 'DELETE'])
 def participant(request, project_id, participant_id=None):
-    manager_id = request.data.get('manager')
-    manager = User.objects.get(id=manager_id)
     if participant_id:
         participant = Participant.objects.get(id=participant_id)
-        if request.method == 'PUT':
-            serializer = ParticipantDetailSerializer(participant, data=request.data)
-            if serializer.is_valid():
-                serializer.save(manager=manager)
-        elif request.method == 'DELETE':
+        if request.method == 'DELETE':
             participant.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
     else:
         if request.method == 'POST':
             project = Project.objects.get(id=project_id)
-            serializer = ParticipantDetailSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(project=project, manager=manager)
+            response = request.data
+            for _, values in response.items():
+                temp_list = values.split(',')
+                queryset = QueryDict('', mutable=True)
+
+                for temp in temp_list:
+                    key, value = temp.split(':')
+                    queryset.update({key:value})
+
+                manager_id = queryset['manager']
+                manager = User.objects.get(id=manager_id)
+                serializer = ParticipantDetailSerializer(data=queryset)
+
+                if serializer.is_valid():
+                    serializer.save(project=project, manager=manager)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
