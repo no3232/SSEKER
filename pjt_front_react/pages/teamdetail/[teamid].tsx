@@ -11,9 +11,32 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import axios from "axios";
 import { skillObject, TeamMember } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
-import UserSearchBar from '../../component/userSearchBar';
-import TeamMemberList from '../../component/TeamMemberCard';
+import TeamMemberList from "../../component/TeamMemberCard";
 
+const Dummyparticipant = [
+  {
+    id: 2,
+    manager: {
+      id: 2,
+      username: "test4",
+    },
+    skillcategory: {
+      id: 4,
+      category: "Devops",
+    },
+  },
+  {
+    id: 3,
+    manager: {
+      id: 1,
+      username: "test5",
+    },
+    skillcategory: {
+      id: 1,
+      category: "Frontend",
+    },
+  },
+];
 
 interface StackElement {
   id: number;
@@ -83,7 +106,7 @@ const Index = () => {
       <NanumSquareRegular />
       <NanumSquareBold />
       {/* <UserSearchBar /> */}
-      <DetailHeader name={teamInfo.title} isUser={isUser} id={null}/>
+      <DetailHeader name={teamInfo.title} isUser={isUser} id={null} />
       <CampusBox>
         <SubtitleText className='title'>소속캠퍼스</SubtitleText>
 
@@ -91,9 +114,11 @@ const Index = () => {
         <Campus>{`${teamInfo.campus.partcount}반`}</Campus>
       </CampusBox>
       <DetailBox>
-      {/* <TeamMemberList {...DummyParticipant}/> */}
+        <SubtitleText className='title'>Member</SubtitleText>
+        {teamInfo.participant.length === 0 ? <p>팀원이 없습니다.</p> : <TeamMemberList {...teamInfo.participant} />}
+      </DetailBox>
+      <DetailBox>
         <SubtitleText className='title'>Skill</SubtitleText>
-
 
         <SubBox>
           <SubtitleText>프론트엔드</SubtitleText>
@@ -179,7 +204,6 @@ const Campus = styled.div`
 const DetailBox = styled.div`
   margin: 2em;
 `;
-
 
 const CampusBox = styled.div`
   display: flex;

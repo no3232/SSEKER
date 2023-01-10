@@ -43,11 +43,26 @@ const LoginMainPage = () => {
         console.log(err.response);
         return alert("이메일/비밀번호를 확인 해 주세요!")
       });
-      console.log(getKey)
+    let primeKey = ""
     if (getKey === 200) {
+      // console.log(getKeyCookies("key"))
+      const pk = await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/dj-accounts/user/`,
+        headers: {Authorization: `Token ${getKeyCookies("key")}`}
+      })
+        .then((response) => {
+          // console.log(response.data)
+          return primeKey = response.data.pk
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
+      // console.log(pk)
       await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${loginEmail}`,
+        url: `https://ssekerapi.site/accounts/${pk}`,
       })
         .then((response) => {
           if (localStorage.getItem("userinfo") === undefined) {
