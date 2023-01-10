@@ -97,7 +97,7 @@ const Index = () => {
       
       <CampusBox>
         <SubtitleText className="title">희망 포지션</SubtitleText>
-        <Campus>{userInfo.position.category}</Campus>
+        {userInfo.position === null ? <Campus>선택안함</Campus> : <Campus>{userInfo.position?.category}</Campus>}
       </CampusBox>
       
       <DetailBox>

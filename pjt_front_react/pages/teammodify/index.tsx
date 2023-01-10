@@ -54,6 +54,15 @@ const Index = () => {
 
   const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
 
+  const [participantList, setParticipantList] =
+    useState<TeamMember[]>(Dummyparticipant);
+  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
+
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
     axios
@@ -327,8 +336,27 @@ const Index = () => {
         console.log(err);
         alert("잘못된 형식입니다.");
       });
+    const teamPList = participantList.map((person)=>{
+      return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`
+    })
+    const sendTeamList = Object.assign({}, teamPList)
+    const teamMethod = await axios({
+      method: "POST",
+      url: `https://ssekerapi.site/projects/${teamInfo.id}/participant`,
+      headers: {
+        Authorization: `Token ${getKeyCookies("key")}`,
+      },
+      data: sendTeamList,
+    })
+      .then((res) => {
+        return res.status;
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("잘못된 형식입니다.");
+      });
 
-    if (putMethod === 200) {
+    if (putMethod === 200 && teamMethod === 200) {
       await axios({
         method: "GET",
         url: `https://ssekerapi.site/accounts/${userInfo.id}`,
@@ -344,15 +372,8 @@ const Index = () => {
         });
     }
   };
-  // -----------------------------------------------
-  const [participantList, setParticipantList] =
-    useState<TeamMember[]>(Dummyparticipant);
-  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-  });
+
+  // 팀 리스트 추가 함수
   useEffect(() => {
     setPartObj((prev) => {
       const newObj: { [key: number]: TeamMember[] } = {
@@ -381,7 +402,7 @@ const Index = () => {
 
     participantList.map((person) => {
       if (person.manager.id === props.manager.id) {
-        (overlap = true)
+        overlap = true;
       }
     });
     if (!overlap) {
@@ -389,7 +410,7 @@ const Index = () => {
         return [...prev, props];
       });
     } else {
-      alert("이미 추가된 유저입니다.")
+      alert("이미 추가된 유저입니다.");
     }
   };
   const removeHandler = (props: TeamMember) => {

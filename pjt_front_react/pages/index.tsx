@@ -7,9 +7,16 @@ import LargeText from "../common/LargeText";
 import MainButton from "../common/MainButton";
 import IndexAnimation from "../component/IndexAnimation";
 import styled from "styled-components";
+import { getKeyCookies } from '../modules/cookie/keyCookies';
 
 export default function Home() {
   const route = Router;
+
+  useEffect(() => {
+    if (getKeyCookies("key") !== undefined) {
+      route.push('/login/after')
+    }
+  }, []);
 
   // 크로스 브라우징 높이, 넓이 계산
   let vh = 0;
