@@ -55,8 +55,9 @@ const Index = () => {
 
   const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
 
-  const [participantList, setParticipantList] =
-    useState<TeamMember[]>(teamInfo.participant);
+  const [participantList, setParticipantList] = useState<TeamMember[]>(
+    teamInfo.participant
+  );
   const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
     1: [],
     2: [],
@@ -128,8 +129,8 @@ const Index = () => {
             };
           });
           setParticipantList(() => {
-            return [...participant]
-          })
+            return [...participant];
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -375,56 +376,121 @@ const Index = () => {
   };
 
   const sendData: MouseEventHandler<HTMLElement> = async () => {
-    const putMethod = await axios({
-      method: "PUT",
-      url: `https://ssekerapi.site/projects/project/${teamInfo.id}`,
-      headers: {
-        Authorization: `Token ${getKeyCookies("key")}`,
-      },
-      data: { ...changeInfo },
-    })
-      .then((res) => {
-        return res.status;
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("잘못된 형식입니다.");
-      });
-    const teamPList = participantList.map((person)=>{
-      return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`
-    })
-    const sendTeamList = Object.assign({}, teamPList)
-    const teamMethod = await axios({
-      method: "POST",
-      url: `https://ssekerapi.site/projects/${teamInfo.id}/participant`,
-      headers: {
-        Authorization: `Token ${getKeyCookies("key")}`,
-      },
-      data: sendTeamList,
-    })
-      .then((res) => {
-        return res.status;
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("잘못된 형식입니다.");
-      });
-
-    if (putMethod === 200 && teamMethod === 200) {
-      await axios({
-        method: "GET",
-        url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+    if (router.query.id !== undefined) {
+      
+      const putMethod = await axios({
+        method: "PUT",
+        url: `https://ssekerapi.site/projects/project/${teamInfo.id}`,
+        headers: {
+          Authorization: `Token ${getKeyCookies("key")}`,
+        },
+        data: { ...changeInfo },
       })
         .then((res) => {
-          const { data } = res;
-          localStorage.setItem("userinfo", JSON.stringify(data));
-
-          router.push(`/teamdetail/${teamInfo.id}`);
+          return res.status;
         })
         .catch((err) => {
           console.log(err);
+          alert("잘못된 형식입니다.");
         });
-    }
+      const teamPList = participantList.map((person) => {
+        return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`;
+      });
+      const sendTeamList = Object.assign({}, teamPList);
+      let teamMethod
+      if (teamPList.length > 0) {
+        teamMethod = await axios({
+          method: "POST",
+          url: `https://ssekerapi.site/projects/${teamInfo.id}/participant`,
+          headers: {
+            Authorization: `Token ${getKeyCookies("key")}`,
+          },
+          data: sendTeamList,
+        })
+          .then((res) => {
+            return res.status;
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("잘못된 형식입니다.");
+          });
+      } else {
+        teamMethod = 201
+      }
+
+      if (putMethod === 200 && teamMethod === 201) {
+        await axios({
+          method: "GET",
+          url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+        })
+          .then((res) => {
+            const { data } = res;
+            localStorage.setItem("userinfo", JSON.stringify(data));
+
+            router.push(`/teamdetail/${teamInfo.id}`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      console.log(changeInfo)
+      let newProjectId = ""
+      const putMethod = await axios({
+        method: "POST",
+        url: `https://ssekerapi.site/projects/project`,
+        headers: {
+          Authorization: `Token ${getKeyCookies("key")}`,
+        },
+        data: { ...changeInfo },
+      })
+        .then((res) => {
+          newProjectId = res.data.id
+          return res.status;
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("잘못된 형식입니다.");
+        });
+      const teamPList = participantList.map((person) => {
+        return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`;
+      });
+      const sendTeamList = Object.assign({}, teamPList);
+      let teamMethod
+      if (teamPList.length > 0) {
+        teamMethod = await axios({
+          method: "POST",
+          url: `https://ssekerapi.site/projects/${newProjectId}/participant`,
+          headers: {
+            Authorization: `Token ${getKeyCookies("key")}`,
+          },
+          data: sendTeamList,
+        })
+          .then((res) => {
+            return res.status;
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("잘못된 형식입니다.");
+          });
+      } else {
+        teamMethod = 201
+      }
+      if (putMethod === 201 && teamMethod === 201) {
+        await axios({
+          method: "GET",
+          url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+        })
+          .then((res) => {
+            const { data } = res;
+            localStorage.setItem("userinfo", JSON.stringify(data));
+            router.push(`/teamdetail/${newProjectId}`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      
+    }}
   };
 
   // 팀 리스트 추가 함수
@@ -467,7 +533,7 @@ const Index = () => {
       alert("이미 추가된 유저입니다.");
     }
   };
-  
+
   const removeHandler = (props: TeamMember) => {
     setParticipantList((prev) => {
       return prev.filter((person) => {
@@ -491,26 +557,28 @@ const Index = () => {
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
+        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
         <Select
-          title={(teamInfo.campus.title === "")? "선택 안됨":teamInfo.campus.title}
+          title={
+            teamInfo.campus.title === "" ? "선택 안됨" : teamInfo.campus.title
+          }
           options={regionOption}
           handler={getSignupRegion}
         />
-        
+
         <p> 반</p>
 
         <Select
-          title={(teamInfo.part === 0)? "선택 안됨":  `${teamInfo.part}반`}
+          title={teamInfo.part === 0 ? "선택 안됨" : `${teamInfo.part}반`}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
 
       <DetailBox>
-        <SubtitleText className="title"> Skill</SubtitleText>
+        <SubtitleText className='title'> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>
