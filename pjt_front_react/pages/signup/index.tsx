@@ -1,12 +1,11 @@
 import Router from "next/router";
-import { SyntheticEvent, useContext, useState, useEffect } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import axios from "axios";
-import { KeyContext } from "../../modules/context/KeyContext";
 import { setKeyCookies, getKeyCookies } from "../../modules/cookie/keyCookies";
 
 const SignupPage = () => {
@@ -105,31 +104,35 @@ const SignupPage = () => {
   return (
     <SignupBox>
       <TitleBox>
-        <TitleText>SignUp Page</TitleText>
+        <TitleText>회원가입</TitleText>
       </TitleBox>
       <FormBox onSubmit={moveToComplete}>
+        <br />
         <InputStyle
-          name='email'
-          type='email'
-          placeholder='example@ssafy.com'
-          labelText='이메일'
+          name="email"
+          type="email"
+          placeholder="example@ssafy.com"
+          labelText="이메일"
           getInputValue={getSignupEmail}
         />
+        <br />
         <InputStyle
-          name='password'
-          type='password'
-          placeholder='대문자, 특수문자 포함, 8글자 이상'
-          labelText='비밀번호'
+          name="password"
+          type="password"
+          placeholder="대문자, 특수문자 포함, 8글자 이상"
+          labelText="비밀번호"
           getInputValue={getSignupPassword}
         />
+        <br />
         <InputStyle
-          name='passwordConfirm'
-          type='password'
-          placeholder='위 비밀번호와 같은 비밀번호를 입력해주세요'
-          labelText='비밀번호 확인'
+          name="passwordConfirm"
+          type="password"
+          placeholder="위 비밀번호와 같은 비밀번호를 입력해주세요"
+          labelText="비밀번호 확인"
           getInputValue={getSignupPasswordConfirm}
         />
-        <MainButton type='submit'>회원가입</MainButton>
+        <br />
+        <MainButton type="submit">회원가입</MainButton>
       </FormBox>
     </SignupBox>
   );
@@ -137,13 +140,19 @@ const SignupPage = () => {
 
 export default SignupPage;
 
+const ContentBox = styled.div``;
+
 const SignupBox = styled.div`
+  justify-content: center;
+  align-items: center;
+  color : #404040;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
-  width: 100vw;
-  width: calc(vat(--vw, 1vw) * 100);
+  width: 90vw;
+  width: calc(vat(--vw, 1vw) * 100);F
 `;
 
 const TitleBox = styled.div`

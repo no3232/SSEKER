@@ -1,21 +1,19 @@
 import type { AppProps } from "next/app";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import Menu from "../common/Menu";
 import MenuBox from "../component/MenuBox";
 
-import { getKeyCookies, removeKeyCookies } from "../modules/cookie/keyCookies";
+import { getKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
-import { Router, useRouter } from "next/router";
-import { Cookies } from "react-cookie";
+import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const path = useRouter().pathname;
-  const router = useRouter();
-  const cookies = new Cookies();
-
+  
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
       let key = "";
@@ -41,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyle />
+      <NanumSquareRegular />
       {path === "/login" ||
       path === "/signup" ||
       path === "/" ||
