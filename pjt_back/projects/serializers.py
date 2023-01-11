@@ -57,6 +57,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         read_only_fields = ('founder', 'participant')
 
 
+class ProjectPOSTSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = ('__all__')
+        read_only_fields = ('founder',)
+
+
 class UpdateProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
