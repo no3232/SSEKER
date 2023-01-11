@@ -1,5 +1,5 @@
 from .models import Project, Applicant, Participant
-from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, ParticipantDetailSerializer, UpdateProjectSerializer
+from .serializers import ProjectSerializer, ProjectListSerializer, ApplicantSerializer, ParticipantDetailSerializer, UpdateProjectSerializer, ProjectPOSTSerializer
 from objects.models import Campus, SkillCategory
 from accounts.models import User
 
@@ -72,12 +72,11 @@ def project_detail(request, project_id=None):
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         if request.method == 'POST':
-            serializer = ProjectSerializer(data=request.data)
+            serializer = ProjectPOSTSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save(founder=request.user)
-            else:
-                print(serializer.errors)
-            return Response(status=status.HTTP_201_CREATED)
+                context = {'id': serializer.data['id']}
+            return Response(context, status=status.HTTP_201_CREATED)
 
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
 def apply_project(request):
@@ -126,5 +125,29 @@ def participant(request, project_id, participant_id=None):
                 serializer = ParticipantDetailSerializer(data=queryset)
 
                 if serializer.is_valid():
+                    print(serializer)
                     serializer.save(project=project, manager=manager)
+
+        elif request.method == 'PUT':
+            response = request.data
+            print(response)
+            for _, values in response.items():
+                temp_list = values.split(',')
+                print(temp_list)
+                queryset = QueryDict('', mutable=True)
+                for temp in temp_list:
+                    key, value = temp.split(':')
+                    queryset.update({key:value})
+                print(queryset)
+                manager_id = queryset['manager']
+                manager = User.objects.get(id=manager_id)
+
+                participant_id = queryset['participant_id']
+                participant = Participant.objects.get(id=participant_id)
+                serializer = ParticipantDetailSerializer(participant, data=queryset)
+                if serializer.is_valid():
+                    serializer.save(manager=manager)
+            return Response()
+
+
     return Response(serializer.data, status=status.HTTP_201_CREATED)
