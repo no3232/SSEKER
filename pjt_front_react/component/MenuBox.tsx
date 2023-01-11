@@ -19,7 +19,7 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
     const getInfo = localStorage.getItem("userinfo")
 
     if (getInfo) {
-      setUserName(JSON.parse(getInfo).username)
+      setUserName(JSON.parse(getInfo).id)
       setIsUserLogin(true);
     } else {
       setIsUserLogin(false);

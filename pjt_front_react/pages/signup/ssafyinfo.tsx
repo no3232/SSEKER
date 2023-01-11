@@ -77,7 +77,7 @@ const SsafyInfo = () => {
       headers: {Authorization: `Token ${getKeyCookies("key")}`},
       data: {name: signupName, campus: signupRegion, part: signupClass, track: trackSelect}
     })
-    .then(response => console.log(response))
+    .then()
       .catch()
     await axios({
         method: "GET",

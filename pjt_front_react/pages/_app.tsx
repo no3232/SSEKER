@@ -5,14 +5,16 @@ import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import Menu from "../common/Menu";
 import MenuBox from "../component/MenuBox";
 
-import { getKeyCookies } from "../modules/cookie/keyCookies";
+import { getKeyCookies, removeKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
 import { Router, useRouter } from "next/router";
+import { Cookies } from "react-cookie";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const path = useRouter().pathname;
   const router = useRouter();
+  const cookies = new Cookies();
 
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
@@ -50,8 +52,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
       )}
 
-      
-        <Component {...pageProps} />
+      <Component {...pageProps} />
     </>
   );
 }

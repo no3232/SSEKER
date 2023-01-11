@@ -32,7 +32,7 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
-import UserSearchBar from "../../component/UserSearchBar";
+import UserSearchBar from "../../component/userSearchBar";
 
 const Index = () => {
   const router = useRouter();
@@ -56,13 +56,20 @@ const Index = () => {
   const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
 
   const [participantList, setParticipantList] =
-    useState<TeamMember[]>(Dummyparticipant);
+    useState<TeamMember[]>(teamInfo.participant);
   const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
     1: [],
     2: [],
     3: [],
     4: [],
   });
+
+  // 유저가 로그인 했냐...?
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      router.push("/login");
+    }
+  }, []);
 
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
@@ -120,13 +127,15 @@ const Index = () => {
               title: title,
             };
           });
+          setParticipantList(() => {
+            return [...participant]
+          })
         })
         .catch((err) => {
           console.log(err);
         });
     }
   }, [router.query.id]);
-
   useEffect(() => {
     setChangeInfo((prev) => {
       return {

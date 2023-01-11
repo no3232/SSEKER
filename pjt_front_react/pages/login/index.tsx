@@ -7,7 +7,7 @@ import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import SubText from "../../common/SubText";
-import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
+import { setKeyCookies, getKeyCookies } from "../../modules/cookie/keyCookies";
 // import { KeyContext } from "../../modules/context/KeyContext";
 
 const LoginMainPage = () => {
@@ -17,8 +17,8 @@ const LoginMainPage = () => {
 
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
-      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!")
-      route.push('/login/after')
+      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!");
+      route.push("/login/after");
     }
   }, []);
 
@@ -33,27 +33,26 @@ const LoginMainPage = () => {
       },
     })
       .then((response) => {
-        if (response.status === 200){
-          setKeyCookies("key", response.data.key)
+        if (response.status === 200) {
+          setKeyCookies("key", response.data.key);
           return response.status;
         }
-        return alert("이메일/비밀번호를 확인 해 주세요!")
       })
       .catch((err) => {
         console.log(err.response);
-        return alert("이메일/비밀번호를 확인 해 주세요!")
+        return alert(err.request.responseText);
       });
-    let primeKey = ""
+    let primeKey = "";
     if (getKey === 200) {
       // console.log(getKeyCookies("key"))
       const pk = await axios({
         method: "GET",
         url: `https://ssekerapi.site/dj-accounts/user/`,
-        headers: {Authorization: `Token ${getKeyCookies("key")}`}
+        headers: { Authorization: `Token ${getKeyCookies("key")}` },
       })
         .then((response) => {
           // console.log(response.data)
-          return primeKey = response.data.pk
+          return (primeKey = response.data.pk);
         })
         .catch((err) => {
           console.log(err.response);
@@ -66,7 +65,7 @@ const LoginMainPage = () => {
       })
         .then((response) => {
           if (localStorage.getItem("userinfo") === undefined) {
-            localStorage.removeItem("userinfo")
+            localStorage.removeItem("userinfo");
           }
           // console.log(response.data);
           localStorage.setItem("userinfo", JSON.stringify(response.data));

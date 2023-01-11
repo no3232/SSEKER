@@ -3,7 +3,7 @@ import { Cookies } from 'react-cookie';
 const cookies = new Cookies()
 
 export const setKeyCookies = (key: string, value: string, option?: any) => {
-  return cookies.set(key, value, {...option})
+  return cookies.set(key, value, { path: '/' })
 }
 
 export const getKeyCookies = (key:string) => {
@@ -11,5 +11,5 @@ export const getKeyCookies = (key:string) => {
 }
 
 export const removeKeyCookies = (key:string) => {
-  cookies.remove(key)
+  cookies.remove(key, { path: '/' })
 }

@@ -12,6 +12,7 @@ import axios from "axios";
 import { skillObject, TeamMember } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
 import TeamMemberList from "../../component/TeamMemberCard";
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const Dummyparticipant = [
   {
@@ -63,12 +64,24 @@ const Index = () => {
 
   const [teamInfo, setTeamInfo] = useState(defaultTeamState);
 
+  // 유저가 로그인 했냐...?
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      router.push("/login");
+    }
+  }, []);
+
+  let isUser = false;
+
   useEffect(() => {
     if (router.query.teamid !== undefined) {
       axios
         .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
         .then((res) => {
           const { data } = res;
+          if (JSON.parse(localStorage.getItem("userinfo") || '{}').id === data.founder.id) {
+            isUser = true
+          }
           setTeamInfo(data);
         })
         .catch((err) => console.log(err));
@@ -98,7 +111,8 @@ const Index = () => {
     }
   };
 
-  const isUser = true;
+
+  
 
   return (
     <Container>

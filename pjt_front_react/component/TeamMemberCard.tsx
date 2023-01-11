@@ -6,8 +6,8 @@ import { TeamMember } from "../modules/types/dummy";
 const TeamMemberList = (props: TeamMember[]) => {
   // console.log(props)
 
-  const CardList = Object.values(props).map((person) => {
-    return (<Link href={`/userdetail/${person.manager.id}`} key={person.manager.username}>
+  const CardList = Object.values(props).map((person, index) => {
+    return (<Link href={`/userdetail/${person.manager.id}`} key={index}>
     <CardOutside>
       <CardMainside>
         <CardTitleside>

@@ -7,7 +7,7 @@ import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import axios from "axios";
 import { KeyContext } from "../../modules/context/KeyContext";
-import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
+import { setKeyCookies, getKeyCookies } from "../../modules/cookie/keyCookies";
 
 const SignupPage = () => {
   const route = Router;
@@ -16,10 +16,9 @@ const SignupPage = () => {
   const [signupPasswordConfirm, setSignupPasswordConfirm] = useState("");
 
   useEffect(() => {
-
     if (getKeyCookies("key") !== undefined) {
-      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!")
-      route.push('/login/after')
+      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!");
+      route.push("/login/after");
     }
   }, []);
 
@@ -34,52 +33,51 @@ const SignupPage = () => {
         password2: signupPasswordConfirm,
       },
     })
-    .then((response) => {
-      if (response.status === 201){
-        setKeyCookies("key", response.data.key)
-        return response.status;
-      }
-      return alert("이메일/비밀번호를 확인 해 주세요!")
-    })
-    .catch((err) => {
-      console.log(err.response);
-      return alert("이메일/비밀번호를 확인 해 주세요!")
-    });
-      
-      console.log(getKey)
-      if (getKey === 201) {
-        let primeKey = ""
+      .then((response) => {
+        if (response.status === 201) {
+          setKeyCookies("key", response.data.key);
+          return response.status;
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+        return alert(err.request.responseText);
+      });
+
+    console.log(getKey);
+    if (getKey === 201) {
+      let primeKey = "";
       // console.log(getKeyCookies("key"))
       const pk = await axios({
         method: "GET",
         url: `https://ssekerapi.site/dj-accounts/user/`,
-        headers: {Authorization: `Token ${getKeyCookies("key")}`}
+        headers: { Authorization: `Token ${getKeyCookies("key")}` },
       })
         .then((response) => {
           // console.log(response.data)
-          return primeKey = response.data.pk
+          return (primeKey = response.data.pk);
         })
         .catch((err) => {
           console.log(err.response);
           return;
         });
 
-        await axios({
-          method: "GET",
-          url: `https://ssekerapi.site/accounts/${pk}`,
+      await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${pk}`,
+      })
+        .then((response) => {
+          if (localStorage.getItem("userinfo") === undefined) {
+            localStorage.removeItem("userinfo");
+          }
+          localStorage.setItem("userinfo", JSON.stringify(response.data));
+          route.push("/signup/ssafyinfo");
         })
-          .then((response) => {
-            if (localStorage.getItem("userinfo") === undefined) {
-              localStorage.removeItem("userinfo")
-            }
-            localStorage.setItem("userinfo", JSON.stringify(response.data))
-            route.push("/signup/ssafyinfo");
-          })
-          .catch((err) => {
-            console.log(err.response);
-            return;
-          });
-      }
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
+    }
   };
 
   const getSignupEmail = (email: string) => {
