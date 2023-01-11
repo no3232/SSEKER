@@ -1,5 +1,5 @@
 import Router from "next/router";
-import { SyntheticEvent, useState, useContext, useEffect } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -37,29 +37,26 @@ const LoginMainPage = () => {
           setKeyCookies("key", response.data.key);
           return response.status;
         }
-        return alert("이메일/비밀번호를 확인 해 주세요!");
       })
       .catch((err) => {
         console.log(err.response);
-        return alert("이메일/비밀번호를 확인 해 주세요!");
+        return alert(err.request.responseText);
       });
     let primeKey = "";
     if (getKey === 200) {
-      // console.log(getKeyCookies("key"))
       const pk = await axios({
         method: "GET",
         url: `https://ssekerapi.site/dj-accounts/user/`,
         headers: { Authorization: `Token ${getKeyCookies("key")}` },
       })
         .then((response) => {
-          // console.log(response.data)
           return (primeKey = response.data.pk);
         })
         .catch((err) => {
           console.log(err.response);
           return;
         });
-      // console.log(pk)
+        
       await axios({
         method: "GET",
         url: `https://ssekerapi.site/accounts/${pk}`,
@@ -68,9 +65,9 @@ const LoginMainPage = () => {
           if (localStorage.getItem("userinfo") === undefined) {
             localStorage.removeItem("userinfo");
           }
-          // console.log(response.data);
+
           localStorage.setItem("userinfo", JSON.stringify(response.data));
-          // console.log(ctxUserinfo);
+          
           route.push("/login/after");
         })
         .catch((err) => {

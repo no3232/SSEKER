@@ -1,12 +1,11 @@
 import Router from "next/router";
-import { SyntheticEvent, useContext, useState, useEffect } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import axios from "axios";
-import { KeyContext } from "../../modules/context/KeyContext";
 import { setKeyCookies, getKeyCookies } from "../../modules/cookie/keyCookies";
 
 const SignupPage = () => {
@@ -38,11 +37,10 @@ const SignupPage = () => {
           setKeyCookies("key", response.data.key);
           return response.status;
         }
-        return alert("이메일/비밀번호를 확인 해 주세요!");
       })
       .catch((err) => {
         console.log(err.response);
-        return alert("이메일/비밀번호를 확인 해 주세요!");
+        return alert(err.request.responseText);
       });
 
     console.log(getKey);

@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import Menu from "../common/Menu";
@@ -7,15 +7,13 @@ import MenuBox from "../component/MenuBox";
 
 import { getKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
-import { useRouter } from "next/router";
-import NanumSquareNeoRegular from "../modules/fonts/NanumSquareNeoRegular";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
+import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const path = useRouter().pathname;
-  const router = useRouter();
-
+  
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
       let key = "";
@@ -33,7 +31,6 @@ export default function App({ Component, pageProps }: AppProps) {
         }).then(async (response) => {
           localStorage.setItem("userinfo", JSON.stringify(response.data));
           // console.log(JSON.parse(localStorage.getItem("userinfo") || '{}'))
-          return;
         });
       });
     }

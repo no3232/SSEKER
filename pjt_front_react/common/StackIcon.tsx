@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Stack } from "../modules/types/dummy";
-import { language, skill } from "../modules/StackIconDummy";
+import { skill } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const Icon = (props: Stack) => {

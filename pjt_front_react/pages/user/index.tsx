@@ -45,7 +45,7 @@ const UserListPage = () => {
 
   // 로그인은 했는데 캠퍼스 설정이 안되있다
   useEffect(() => {
-    if (userInfo.campus !== null && userInfo.part !== null) {
+    if (userInfo.campus !== undefined || userInfo.part !== undefined) {
       setSignupRegion(userInfo.campus.id.toString());
       setSignupClass(userInfo.part.toString());
     } else {
@@ -80,24 +80,23 @@ const UserListPage = () => {
 
   // 필터링
   useEffect(() => {
-    setUserList([]);
-
     setPageNum({
       page: 1,
       totalPage: 1,
     });
-    
+
     axios({
       method: "GET",
       url: `https://ssekerapi.site/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
+        setUserList([]);
         setUserList((prev: any) => {
           if (response.data.peoples.length > 0) {
             const peopleList = Object.values(response.data.peoples);
             return [...peopleList];
           }
-          
+
           return [...prev];
         });
 
@@ -108,11 +107,10 @@ const UserListPage = () => {
       }
     });
   }, [skills, signupRegion, signupClass]);
-  console.log(pageNum)
+
   // 인피니티 스크롤 스크롤링
   const handleIntersect = useCallback(
     ([entry]: IntersectionObserverEntry[]) => {
-      console.log(pageNum)
       if (entry.isIntersecting) {
         setPageNum((prev) => {
           if (prev.totalPage > prev.page) {
@@ -302,14 +300,14 @@ const UserListPage = () => {
       <SearchBar />
       <FilterBox>
         {filterOpen ? (
-          <i className="bx bx-x" onClick={openFilter}></i>
+          <i className='bx bx-x' onClick={openFilter}></i>
         ) : (
-          <i className="bx bx-filter" onClick={openFilter}></i>
+          <i className='bx bx-filter' onClick={openFilter}></i>
         )}
       </FilterBox>
       {filterOpen && (
         <DetailBox>
-          <SubtitleText className="title">소속캠퍼스</SubtitleText>
+          <SubtitleText className='title'>소속캠퍼스</SubtitleText>
           <RegionBox>
             <div>
               <p>지역</p>
@@ -329,7 +327,7 @@ const UserListPage = () => {
             </div>
           </RegionBox>
 
-          <SubtitleText className="title">Skill</SubtitleText>
+          <SubtitleText className='title'>Skill</SubtitleText>
           {/* <SubBox>
             <SubtitleText>언어</SubtitleText>
 

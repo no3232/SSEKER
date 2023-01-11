@@ -1,4 +1,4 @@
-import { skillObject } from "./dummy"
+import { skillObject, TeamMember } from "./dummy"
 import { campusInfo } from "./UserInfoTypes"
 
 interface Founder {
@@ -31,7 +31,7 @@ export interface TeamInfo {
     founder : Founder
     id: number,
     part: number
-    participant: Member[],
+    participant: TeamMember[],
     participant_count: number,
     skill: skillObject[],
     status: Status,

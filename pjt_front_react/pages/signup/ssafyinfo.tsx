@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { SyntheticEvent, useState, useContext, useEffect } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
 import Router from "next/router";
 import axios from "axios";
 
@@ -89,8 +89,9 @@ const SsafyInfo = () => {
         track: trackSelect,
       },
     })
-      .then((response) => console.log(response))
+      .then()
       .catch();
+
     await axios({
       method: "GET",
       url: `https://ssekerapi.site/accounts/${user.id}`,
@@ -254,7 +255,7 @@ const FormBox = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   margin: 0 auto;
   width: 100%;
 `;

@@ -36,7 +36,7 @@ export const ExampleUser: defaultUserInfo = {
   id: 0,
   username: "",
   campus: {
-    id: 0,
+    id: 6,
     title: "",
     partcount: 0,
   },

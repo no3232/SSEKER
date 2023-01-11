@@ -12,7 +12,6 @@ const SignupAfterPage = () => {
   const router = Router;
 
   useEffect(() => {
-    console.log(getKeyCookies("key"))
     if (getKeyCookies("key") === undefined) {
       router.push('/login')
     }
