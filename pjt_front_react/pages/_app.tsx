@@ -7,7 +7,9 @@ import MenuBox from "../component/MenuBox";
 
 import { getKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
+import NanumSquareNeoRegular from "../modules/fonts/NanumSquareNeoRegular";
+import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -40,6 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyle />
+      <NanumSquareRegular />
       {path === "/login" ||
       path === "/signup" ||
       path === "/" ||
@@ -51,8 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </div>
       )}
 
-      
-        <Component {...pageProps} />
+      <Component {...pageProps} />
     </>
   );
 }

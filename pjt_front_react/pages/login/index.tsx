@@ -7,7 +7,7 @@ import TitleText from "../../common/TitleText";
 import MainButton from "../../common/MainButton";
 import InputStyle from "../../component/InputStyle";
 import SubText from "../../common/SubText";
-import { setKeyCookies, getKeyCookies } from '../../modules/cookie/keyCookies';
+import { setKeyCookies, getKeyCookies } from "../../modules/cookie/keyCookies";
 // import { KeyContext } from "../../modules/context/KeyContext";
 
 const LoginMainPage = () => {
@@ -17,8 +17,8 @@ const LoginMainPage = () => {
 
   useEffect(() => {
     if (getKeyCookies("key") !== undefined) {
-      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!")
-      route.push('/login/after')
+      alert("이미 로그인 된 유저입니다! 로그아웃 후 접속해 주세요!");
+      route.push("/login/after");
     }
   }, []);
 
@@ -33,27 +33,27 @@ const LoginMainPage = () => {
       },
     })
       .then((response) => {
-        if (response.status === 200){
-          setKeyCookies("key", response.data.key)
+        if (response.status === 200) {
+          setKeyCookies("key", response.data.key);
           return response.status;
         }
-        return alert("이메일/비밀번호를 확인 해 주세요!")
+        return alert("이메일/비밀번호를 확인 해 주세요!");
       })
       .catch((err) => {
         console.log(err.response);
-        return alert("이메일/비밀번호를 확인 해 주세요!")
+        return alert("이메일/비밀번호를 확인 해 주세요!");
       });
-    let primeKey = ""
+    let primeKey = "";
     if (getKey === 200) {
       // console.log(getKeyCookies("key"))
       const pk = await axios({
         method: "GET",
         url: `https://ssekerapi.site/dj-accounts/user/`,
-        headers: {Authorization: `Token ${getKeyCookies("key")}`}
+        headers: { Authorization: `Token ${getKeyCookies("key")}` },
       })
         .then((response) => {
           // console.log(response.data)
-          return primeKey = response.data.pk
+          return (primeKey = response.data.pk);
         })
         .catch((err) => {
           console.log(err.response);
@@ -66,7 +66,7 @@ const LoginMainPage = () => {
       })
         .then((response) => {
           if (localStorage.getItem("userinfo") === undefined) {
-            localStorage.removeItem("userinfo")
+            localStorage.removeItem("userinfo");
           }
           // console.log(response.data);
           localStorage.setItem("userinfo", JSON.stringify(response.data));
@@ -106,27 +106,27 @@ const LoginMainPage = () => {
   return (
     <LoginBox>
       <TitleBox>
-        <TitleText>Login Page</TitleText>
+        <TitleText>로그인</TitleText>
       </TitleBox>
       <FormBox onSubmit={moveToAfter}>
         <InputStyle
-          name='email'
-          type='email'
-          placeholder='example@ssafy.com'
-          labelText='이메일'
+          name="email"
+          type="email"
+          placeholder="example@ssafy.com"
+          labelText="이메일"
           getInputValue={getLoginEmail}
         />
         <InputStyle
-          name='password'
-          type='password'
-          placeholder='대문자, 특수문자 포함, 8글자 이상'
-          labelText='비밀번호'
+          name="password"
+          type="password"
+          placeholder="대문자, 특수문자 포함, 8글자 이상"
+          labelText="비밀번호"
           getInputValue={getLoginPassword}
         />
-        <MainButton type='submit'>로그인</MainButton>
+        <MainButton type="submit">로그인</MainButton>
         <SubText>
           아직 회원이 아니십니까?{" "}
-          <a href='' onClick={moveToSignup}>
+          <a href="" onClick={moveToSignup}>
             회원가입
           </a>
         </SubText>
@@ -138,23 +138,41 @@ const LoginMainPage = () => {
 export default LoginMainPage;
 
 const LoginBox = styled.div`
+  justify-content: center;
+  align-items: center;
+  color: #404040;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
-  width: 100vw;
+  width: 90vw;
   width: calc(vat(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`
   margin-top: auto;
-  margin-left: 15px;
-  margin-bottom: 24px;
+  margin-bottom: 50px;
 `;
 
 const FormBox = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 0px 15px;
   margin-bottom: auto;
+
+  & label {
+    width: 100%;
+    text-align:left;
+  }
+
+  & input {
+    width: 100%;
+  }
+
+  & button {
+    margin-block: 50px;
+  }
 `;
