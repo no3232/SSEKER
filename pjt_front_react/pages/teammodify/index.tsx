@@ -5,7 +5,7 @@ import React, {
   MouseEventHandler,
 } from "react";
 import styled, { css } from "styled-components";
-import axios from "axios";
+import axios, { all } from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
@@ -32,13 +32,14 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
-import UserSearchBar from "../../component/userSearchBar";
+import UserSearchBar from "../../component/UserSearchBar";
 
 const Index = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
+  const [checkBeginning, setCheckBeginning] = useState(false);
   const [teamInfo, setTeamInfo] = useState<TeamInfo>(ExampleTeam);
 
   const [lastList, setLastList] = useState<{ [key: number]: skillList[] }>({
@@ -79,9 +80,13 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
+    setBeginningList();
+  }, [allSkills]);
+
+  useEffect(() => {
     const teamID = router.query.id;
 
-    if (teamID !== undefined) {
+    if (teamID) {
       axios
         .get(`https://ssekerapi.site/projects/project/${teamID}`)
         .then((res) => {
@@ -186,16 +191,54 @@ const Index = () => {
     });
   };
 
-  const setSkillList = () => {
-    const teamSkills: {
-      [key: number]: skillList[];
-    } = {
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-    };
+  const teamSkills: {
+    [key: number]: skillList[];
+  } = {
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  };
 
+  const setBeginningList = () => {
+    for (const i in allSkills) {
+      const SkillsCategory = parseInt(allSkills[i].category);
+
+      const info: skillObject = allSkills[i];
+      switch (SkillsCategory) {
+        case 1:
+          teamSkills[1].push({
+            ...info,
+            selected: false,
+          });
+          break;
+        case 2:
+          teamSkills[2].push({
+            ...info,
+            selected: false,
+          });
+          break;
+        case 3:
+          teamSkills[3].push({
+            ...info,
+            selected: false,
+          });
+          break;
+        case 4:
+          teamSkills[4].push({
+            ...info,
+            selected: false,
+          });
+          break;
+      }
+    }
+
+    setLastList(() => {
+      return teamSkills;
+    });
+  };
+
+  const setSkillList = () => {
     //가지고 있는 스킬 title만 추출하기
     let teamSkillList: string[] = [];
 
@@ -279,7 +322,9 @@ const Index = () => {
       };
     });
 
-    setLastList(teamSkills);
+    setLastList(() => {
+      return teamSkills;
+    });
   };
 
   const UpdateStackState = (stackId: 0, newState: boolean, type: number) => {
@@ -413,8 +458,8 @@ const Index = () => {
       alert("이미 추가된 유저입니다.");
     }
   };
+  
   const removeHandler = (props: TeamMember) => {
-    console.log(props);
     setParticipantList((prev) => {
       return prev.filter((person) => {
         if (person.manager.id === props.manager.id) {
@@ -424,6 +469,7 @@ const Index = () => {
       });
     });
   };
+
   return (
     <Container>
       <GlobalStyle />
@@ -436,26 +482,26 @@ const Index = () => {
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
+        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
-
         <Select
-          title={teamInfo.campus.title}
+          title={(teamInfo.campus.title === "")? "선택 안됨":teamInfo.campus.title}
           options={regionOption}
           handler={getSignupRegion}
         />
+        
         <p> 반</p>
 
         <Select
-          title={teamInfo.part + "반"}
+          title={(teamInfo.part === 0)? "선택 안됨":  `${teamInfo.part}반`}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
 
       <DetailBox>
-        <SubtitleText className='title'> Skill</SubtitleText>
+        <SubtitleText className="title"> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>

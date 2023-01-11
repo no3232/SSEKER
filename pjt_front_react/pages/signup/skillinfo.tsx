@@ -182,6 +182,5 @@ const IconBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-top: 10px;
-  margin-bottom: 24px;
+  margin-top: 10px 1em 24px 1em;
 `;

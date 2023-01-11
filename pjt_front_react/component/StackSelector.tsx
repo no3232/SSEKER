@@ -65,11 +65,12 @@ const StackSelector = ({stackListHandle} : {
                 <Icon className="bx bx-x"/>
             </CloseBtn>
         </InputSections>
+        
         <List>
-            {searchList.map((s: testElem) => {
+            {searchList.map((s: testElem, idx:number) => {
                 if(!s.selected) {
                     return <StackListItem
-                        key={s.title}
+                        key={idx}
                         stack={s}
                         removeItem={RemoveItem}
                         UpdateStackState={UpdateStackState}

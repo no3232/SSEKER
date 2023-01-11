@@ -48,10 +48,25 @@ const SignupPage = () => {
       
       console.log(getKey)
       if (getKey === 201) {
+        let primeKey = ""
+      // console.log(getKeyCookies("key"))
+      const pk = await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/dj-accounts/user/`,
+        headers: {Authorization: `Token ${getKeyCookies("key")}`}
+      })
+        .then((response) => {
+          // console.log(response.data)
+          return primeKey = response.data.pk
+        })
+        .catch((err) => {
+          console.log(err.response);
+          return;
+        });
 
-        const getUserInfo = await axios({
+        await axios({
           method: "GET",
-          url: `https://ssekerapi.site/accounts/${signupEmail}`,
+          url: `https://ssekerapi.site/accounts/${pk}`,
         })
           .then((response) => {
             if (localStorage.getItem("userinfo") === undefined) {
