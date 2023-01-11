@@ -181,6 +181,8 @@ const SsafyInfoBox = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
   width: calc(vat(--vw, 1vw) * 100);
+  
+  // margin: 10px 1.5em 24px 1.5em;
 `;
 
 const TitleBox = styled.div`
@@ -192,7 +194,6 @@ const TitleBox = styled.div`
 const FormBox = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 0px 15px;
   margin-bottom: auto;
 `;
 
