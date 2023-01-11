@@ -2,7 +2,6 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
-import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 const ModifyHeader = ({
@@ -16,7 +15,6 @@ const ModifyHeader = ({
 }) => {
   return (
     <TitleBox>
-      <GmarketMedium />
       <NanumSquareBold />
       <ContentBox>
         <InputBox

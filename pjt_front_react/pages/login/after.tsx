@@ -51,9 +51,10 @@ const AfterBox = styled.div`
   flex-direction: column;
   height: 100vh;
   margin: 0 auto;
+  color: var(--text-color);
   height: calc(var(--vh, 1vh) * 100);
   width: 90vw;
-  width: calc(vat(--vw, 1vw) * 100);
+  width: calc(var(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`
@@ -67,6 +68,7 @@ const ButtonBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 1em;
   margin: 0px 15px;
   margin-top: auto;
