@@ -32,6 +32,8 @@ import {
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
 import UserSearchBar from "../../component/UserSearchBar";
+import ClassButtonTypes from "../../modules/types/classSelectButton";
+import TitleText from "../../common/TitleText";
 
 const Index = () => {
   const router = useRouter();
@@ -528,7 +530,7 @@ const Index = () => {
         </SubBox>
       </DetailBox>
 
-      <SubtitleText>멤버</SubtitleText>
+      <SubtitleText className="TypeTitle">멤버</SubtitleText>
       <DetailBox>
         <SubtitleText> 프론트엔드</SubtitleText>
         <UserSearchBar
@@ -592,6 +594,60 @@ const ChoiceCampus = styled.div`
     grid-template-columns: 1fr 3fr;
     align-items: center;
   }
+`;
+
+const TrackLabelText = styled.div``;
+
+const TrackUl = styled.ul`
+  width: 100%;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 24px;
+`;
+
+const TrackLi = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TrackButton = styled.button<ClassButtonTypes>`
+  border: var(--primary-color-light) 2px solid;
+  background-color: white;
+  border-radius: 5px;
+  color: var(--primary-color-light);
+  font-family: 'NanumSquareNeoRegular';
+  font-size: 1em;
+  padding : 15px 5px;
+  margin: 2px;
+  
+  width: 35vw;
+
+  &:hover {
+    border: solid 1px white;
+      background-color: blue;
+      color: white;
+  }
+  ${(props) =>
+    props.selected &&
+    css`
+      border: solid 1px white;
+      background-color: #0062ff;
+      color: white;
+
+      &:hover {
+        border: solid 1px white;
+        background-color: #0062ff;
+        color: white;
+      }
+    `}
+    
+  }
+  
 `;
 
 const IntroBox = styled.textarea`
