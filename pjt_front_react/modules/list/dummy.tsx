@@ -36,7 +36,7 @@ export const ExampleUser: defaultUserInfo = {
   id: 0,
   username: "",
   campus: {
-    id: 0,
+    id: 6,
     title: "",
     partcount: 0,
   },
@@ -104,7 +104,7 @@ export const ExampleTeam = {
     title: ""
   },
   content: "",
-  fixed_count: 0,
+  fixed_count: 6,
   founder : {
     id: 0,
     username: ""
@@ -115,7 +115,7 @@ export const ExampleTeam = {
   participant_count: 0,
   skill: [],
   status: {
-    id: 0,
+    id: 2,
     status: ""
   },
   title: "",
@@ -123,9 +123,9 @@ export const ExampleTeam = {
 
 export const ExampleData:sendInfo = {
   campus: 0,
-  status: 0,
+  status: 2,
   title: "",
   content: "",
   skill: [],
-  fixed_count: 0
+  fixed_count: 6
 }

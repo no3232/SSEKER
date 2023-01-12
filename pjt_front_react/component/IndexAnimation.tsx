@@ -4,7 +4,7 @@ import SubtitleText from "../common/SubtitleText";
 
 const IndexAnimation = () => {
   return (
-    <>
+    <AnimationBox>
       <AnimationOutside>
         <SubtitleText>싸피에서</SubtitleText>
         <AnimationLoopBox>
@@ -28,7 +28,7 @@ const IndexAnimation = () => {
         </AnimationLoopBox>
         <SubtitleText>구할때는?</SubtitleText>
       </AnimationOutside>
-    </>
+    </AnimationBox>
   );
 };
 
@@ -81,4 +81,8 @@ const AnimationLoopText = styled.li`
   padding: 10px;
   list-style: none;
   display: flex;
+`;
+
+const AnimationBox = styled.div`
+  margin-bottom: 1em;
 `;

@@ -29,7 +29,7 @@ const Select = ({title, options, handler} : Selection) => {
         setActive(!active);
     }
 
-    return <Box>
+    return <Box className="Select">
         <GlobalStyle/>
         <DropDown onClick={dropDownHandler}>
             {main}
@@ -49,7 +49,6 @@ const SubElem = styled.span `
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
     height: 100%;
     background: var(--primary-color-light);
     z-index: -1;
@@ -117,8 +116,9 @@ const LeftIcon = styled.span < {
 
 const DropDown = styled.div `
     position: relative;
-    width: 100%;
+    width: 40vw;
     height: 40px;
+    padding: 20px 0;
     background: var(--body-color);
     border: solid 2px var(--primary-color-light);
     display: flex;
@@ -142,6 +142,5 @@ const DropDown = styled.div `
 
 const Box = styled.div `
     position: relative;
-    width: 100%;
     height: fit-content;
 `

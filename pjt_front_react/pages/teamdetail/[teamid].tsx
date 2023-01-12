@@ -12,6 +12,7 @@ import axios from "axios";
 import { skillObject, TeamMember } from "../../modules/types/dummy";
 import { useRouter } from "next/router";
 import TeamMemberList from "../../component/TeamMemberCard";
+import { getKeyCookies } from '../../modules/cookie/keyCookies';
 
 const Dummyparticipant = [
   {
@@ -62,6 +63,15 @@ const Index = () => {
   const router = useRouter();
 
   const [teamInfo, setTeamInfo] = useState(defaultTeamState);
+  const [isUser, setIsUser] = useState<boolean>(false)
+
+  // 유저가 로그인 했냐...?
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      router.push("/login");
+    }
+  }, []);
+
 
   useEffect(() => {
     if (router.query.teamid !== undefined) {
@@ -69,6 +79,12 @@ const Index = () => {
         .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
         .then((res) => {
           const { data } = res;
+          console.log(JSON.parse(localStorage.getItem("userinfo") || '{}').id)
+          console.log(data.founder.id)
+          if (JSON.parse(localStorage.getItem("userinfo") || '{}').id == data.founder.id) {
+            setIsUser(true)
+          }
+          console.log(data)
           setTeamInfo(data);
         })
         .catch((err) => console.log(err));
@@ -98,7 +114,8 @@ const Index = () => {
     }
   };
 
-  const isUser = true;
+
+  
 
   return (
     <Container>
@@ -106,7 +123,7 @@ const Index = () => {
       <NanumSquareRegular />
       <NanumSquareBold />
       {/* <UserSearchBar /> */}
-      <DetailHeader name={teamInfo.title} isUser={isUser} id={null} />
+      <DetailHeader name={teamInfo.title} isUser={isUser} id={teamInfo.id} />
       <CampusBox>
         <SubtitleText className='title'>소속캠퍼스</SubtitleText>
 

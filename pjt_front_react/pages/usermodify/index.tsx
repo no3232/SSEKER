@@ -30,6 +30,14 @@ import {
 
 const Index = () => {
   const router = useRouter();
+  // 유저가 로그인 했냐...?
+  useEffect(() => {
+    if (getKeyCookies("key") === undefined) {
+      router.push("/login");
+    } else {
+      setUserInfo(JSON.parse(localStorage.getItem("userinfo") || "{}"));
+    }
+  }, []);
   const [loaded, setLoaded] = useState(false);
   const [allSkills, setAllSkills] = useState<skillObject[]>([]);
   const [userInfo, setUserInfo] = useState<defaultUserInfo>(ExampleUser);
@@ -85,7 +93,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    const levelId = userInfo.level.id;
+    const levelId = userInfo.level?.id;
     const rank = 5 - (levelId % 5);
     const tier = Math.floor(levelId / 5) + 1;
 
@@ -207,7 +215,7 @@ const Index = () => {
 
     //가지고 있는 스킬 title만 추출하기
     let mySkillList: string[] = [];
-    
+
     for (let i = 0; i < userInfo.skill.length; i++) {
       mySkillList.push(userInfo.skill[i].title);
     }
@@ -379,7 +387,7 @@ const Index = () => {
       })
       .catch((err) => {
         console.log(err);
-        alert("잘못된 형식입니다.")
+        alert("잘못된 형식입니다.");
       });
 
     if (putMethod === 200) {
@@ -427,58 +435,58 @@ const Index = () => {
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className="title">수강 트랙</SubtitleText>
-      <TrackUl>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 1}
-            onClick={clickTrack}
-            value="1"
-          >
-            파이썬
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 3}
-            onClick={clickTrack}
-            value="3"
-          >
-            자바(전공)
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 2}
-            onClick={clickTrack}
-            value="2"
-          >
-            자바(비전공)
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 5}
-            onClick={clickTrack}
-            value="5"
-          >
-            모바일
-          </TrackButton>
-        </TrackLi>
-        <TrackLi>
-          <TrackButton
-            selected={changeInfo.track == 4}
-            onClick={clickTrack}
-            value="4"
-          >
-            임베디드
-          </TrackButton>
-        </TrackLi>
-      </TrackUl>
+        <SubtitleText className='title'>수강 트랙</SubtitleText>
+        <TrackUl>
+          <TrackLi>
+            <TrackButton
+              selected={changeInfo.track == 1}
+              onClick={clickTrack}
+              value='1'
+            >
+              파이썬
+            </TrackButton>
+          </TrackLi>
+          <TrackLi>
+            <TrackButton
+              selected={changeInfo.track == 3}
+              onClick={clickTrack}
+              value='3'
+            >
+              자바(전공)
+            </TrackButton>
+          </TrackLi>
+          <TrackLi>
+            <TrackButton
+              selected={changeInfo.track == 2}
+              onClick={clickTrack}
+              value='2'
+            >
+              자바(비전공)
+            </TrackButton>
+          </TrackLi>
+          <TrackLi>
+            <TrackButton
+              selected={changeInfo.track == 5}
+              onClick={clickTrack}
+              value='5'
+            >
+              모바일
+            </TrackButton>
+          </TrackLi>
+          <TrackLi>
+            <TrackButton
+              selected={changeInfo.track == 4}
+              onClick={clickTrack}
+              value='4'
+            >
+              임베디드
+            </TrackButton>
+          </TrackLi>
+        </TrackUl>
       </CampusBox>
 
       <CampusBox>
-        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
+        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
 
@@ -497,7 +505,7 @@ const Index = () => {
       </CampusBox>
 
       <CampusBox>
-        <SubtitleText className="title"> 희망 포지션</SubtitleText>
+        <SubtitleText className='title'> 희망 포지션</SubtitleText>
         <Select
           title={userInfo.position.category}
           options={positionOption}
@@ -505,7 +513,7 @@ const Index = () => {
         />
       </CampusBox>
       <DetailBox>
-        <SubtitleText className="title"> Skill</SubtitleText>
+        <SubtitleText className='title'> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 언어</SubtitleText>
           <Icons>
@@ -557,7 +565,7 @@ const Index = () => {
           </Icons>
         </SubBox>
       </DetailBox>
-      <DetailBox className="rank">
+      <DetailBox className='rank'>
         <SubtitleText> 백준 랭크</SubtitleText>
         <Select
           title={selectBj.tierName}
@@ -570,7 +578,7 @@ const Index = () => {
           handler={rankHandler}
         />
       </DetailBox>
-      <DetailBox className="rank">
+      <DetailBox className='rank'>
         <SubtitleText> GitHub</SubtitleText>
         <InputBox
           placeholder={
@@ -579,7 +587,7 @@ const Index = () => {
           onChange={(e) => getInputData(e, 1)}
         />
       </DetailBox>
-      <DetailBox className="rank">
+      <DetailBox className='rank'>
         <SubtitleText> Blog</SubtitleText>
         <InputBox
           placeholder={

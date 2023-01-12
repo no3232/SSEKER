@@ -45,7 +45,6 @@ const UserSearchBar = ({
   const [listOpen, setListOpen] = useState(false);
   const [searchList, setSearchList] = useState([]);
   const searchInput = useRef<HTMLInputElement>(null);
-  useEffect(()=>{console.log(userList)},[userList])
   
   const SelectPeopleList = userList.map((person: TeamMember, index) => {
     return (

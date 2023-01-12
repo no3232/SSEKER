@@ -3,15 +3,15 @@ import styled from "styled-components";
 
 import LargeText from "../../common/LargeText";
 import MainButton from "../../common/MainButton";
-import { useEffect } from 'react';
-import { getKeyCookies } from '../../modules/cookie/keyCookies';
+import { useEffect } from "react";
+import { getKeyCookies } from "../../modules/cookie/keyCookies";
 
 const LoginAfterPage = () => {
   const router = Router;
 
   useEffect(() => {
     if (getKeyCookies("key") === undefined) {
-      router.push('/login')
+      router.push("/login");
     }
   }, []);
   const moveToTeamList = () => {
@@ -50,8 +50,9 @@ const AfterBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
-  width: 100vw;
+  width: 90vw;
   width: calc(vat(--vw, 1vw) * 100);
 `;
 
@@ -65,6 +66,14 @@ const TitleBox = styled.div`
 const ButtonBox = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 1em;
   margin: 0px 15px;
   margin-top: auto;
+
+  padding-bottom: 4em;
+
+  & button {
+    margin: 0;
+  }
 `;

@@ -77,7 +77,6 @@ const TeamListPage = () => {
 
   // 필터링
   useEffect(() => {
-    setTeamData([]);
     setPageNum({
       page: 1,
       totalPage: 1,
@@ -87,6 +86,7 @@ const TeamListPage = () => {
       url: `https://ssekerapi.site/projects/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
+        setTeamData([]);
         setTeamData((prev: any) => {
           if (response.data.projects.length > 0) {
             const projectsList = Object.values(response.data.projects);

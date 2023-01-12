@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
-import DNFBit from "../modules/fonts/DNFBitBit";
+
+import NanumSquareNeoHeavy from "../modules/fonts/NanumSquareNeoHeavy"
 
 const LargeText = (props: any) => {
   return (
     <>
-      <DNFBit />
+      <NanumSquareNeoHeavy/>
       <LargeTextStyle>{props.children}</LargeTextStyle>
     </>
   );
@@ -15,5 +16,5 @@ export default LargeText;
 
 const LargeTextStyle = styled.div`
   font-size: 30px;
-  font-family: "bitbit";
+  font-family: "NanumSquareNeoHeavy";
 `;

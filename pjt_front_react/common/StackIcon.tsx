@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { Stack } from "../modules/types/dummy";
-import { language, skill } from "../modules/StackIconDummy";
+import { skill } from "../modules/StackIconDummy";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const Icon = (props: Stack) => {
@@ -16,7 +16,7 @@ const Icon = (props: Stack) => {
 
   return (
     <IconBody
-      className={props.clickable ? 'notClick' : ''}
+      className={`${props.clickable ? 'notClick' : ''} icons`}
       onClick={props.clickable ? StyleHandler : NoneHandler}
       color={ skill[props.stack].color}
     >
@@ -47,7 +47,6 @@ const IconBody = styled.span`
     min-width: 60px;
     width: fit-content;
     padding: 5px 10px;
-    padding-left: 20px;
     display: flex;
     align-items: center;
     justify-content: center;

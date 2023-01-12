@@ -6,14 +6,15 @@ const GlobalStyle = createGlobalStyle`
           padding: 0;
           box-sizing: border-box;
           font-size: 15px;
+          font-family: 'NanumSquareNeoLight';
       }
   
       :root {
           /* ===== Colors ===== */
           --body-color : #fff;
           --sidebar-color : #ccd0d8;
-          --primary-color : #1643f3;
-          --primary-color-light : #84a4fc;
+          --primary-color : #1F4EF5;
+          --primary-color-light : #4880EE;
           --text-color : #1d2023;
           --text-color-light : #c0c0c0;
   

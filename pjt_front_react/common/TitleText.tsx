@@ -1,19 +1,20 @@
 import styled from "styled-components";
 
-import DNFBit from "../modules/fonts/DNFBitBit";
+import NanumSquareHeavy from "../modules/fonts/NanumSquareNeoHeavy";
 
 const TitleText = (props: any) => {
   return (
-    <>
-      <DNFBit />
+    <div className="mainTitle">
+      <NanumSquareHeavy />
       <TitleTextStyle>{props.children}</TitleTextStyle>
-    </>
+    </div>
   );
 };
 
 export default TitleText;
 
 const TitleTextStyle = styled.div`
-  font-size: 24px;
-  font-family: "bitbit";
+  font-size: 30px;
+  font-weight: 600;
+  font-family: "NanumSquareNeoHeavy";
 `;
