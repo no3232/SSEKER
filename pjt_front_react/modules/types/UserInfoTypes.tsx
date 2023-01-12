@@ -50,6 +50,7 @@ export interface defaultUserInfo {
     blog: string;
     level: level2;
     track: track;
+    name: string;
     language: skillObject[];
     email: string;
     introduce: string;

@@ -5,7 +5,7 @@ import React, {
   MouseEventHandler,
 } from "react";
 import styled, { css } from "styled-components";
-import axios, { all } from "axios";
+import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
@@ -18,7 +18,6 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import {
   skillList,
   skillObject,
-  teamData,
   TeamMember,
 } from "../../modules/types/dummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
@@ -32,7 +31,7 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
-import UserSearchBar from "../../component/userSearchBar";
+import UserSearchBar from "../../component/UserSearchBar";
 
 const Index = () => {
   const router = useRouter();
@@ -54,22 +53,6 @@ const Index = () => {
   });
 
   const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
-
-  const [participantList, setParticipantList] =
-    useState<TeamMember[]>(teamInfo.participant);
-  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-  });
-
-  // 유저가 로그인 했냐...?
-  useEffect(() => {
-    if (getKeyCookies("key") === undefined) {
-      router.push("/login");
-    }
-  }, []);
 
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
@@ -127,15 +110,13 @@ const Index = () => {
               title: title,
             };
           });
-          setParticipantList(() => {
-            return [...participant]
-          })
         })
         .catch((err) => {
           console.log(err);
         });
     }
   }, [router.query.id]);
+
   useEffect(() => {
     setChangeInfo((prev) => {
       return {
@@ -390,27 +371,8 @@ const Index = () => {
         console.log(err);
         alert("잘못된 형식입니다.");
       });
-    const teamPList = participantList.map((person)=>{
-      return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`
-    })
-    const sendTeamList = Object.assign({}, teamPList)
-    const teamMethod = await axios({
-      method: "POST",
-      url: `https://ssekerapi.site/projects/${teamInfo.id}/participant`,
-      headers: {
-        Authorization: `Token ${getKeyCookies("key")}`,
-      },
-      data: sendTeamList,
-    })
-      .then((res) => {
-        return res.status;
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("잘못된 형식입니다.");
-      });
 
-    if (putMethod === 200 && teamMethod === 200) {
+    if (putMethod === 200) {
       await axios({
         method: "GET",
         url: `https://ssekerapi.site/accounts/${userInfo.id}`,
@@ -426,8 +388,15 @@ const Index = () => {
         });
     }
   };
-
-  // 팀 리스트 추가 함수
+  // -----------------------------------------------
+  const [participantList, setParticipantList] =
+    useState<TeamMember[]>(Dummyparticipant);
+  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
   useEffect(() => {
     setPartObj((prev) => {
       const newObj: { [key: number]: TeamMember[] } = {
@@ -467,7 +436,7 @@ const Index = () => {
       alert("이미 추가된 유저입니다.");
     }
   };
-  
+
   const removeHandler = (props: TeamMember) => {
     setParticipantList((prev) => {
       return prev.filter((person) => {
@@ -495,20 +464,23 @@ const Index = () => {
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
         <Select
-          title={(teamInfo.campus.title === "")? "선택 안됨":teamInfo.campus.title}
+          title={
+            teamInfo.campus.title === "" ? "선택 안됨" : teamInfo.campus.title
+          }
           options={regionOption}
           handler={getSignupRegion}
         />
-        
+
         <p> 반</p>
 
         <Select
-          title={(teamInfo.part === 0)? "선택 안됨":  `${teamInfo.part}반`}
+          title={teamInfo.part === 0 ? "선택 안됨" : `${teamInfo.part}반`}
           options={classOption}
           handler={getSignupClass}
         />
       </CampusBox>
 
+      <SubtitleText className="TypeTitle">스킬</SubtitleText>
       <DetailBox>
         <SubtitleText className="title"> Skill</SubtitleText>
         <SubBox>
@@ -521,6 +493,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> 백엔드</SubtitleText>
           <Icons>
@@ -531,6 +504,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> UI / UX</SubtitleText>
           <Icons>
@@ -541,6 +515,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> Devops</SubtitleText>
           <Icons>
@@ -552,6 +527,8 @@ const Index = () => {
           </Icons>
         </SubBox>
       </DetailBox>
+
+      <SubtitleText>멤버</SubtitleText>
       <DetailBox>
         <SubtitleText> 프론트엔드</SubtitleText>
         <UserSearchBar
@@ -582,6 +559,7 @@ const Index = () => {
           removeHandler={removeHandler}
         />
       </DetailBox>
+      
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>
         <IntroBox
@@ -597,10 +575,23 @@ const Index = () => {
 
 export default Index;
 
-const InputBox = styled.input`
-  border: solid 2px var(--primary-color-light);
-  padding: 0.5em 1em;
-  border-radius: 1em;
+const ChoiceCampus = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0 24px;
+
+  & .Select {
+    margin: 6px 0;
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+  }
 `;
 
 const IntroBox = styled.textarea`
@@ -614,6 +605,7 @@ const IntroBox = styled.textarea`
 
 const Icons = styled.div`
   width: 100%;
+  margin-bottom: 2em;
 `;
 
 const SubBox = styled.div`
@@ -621,6 +613,10 @@ const SubBox = styled.div`
 
   & div {
     font-family: "NanumSquareNeoBold";
+  }
+
+  & div.SubTitle {
+    margin: 0;
   }
 `;
 
@@ -630,20 +626,42 @@ const DetailBox = styled.div`
 
 const CampusBox = styled.div`
   margin: 2em;
+
+  &.lineSelect {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &.lineSelect .SubTitle {
+    margin-right: 1.5em;
+  }
 `;
 
 const Container = styled.div`
   font-family: "NanumSquareNeoLight";
   min-height: 100vh;
-  padding-bottom: 5em;
+  color: var(--text-color);
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(var(--vw, 1vw) * 100);
 
-  & .rank {
+  & .line {
     display: flex;
     align-items: center;
     justify-content: flex-center;
     gap: 1.5em;
   }
+
+  & .SubTitle {
+    margin-bottom: 1em;
+  }
+
+  & .line input {
+    width: 100%;
+  }
 `;
+
 
 const Dummyparticipant: Array<TeamMember> = [
   {
