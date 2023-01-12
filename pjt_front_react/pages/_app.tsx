@@ -9,6 +9,7 @@ import { getKeyCookies } from "../modules/cookie/keyCookies";
 import axios from "axios";
 import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <>
+    <AppContainer>
       <GlobalStyle />
       <NanumSquareRegular />
       {path === "/login" ||
@@ -52,6 +53,10 @@ export default function App({ Component, pageProps }: AppProps) {
       )}
 
       <Component {...pageProps} />
-    </>
+    </AppContainer>
   );
 }
+
+const AppContainer = styled.div`
+  font-family: 'NanumSquareNeoRegular';
+`

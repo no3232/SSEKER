@@ -63,7 +63,8 @@ const AfterBox = styled.div`
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
-  width: calc(vat(--vw, 1vw) * 100);
+  width: calc(var(--vw, 1vw) * 100);
+  color: var(--text-color);
 `;
 
 const TitleBox = styled.div`

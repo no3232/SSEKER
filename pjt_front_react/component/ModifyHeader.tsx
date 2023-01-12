@@ -1,8 +1,6 @@
-import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
-import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 const ModifyHeader = ({
@@ -16,7 +14,6 @@ const ModifyHeader = ({
 }) => {
   return (
     <TitleBox>
-      <GmarketMedium />
       <NanumSquareBold />
       <ContentBox>
         <InputBox
@@ -33,7 +30,7 @@ const ModifyHeader = ({
 export default ModifyHeader;
 
 const Edit = styled.i`
-  font-size: 30px;
+  font-size: 35px;
 
   &:hover {
     color: var(--primary-color-light);
@@ -43,7 +40,9 @@ const Edit = styled.i`
 
 const InputBox = styled.input`
   border: solid 2px var(--primary-color);
+  width: 90%;
   padding: 1em;
+  margin-right: 1em;
   border-radius: 20px;
 `;
 

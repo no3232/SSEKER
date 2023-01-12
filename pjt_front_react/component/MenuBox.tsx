@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
-import GmarketBold from "../modules/fonts/GmarketSansBold";
-import GmarketLight from "../modules/fonts/GmarketSansLight";
 import { Props } from "../modules/types/dummy";
 import Link from "next/link";
 import Router from "next/router";
 import axios from "axios";
 import { getKeyCookies, removeKeyCookies } from "../modules/cookie/keyCookies";
+import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 
 const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
   const [isUserLogin, setIsUserLogin] = useState(false);
@@ -16,10 +15,10 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
   const router = Router;
 
   useEffect(() => {
-    const getInfo = localStorage.getItem("userinfo")
+    const getInfo = localStorage.getItem("userinfo");
 
     if (getInfo) {
-      setUserName(JSON.parse(getInfo).id)
+      setUserName(JSON.parse(getInfo).id);
       setIsUserLogin(true);
     } else {
       setIsUserLogin(false);
@@ -32,7 +31,7 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
 
   const logoutHandler = () => {
     event?.preventDefault();
-    
+
     axios({
       method: "POST",
       url: "https://ssekerapi.site/dj-accounts/logout/",
@@ -53,41 +52,44 @@ const MenuBox = ({ menuOpen, setMenuOpen }: Props) => {
   return (
     <Container className={`${menuOpen ? "open-menu" : null}`}>
       <GlobalStyle />
-      <GmarketBold />
-      <GmarketLight />
+      <NanumSquareRegular />
+
       <MenuUl>
         <MenuLi>
           <Link href={"/user"} onClick={closeMenuList}>
-            팀원 구하기
+            <i className="bx bxs-face"></i>&nbsp;<p>팀원 구하기</p>
           </Link>
         </MenuLi>
+
         <MenuLi>
           <Link href={"/team"} onClick={closeMenuList}>
-            팀에 들어가기
+            <i className="bx bx-group"></i>&nbsp;<p>팀에 들어가기</p>
           </Link>
         </MenuLi>
+
         <MenuLi>
           <Link href={"/teammodify"} onClick={closeMenuList}>
-            팀만들기
+            <i className="bx bx-list-plus"></i>&nbsp;<p>팀만들기</p>
           </Link>
         </MenuLi>
+
         <MenuLi>
           <Link href={`/userdetail/${userName}`} onClick={closeMenuList}>
-            마이페이지
+            <i className="bx bx-user"></i>&nbsp;<p>마이페이지</p>
           </Link>
         </MenuLi>
+
         <MenuLi>
           {isUserLogin ? (
             <a onClick={logoutHandler} className="logout">
-              로그아웃
+              <i className="bx bx-log-out"></i>&nbsp;<p>로그아웃</p>
             </a>
           ) : (
             <Link href={"/login"} onClick={closeMenuList}>
-              로그인
+              <i className="bx bx-log-in"></i>&nbsp;<p>로그인</p>
             </Link>
           )}
         </MenuLi>
-        )
       </MenuUl>
     </Container>
   );
@@ -97,21 +99,26 @@ export default MenuBox;
 
 const MenuLi = styled.li`
   list-style: none;
-  margin: 50px;
-  text-align: center;
+  width: 100%;
+  padding: 30px 50px 30px 0;
+  margin: 0;
+  border-bottom: var(--sub-color) solid 1px;
 
   & a {
-    display: inline-block;
     text-decoration: none;
     color: var(--text-color);
-    font-size: 30px;
-    font-weight: 600;
+    width: 100%;
+    font-size: 20px;
     position: relative;
     transition: var(--trans-05);
+    font-family: "NanumSquareNeoRegular";
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   & a:hover {
-    font-family: "GmarketSansBold";
+    font-family: "NanumSquareNeoRegular";
     color: var(--primary-color);
   }
 
@@ -131,33 +138,51 @@ const MenuLi = styled.li`
   & a:hover::after {
     opacity: 1;
   }
-  & .logout {
-    color: red;
+
+  & i {
+    font-size: 1.5em;
+    margin-right: 0.5em;
+  }
+
+  &:nth-child(5), &:nth-child(4) {
+    border: none;
+  }
+
+  &:nth-child(5) a {
+    margin-top: 10em;
+    border: none;
+    text-align: end;
+    justify-content: flex-end;
   }
 `;
 
-const MenuUl = styled.ul``;
+const MenuUl = styled.ul`
+  position: absolute;
+  bottom: 20px;
+  width: 80%;
+`;
 
 const Container = styled.div`
   width: 0;
-  height: 0;
-  background: var(--primary-color-light);
+  height: 100vh;
+  background: var(--body-color);
   position: fixed;
   top: 0;
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   overflow: hidden;
-  font-family: "GmarketSansLight";
+  font-family: "NanumSquareNeoRegular";
 
   border-bottom-left-radius: 100%;
   transition: var(--trans-05);
   z-index: 99;
 
   &.open-menu {
-    width: 100%;
+    width: 80%;
     height: 100vh;
     border-bottom-left-radius: 0;
+    box-shadow: 10px 0 80px 20px rgba(26, 30, 39, 0.5);
   }
 `;

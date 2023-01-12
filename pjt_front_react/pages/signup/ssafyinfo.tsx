@@ -243,12 +243,13 @@ const SsafyInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: var(--text-color);
   align-items: center;
   height: 100vh;
   margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
   width: 80vw;
-  width: calc(vat(--vw, 1vw) * 100);
+  width: calc(var(--vw, 1vw) * 100);
 `;
 
 const FormBox = styled.form`

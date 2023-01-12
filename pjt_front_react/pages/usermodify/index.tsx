@@ -430,18 +430,18 @@ const Index = () => {
       <NanumSquareBold />
 
       <ModifyHeader
-        name={userInfo.username}
+        name={userInfo.name}
         nameHandler={getInputData}
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className='title'>수강 트랙</SubtitleText>
+        <SubtitleText className="title">수강 트랙</SubtitleText>
         <TrackUl>
           <TrackLi>
             <TrackButton
               selected={changeInfo.track == 1}
               onClick={clickTrack}
-              value='1'
+              value="1"
             >
               파이썬
             </TrackButton>
@@ -450,7 +450,7 @@ const Index = () => {
             <TrackButton
               selected={changeInfo.track == 3}
               onClick={clickTrack}
-              value='3'
+              value="3"
             >
               자바(전공)
             </TrackButton>
@@ -459,7 +459,7 @@ const Index = () => {
             <TrackButton
               selected={changeInfo.track == 2}
               onClick={clickTrack}
-              value='2'
+              value="2"
             >
               자바(비전공)
             </TrackButton>
@@ -468,7 +468,7 @@ const Index = () => {
             <TrackButton
               selected={changeInfo.track == 5}
               onClick={clickTrack}
-              value='5'
+              value="5"
             >
               모바일
             </TrackButton>
@@ -477,7 +477,7 @@ const Index = () => {
             <TrackButton
               selected={changeInfo.track == 4}
               onClick={clickTrack}
-              value='4'
+              value="4"
             >
               임베디드
             </TrackButton>
@@ -486,36 +486,44 @@ const Index = () => {
       </CampusBox>
 
       <CampusBox>
-        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
+        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
-        <p> 지역</p>
+        <ChoiceCampus>
+          <div>
+            <p>지역</p>
 
-        <Select
-          title={userInfo.campus.title}
-          options={regionOption}
-          handler={getSignupRegion}
-        />
-        <p> 반</p>
+            <Select
+              title={userInfo.campus.title}
+              options={regionOption}
+              handler={getSignupRegion}
+            />
+          </div>
 
-        <Select
-          title={changeInfo.part + "반"}
-          options={classOption}
-          handler={getSignupClass}
-        />
+          <div>
+            <p>반</p>
+
+            <Select
+              title={changeInfo.part + "반"}
+              options={classOption}
+              handler={getSignupClass}
+            />
+          </div>
+        </ChoiceCampus>
       </CampusBox>
 
-      <CampusBox>
-        <SubtitleText className='title'> 희망 포지션</SubtitleText>
+      <CampusBox className="lineSelect">
+        <SubtitleText className="title"> 희망 포지션</SubtitleText>
         <Select
           title={userInfo.position.category}
           options={positionOption}
           handler={getPosition}
         />
       </CampusBox>
+
+      <SubtitleText className="TypeTitle">스킬</SubtitleText>
       <DetailBox>
-        <SubtitleText className='title'> Skill</SubtitleText>
         <SubBox>
-          <SubtitleText> 언어</SubtitleText>
+          <SubtitleText>언어</SubtitleText>
           <Icons>
             <StackSelect
               mySkills={lastList[0]}
@@ -524,8 +532,9 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
-          <SubtitleText> 프론트엔드</SubtitleText>
+          <SubtitleText>프론트엔드</SubtitleText>
           <Icons>
             <StackSelect
               mySkills={lastList[1]}
@@ -534,8 +543,9 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
-          <SubtitleText> 백엔드</SubtitleText>
+          <SubtitleText>백엔드</SubtitleText>
           <Icons>
             <StackSelect
               mySkills={lastList[2]}
@@ -544,8 +554,9 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
-          <SubtitleText> UI / UX</SubtitleText>
+          <SubtitleText>UI / UX</SubtitleText>
           <Icons>
             <StackSelect
               mySkills={lastList[3]}
@@ -554,8 +565,9 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
-          <SubtitleText> Devops</SubtitleText>
+          <SubtitleText>Devops</SubtitleText>
           <Icons>
             <StackSelect
               mySkills={lastList[4]}
@@ -565,20 +577,32 @@ const Index = () => {
           </Icons>
         </SubBox>
       </DetailBox>
-      <DetailBox className='rank'>
+
+      <DetailBox>
         <SubtitleText> 백준 랭크</SubtitleText>
-        <Select
-          title={selectBj.tierName}
-          options={Tier}
-          handler={tierHandler}
-        />
-        <Select
-          title={selectBj.rankName}
-          options={Rank}
-          handler={rankHandler}
-        />
+
+        <ChoiceCampus>
+          <div>
+            <p>티어</p>
+            <Select
+              title={selectBj.tierName}
+              options={Tier}
+              handler={tierHandler}
+            />
+          </div>
+
+          <div>
+            <p>랭크</p>
+            <Select
+              title={selectBj.rankName}
+              options={Rank}
+              handler={rankHandler}
+            />
+          </div>
+        </ChoiceCampus>
       </DetailBox>
-      <DetailBox className='rank'>
+
+      <DetailBox className="line">
         <SubtitleText> GitHub</SubtitleText>
         <InputBox
           placeholder={
@@ -587,7 +611,8 @@ const Index = () => {
           onChange={(e) => getInputData(e, 1)}
         />
       </DetailBox>
-      <DetailBox className='rank'>
+
+      <DetailBox className="line">
         <SubtitleText> Blog</SubtitleText>
         <InputBox
           placeholder={
@@ -596,6 +621,7 @@ const Index = () => {
           onChange={(e) => getInputData(e, 2)}
         />
       </DetailBox>
+
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>
         <IntroBox
@@ -611,9 +637,33 @@ const Index = () => {
 
 export default Index;
 
+const ChoiceCampus = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0 24px;
+
+  & .Select {
+    margin: 6px 0;
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+  }
+`;
+
+const TrackLabelText = styled.div``;
+
 const TrackUl = styled.ul`
+  width: 100%;
   display: flex;
   align-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
   list-style: none;
   margin-top: 10px;
   margin-bottom: 24px;
@@ -621,16 +671,22 @@ const TrackUl = styled.ul`
 
 const TrackLi = styled.li`
   display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TrackButton = styled.button<ClassButtonTypes>`
-  border: solid 1px #0062ff;
+  border: var(--primary-color-light) 2px solid;
   background-color: white;
   border-radius: 5px;
-  color: #0062ff;
+  color: var(--primary-color-light);
   font-family: 'NanumSquareNeoRegular';
-  padding : 10px;
+  font-size: 1em;
+  padding : 15px 5px;
   margin: 2px;
+  
+  width: 35vw;
+
   &:hover {
     border: solid 1px white;
       background-color: blue;
@@ -642,6 +698,7 @@ const TrackButton = styled.button<ClassButtonTypes>`
       border: solid 1px white;
       background-color: #0062ff;
       color: white;
+
       &:hover {
         border: solid 1px white;
         background-color: #0062ff;
@@ -670,6 +727,7 @@ const IntroBox = styled.textarea`
 
 const Icons = styled.div`
   width: 100%;
+  margin-bottom: 2em;
 `;
 
 const SubBox = styled.div`
@@ -677,6 +735,10 @@ const SubBox = styled.div`
 
   & div {
     font-family: "NanumSquareNeoBold";
+  }
+
+  & div.SubTitle {
+    margin: 0;
   }
 `;
 
@@ -686,17 +748,38 @@ const DetailBox = styled.div`
 
 const CampusBox = styled.div`
   margin: 2em;
+
+  &.lineSelect {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &.lineSelect .SubTitle {
+    margin-right: 1.5em;
+  }
 `;
 
 const Container = styled.div`
   font-family: "NanumSquareNeoLight";
   min-height: 100vh;
-  padding-bottom: 5em;
+  color: var(--text-color);
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(var(--vw, 1vw) * 100);
 
-  & .rank {
+  & .line {
     display: flex;
     align-items: center;
     justify-content: flex-center;
     gap: 1.5em;
+  }
+
+  & .SubTitle {
+    margin-bottom: 1em;
+  }
+
+  & .line input {
+    width: 100%;
   }
 `;

@@ -137,7 +137,7 @@ export default LoginMainPage;
 const LoginBox = styled.div`
   justify-content: center;
   align-items: center;
-  color: #404040;
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   height: 100vh;

@@ -5,7 +5,7 @@ import React, {
   MouseEventHandler,
 } from "react";
 import styled, { css } from "styled-components";
-import axios, { all } from "axios";
+import axios from "axios";
 
 import ModifyHeader from "../../component/ModifyHeader";
 import SubtitleText from "../../common/SubtitleText";
@@ -18,7 +18,6 @@ import NanumSquareBold from "../../modules/fonts/NanumSquareNeoBold";
 import {
   skillList,
   skillObject,
-  teamData,
   TeamMember,
 } from "../../modules/types/dummy";
 import { defaultUserInfo } from "../../modules/types/UserInfoTypes";
@@ -32,7 +31,9 @@ import {
   ExampleData,
 } from "../../modules/list/dummy";
 import { TeamInfo } from "../../modules/types/TeamInfoTypes";
-import UserSearchBar from "../../component/userSearchBar";
+import UserSearchBar from "../../component/UserSearchBar";
+import ClassButtonTypes from "../../modules/types/classSelectButton";
+import TitleText from "../../common/TitleText";
 
 const Index = () => {
   const router = useRouter();
@@ -54,23 +55,6 @@ const Index = () => {
   });
 
   const [changeInfo, setChangeInfo] = useState<sendInfo>(ExampleData);
-
-  const [participantList, setParticipantList] = useState<TeamMember[]>(
-    teamInfo.participant
-  );
-  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
-    1: [],
-    2: [],
-    3: [],
-    4: [],
-  });
-
-  // 유저가 로그인 했냐...?
-  useEffect(() => {
-    if (getKeyCookies("key") === undefined) {
-      router.push("/login");
-    }
-  }, []);
 
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
@@ -128,15 +112,13 @@ const Index = () => {
               title: title,
             };
           });
-          setParticipantList(() => {
-            return [...participant];
-          });
         })
         .catch((err) => {
           console.log(err);
         });
     }
   }, [router.query.id]);
+
   useEffect(() => {
     setChangeInfo((prev) => {
       return {
@@ -376,124 +358,47 @@ const Index = () => {
   };
 
   const sendData: MouseEventHandler<HTMLElement> = async () => {
-    if (router.query.id !== undefined) {
-      
-      const putMethod = await axios({
-        method: "PUT",
-        url: `https://ssekerapi.site/projects/project/${teamInfo.id}`,
-        headers: {
-          Authorization: `Token ${getKeyCookies("key")}`,
-        },
-        data: { ...changeInfo },
+    const putMethod = await axios({
+      method: "PUT",
+      url: `https://ssekerapi.site/projects/project/${teamInfo.id}`,
+      headers: {
+        Authorization: `Token ${getKeyCookies("key")}`,
+      },
+      data: { ...changeInfo },
+    })
+      .then((res) => {
+        return res.status;
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("잘못된 형식입니다.");
+      });
+
+    if (putMethod === 200) {
+      await axios({
+        method: "GET",
+        url: `https://ssekerapi.site/accounts/${userInfo.id}`,
       })
         .then((res) => {
-          return res.status;
+          const { data } = res;
+          localStorage.setItem("userinfo", JSON.stringify(data));
+
+          router.push(`/teamdetail/${teamInfo.id}`);
         })
         .catch((err) => {
           console.log(err);
-          alert("잘못된 형식입니다.");
         });
-      const teamPList = participantList.map((person) => {
-        return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`;
-      });
-      const sendTeamList = Object.assign({}, teamPList);
-      let teamMethod
-      if (teamPList.length > 0) {
-        teamMethod = await axios({
-          method: "POST",
-          url: `https://ssekerapi.site/projects/${teamInfo.id}/participant`,
-          headers: {
-            Authorization: `Token ${getKeyCookies("key")}`,
-          },
-          data: sendTeamList,
-        })
-          .then((res) => {
-            return res.status;
-          })
-          .catch((err) => {
-            console.log(err);
-            alert("잘못된 형식입니다.");
-          });
-      } else {
-        teamMethod = 201
-      }
-
-      if (putMethod === 200 && teamMethod === 201) {
-        await axios({
-          method: "GET",
-          url: `https://ssekerapi.site/accounts/${userInfo.id}`,
-        })
-          .then((res) => {
-            const { data } = res;
-            localStorage.setItem("userinfo", JSON.stringify(data));
-
-            router.push(`/teamdetail/${teamInfo.id}`);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    } else {
-      console.log(changeInfo)
-      let newProjectId = ""
-      const putMethod = await axios({
-        method: "POST",
-        url: `https://ssekerapi.site/projects/project`,
-        headers: {
-          Authorization: `Token ${getKeyCookies("key")}`,
-        },
-        data: { ...changeInfo },
-      })
-        .then((res) => {
-          newProjectId = res.data.id
-          return res.status;
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("잘못된 형식입니다.");
-        });
-      const teamPList = participantList.map((person) => {
-        return `manager:${person.manager.id},skillcategory:${person.skillcategory.id}`;
-      });
-      const sendTeamList = Object.assign({}, teamPList);
-      let teamMethod
-      if (teamPList.length > 0) {
-        teamMethod = await axios({
-          method: "POST",
-          url: `https://ssekerapi.site/projects/${newProjectId}/participant`,
-          headers: {
-            Authorization: `Token ${getKeyCookies("key")}`,
-          },
-          data: sendTeamList,
-        })
-          .then((res) => {
-            return res.status;
-          })
-          .catch((err) => {
-            console.log(err);
-            alert("잘못된 형식입니다.");
-          });
-      } else {
-        teamMethod = 201
-      }
-      if (putMethod === 201 && teamMethod === 201) {
-        await axios({
-          method: "GET",
-          url: `https://ssekerapi.site/accounts/${userInfo.id}`,
-        })
-          .then((res) => {
-            const { data } = res;
-            localStorage.setItem("userinfo", JSON.stringify(data));
-            router.push(`/teamdetail/${newProjectId}`);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      
-    }}
+    }
   };
-
-  // 팀 리스트 추가 함수
+  // -----------------------------------------------
+  const [participantList, setParticipantList] =
+    useState<TeamMember[]>(Dummyparticipant);
+  const [partObj, setPartObj] = useState<{ [key: number]: TeamMember[] }>({
+    1: [],
+    2: [],
+    3: [],
+    4: [],
+  });
   useEffect(() => {
     setPartObj((prev) => {
       const newObj: { [key: number]: TeamMember[] } = {
@@ -557,7 +462,7 @@ const Index = () => {
         sendData={sendData}
       />
       <CampusBox>
-        <SubtitleText className='title'> 소속캠퍼스</SubtitleText>
+        <SubtitleText className="title"> 소속캠퍼스</SubtitleText>
         <p>현재 속한 반을 기준으로 작성해주세요</p>
         <p> 지역</p>
         <Select
@@ -577,8 +482,9 @@ const Index = () => {
         />
       </CampusBox>
 
+      <SubtitleText className="TypeTitle">스킬</SubtitleText>
       <DetailBox>
-        <SubtitleText className='title'> Skill</SubtitleText>
+        <SubtitleText className="title"> Skill</SubtitleText>
         <SubBox>
           <SubtitleText> 프론트엔드</SubtitleText>
           <Icons>
@@ -589,6 +495,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> 백엔드</SubtitleText>
           <Icons>
@@ -599,6 +506,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> UI / UX</SubtitleText>
           <Icons>
@@ -609,6 +517,7 @@ const Index = () => {
             />
           </Icons>
         </SubBox>
+
         <SubBox>
           <SubtitleText> Devops</SubtitleText>
           <Icons>
@@ -620,6 +529,8 @@ const Index = () => {
           </Icons>
         </SubBox>
       </DetailBox>
+
+      <SubtitleText className="TypeTitle">멤버</SubtitleText>
       <DetailBox>
         <SubtitleText> 프론트엔드</SubtitleText>
         <UserSearchBar
@@ -650,6 +561,7 @@ const Index = () => {
           removeHandler={removeHandler}
         />
       </DetailBox>
+      
       <DetailBox>
         <SubtitleText> 소개</SubtitleText>
         <IntroBox
@@ -665,10 +577,77 @@ const Index = () => {
 
 export default Index;
 
-const InputBox = styled.input`
-  border: solid 2px var(--primary-color-light);
-  padding: 0.5em 1em;
-  border-radius: 1em;
+const ChoiceCampus = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0 24px;
+
+  & .Select {
+    margin: 6px 0;
+  }
+
+  & > div {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: center;
+  }
+`;
+
+const TrackLabelText = styled.div``;
+
+const TrackUl = styled.ul`
+  width: 100%;
+  display: flex;
+  align-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 24px;
+`;
+
+const TrackLi = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TrackButton = styled.button<ClassButtonTypes>`
+  border: var(--primary-color-light) 2px solid;
+  background-color: white;
+  border-radius: 5px;
+  color: var(--primary-color-light);
+  font-family: 'NanumSquareNeoRegular';
+  font-size: 1em;
+  padding : 15px 5px;
+  margin: 2px;
+  
+  width: 35vw;
+
+  &:hover {
+    border: solid 1px white;
+      background-color: blue;
+      color: white;
+  }
+  ${(props) =>
+    props.selected &&
+    css`
+      border: solid 1px white;
+      background-color: #0062ff;
+      color: white;
+
+      &:hover {
+        border: solid 1px white;
+        background-color: #0062ff;
+        color: white;
+      }
+    `}
+    
+  }
+  
 `;
 
 const IntroBox = styled.textarea`
@@ -682,6 +661,7 @@ const IntroBox = styled.textarea`
 
 const Icons = styled.div`
   width: 100%;
+  margin-bottom: 2em;
 `;
 
 const SubBox = styled.div`
@@ -689,6 +669,10 @@ const SubBox = styled.div`
 
   & div {
     font-family: "NanumSquareNeoBold";
+  }
+
+  & div.SubTitle {
+    margin: 0;
   }
 `;
 
@@ -698,20 +682,42 @@ const DetailBox = styled.div`
 
 const CampusBox = styled.div`
   margin: 2em;
+
+  &.lineSelect {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &.lineSelect .SubTitle {
+    margin-right: 1.5em;
+  }
 `;
 
 const Container = styled.div`
   font-family: "NanumSquareNeoLight";
   min-height: 100vh;
-  padding-bottom: 5em;
+  color: var(--text-color);
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100vw;
+  width: calc(var(--vw, 1vw) * 100);
 
-  & .rank {
+  & .line {
     display: flex;
     align-items: center;
     justify-content: flex-center;
     gap: 1.5em;
   }
+
+  & .SubTitle {
+    margin-bottom: 1em;
+  }
+
+  & .line input {
+    width: 100%;
+  }
 `;
+
 
 const Dummyparticipant: Array<TeamMember> = [
   {

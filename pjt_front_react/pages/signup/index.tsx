@@ -145,14 +145,14 @@ const ContentBox = styled.div``;
 const SignupBox = styled.div`
   justify-content: center;
   align-items: center;
-  color : #404040;
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
   width: 90vw;
-  width: calc(vat(--vw, 1vw) * 100);F
+  width: calc(var(--vw, 1vw) * 100);F
 `;
 
 const TitleBox = styled.div`

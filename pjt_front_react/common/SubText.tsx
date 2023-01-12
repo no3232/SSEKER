@@ -1,11 +1,8 @@
 import styled from "styled-components";
 
-import GmarketLight from '../modules/fonts/GmarketSansLight'
-
 const SubText = (props: any) => {
   return (
     <>
-      <GmarketLight />
       <SubTextStyle>{props.children}</SubTextStyle>
     </>
   );

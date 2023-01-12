@@ -40,6 +40,7 @@ export const ExampleUser: defaultUserInfo = {
     title: "",
     partcount: 0,
   },
+  name: "",
   part: 0,
   skill: [],
   github: "",

@@ -43,9 +43,9 @@ const StackSelector = ({stackListHandle} : {
 
     return <SelectorBody open={isOpen}>
         <GlobalStyle />
-        {isOpen && <Box onClick={()=>{
+        {/* {isOpen && <Box onClick={()=>{
                     setIsOpen(false);
-                }}/>}
+                }}/>} */}
         <InputSections open={isOpen}>
             <Icon className="bx bx-search"/>
             <Input
@@ -91,6 +91,7 @@ const Box = styled.div`
     height: 100vh;
     width: 100vw;
     z-index: -1;
+    border: solid blue 1px;
 `
 
 const List = styled.div `
@@ -106,12 +107,12 @@ const List = styled.div `
     }
 
     ::-webkit-scrollbar-track {
-        background: var(--primary-color-light);
+        background: var(--text-color-light);
         border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb {
-        background: var(--primary-color);
+        background: #9aa0a6;
     }
 
     ::-webkit-xcrollbar-thumb:hover {
@@ -168,11 +169,11 @@ const SelectorBody = styled.article < {
     width: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--text-color-light);
+    background: var(--sub-color);
     padding: 1rem;
     gap: 1rem;
     border-radius: 10px; 
     transform: all .3s ease-in-out;
-    height: ${props=>props.open ? '200px':'3.5rem'};
+    height: ${props=>props.open ? '200px':'4rem'};
     overflow: hidden;
 `

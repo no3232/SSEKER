@@ -2,11 +2,9 @@ import React from "react";
 import Router, { useRouter } from "next/router";
 import styled from "styled-components";
 
-import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 import { DetailHeaderType } from "../modules/types/dummy";
-import Link from "next/link";
 
 const DetailHeader = ({ name, isUser, id }: DetailHeaderType) => {
   const router = useRouter().pathname.split("/")[1];
@@ -26,7 +24,6 @@ const DetailHeader = ({ name, isUser, id }: DetailHeaderType) => {
 
   return (
     <TitleBox>
-      <GmarketMedium />
       <NanumSquareBold />
       <ContentBox>
         <Info>
@@ -42,7 +39,7 @@ const DetailHeader = ({ name, isUser, id }: DetailHeaderType) => {
 export default DetailHeader;
 
 const Edit = styled.i`
-  font-size: 30px;
+  font-size: 35px;
 
   &:hover {
     color: var(--primary-color-light);

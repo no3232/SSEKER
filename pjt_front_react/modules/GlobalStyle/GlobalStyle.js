@@ -15,8 +15,10 @@ const GlobalStyle = createGlobalStyle`
           --sidebar-color : #ccd0d8;
           --primary-color : #1F4EF5;
           --primary-color-light : #4880EE;
-          --text-color : #1d2023;
-          --text-color-light : #c0c0c0;
+          --light-color: #83B4F9;
+          --text-color : #1A1E27;
+          --text-color-light : #B1B8C0;
+          --sub-color: #D6DADF;
   
           /* ===== Transition ===== */
           --trans-02 : all 0.2s ease;

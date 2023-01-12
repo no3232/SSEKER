@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from "react";
+import React from "react";
 import styled from "styled-components";
-import {dropDown, skillList} from "../modules/types/dummy";
+import {dropDown} from "../modules/types/dummy";
 
 import Stack from "./Stack";
 import StackSelector from "./StackSelector";

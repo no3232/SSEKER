@@ -64,14 +64,14 @@ export default function Home() {
 const IndexBox = styled.div`
   justify-content: center;
   align-items: center;
-  color: #404040;
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0 auto;
   height: calc(var(--vh, 1vh) * 100);
   width: 90vw;
-  width: calc(vat(--vw, 1vw) * 100);
+  width: calc(var(--vw, 1vw) * 100);
 `;
 
 const TitleBox = styled.div`

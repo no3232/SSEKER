@@ -1,6 +1,5 @@
 import axios from "axios";
-import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import GlobalStyle from "../modules/GlobalStyle/GlobalStyle";
 import { TeamMember } from "../modules/types/dummy";

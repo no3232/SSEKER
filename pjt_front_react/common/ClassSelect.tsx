@@ -5,7 +5,6 @@ import NanumSquareRegular from "../modules/fonts/NanumSquareNeoRegular";
 import SubtitleText from "../common/SubtitleText";
 
 import ClassButtonTypes from "../modules/types/classSelectButton";
-import Select from "../component/Select";
 
 const ClassSelect = () => {
   const [selectedClass, setSelectedClass] = useState("서울");
