@@ -27,15 +27,7 @@ jobs:
       with:
         command: |
           rm -rf SSEKER && git clone https://github.com/JAY-Winter/SSEKER.git
-          cd SSEKER/pjt_front_react
-          ls -al
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          npm --version
-          npm install
-          npm run build
-          pm2 start "npm run dev"
-          sudo systemctl restart nginx
+          ./deploy.sh
 
         host: ${{ secrets.AWS_TEST_X_HOST }}
         user: ${{ secrets.AWS_TEST_X_USERNAME }}
@@ -45,15 +37,7 @@ jobs:
       with:
         command: |
           rm -rf SSEKER && git clone https://github.com/JAY-Winter/SSEKER.git
-          cd SSEKER/pjt_front_react
-          git pull
-          ls -al
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          npm --version
-          npm install
-          npm run build
-          pm2 start "npm run dev"
+          ./deploy.sh
 
         host: ${{ secrets.AWS_TEST_X_HOST_FE2 }}
         user: ${{ secrets.AWS_TEST_X_USERNAME }}
