@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 
 import inputFormTypes from "../modules/types/inputFormTypes";
 import SubtitleText from "../common/SubtitleText";

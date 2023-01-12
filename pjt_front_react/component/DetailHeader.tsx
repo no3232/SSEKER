@@ -5,7 +5,6 @@ import styled from "styled-components";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 import { DetailHeaderType } from "../modules/types/dummy";
-import Link from "next/link";
 
 const DetailHeader = ({ name, isUser, id }: DetailHeaderType) => {
   const router = useRouter().pathname.split("/")[1];

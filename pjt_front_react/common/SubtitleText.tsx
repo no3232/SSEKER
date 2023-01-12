@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-// import GmarketLight from '../modules/fonts/GmarketSansLight'
-// import GmarketMedium from "../modules/fonts/GmarketSansMedium";
 import NanumSquareBold from "../modules/fonts/NanumSquareNeoBold";
 
 const SubtitleText = (props: any) => {

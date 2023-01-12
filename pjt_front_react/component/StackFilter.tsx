@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-import StackIcon from '../common/StackIcon'
 import SubtitleText from '../common/SubtitleText';
 import { skill } from '../modules/StackIconDummy';
 

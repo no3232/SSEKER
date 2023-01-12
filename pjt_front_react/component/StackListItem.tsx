@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import styled from "styled-components";
-import { language, skill } from "../modules/StackIconDummy";
+import { skill } from "../modules/StackIconDummy";
 import {StackList} from "../modules/types/dummy";
 
 const StackListItem = ({stack, removeItem, UpdateStackState, type} : StackList) => {
