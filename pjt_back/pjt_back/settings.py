@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'accounts',
     'projects',
     'objects',
+    'roadmaps',
     
     'rest_framework',
     'rest_framework.authtoken',
