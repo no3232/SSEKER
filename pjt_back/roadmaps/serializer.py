@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
-from .models import Node, Track, RecommendContent, Interview, Review, Completion
-
+from .models import Node, Track, RecommendContent, Interview, Review, Completion, Role
 from rest_framework import serializers
 
 
@@ -108,3 +107,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
         read_only_fields = ('user',)
+
+
+class RoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Role
+        fields = '__all__'

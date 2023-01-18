@@ -1,4 +1,4 @@
-from .models import Node, Track, Completion
+from .models import Node, Track, Completion, Role
 from .serializer import TrackSerializer, NodeDetailSerializer, CompletionSerializer
 
 from django.shortcuts import render
@@ -35,3 +35,10 @@ def clear_node(request, node_id):
         else:
             print(serializer.errors)
     return Response()
+
+
+@api_view(['GET'])
+def get_roles(request):
+    roles = Role.objects.all()
+    serializer = RoleSerializer(roles, many=True)
+    return Response(serializer.data)
