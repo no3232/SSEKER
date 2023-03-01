@@ -58,7 +58,7 @@ const UserListPage = () => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `https://ssekerapi.site/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
+      url: `http:/sseker.com:8000/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
         setUserList((prev: any) => {
@@ -87,7 +87,7 @@ const UserListPage = () => {
 
     axios({
       method: "GET",
-      url: `https://ssekerapi.site/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
+      url: `http:/sseker.com:8000/accounts/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
         setUserList([]);
@@ -149,7 +149,7 @@ const UserListPage = () => {
   useEffect(() => {
     // 스킬 오브젝트 불러오기
     axios
-      .get("https://ssekerapi.site/objects/skill-language")
+      .get("http:/sseker.com:8000/objects/skill-language")
       .then((res) => {
         const { data } = res;
 

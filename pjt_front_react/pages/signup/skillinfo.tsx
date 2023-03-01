@@ -60,7 +60,7 @@ const SkillInfo = () => {
     user = JSON.parse(localStorage.getItem("userinfo") || "{}");
     await axios({
       method: "PUT",
-      url: `https://ssekerapi.site/accounts/${user.id}`,
+      url: `http:/sseker.com:8000/accounts/${user.id}`,
       // url: "https://ssekerapi.site/accounts/ssafy123@ssafy.com",
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
@@ -69,7 +69,7 @@ const SkillInfo = () => {
     }).catch();
     await axios({
       method: "GET",
-      url: `https://ssekerapi.site/accounts/${user.id}`,
+      url: `http:/sseker.com:8000/accounts/${user.id}`,
     })
       .then((response) => {
         // console.log(response.data);

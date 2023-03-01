@@ -32,7 +32,7 @@ const Index = () => {
     // setUserInfo(JSON.parse(localStorage.getItem("userinfo") || '{}')) }
     if (router.query.userid !== undefined) {
       axios
-        .get(`https://ssekerapi.site/accounts/${router.query.userid}`)
+        .get(`http:/sseker.com:8000/accounts/${router.query.userid}`)
         .then((res) => {
           const { data } = res;
           setUserInfo(data);
