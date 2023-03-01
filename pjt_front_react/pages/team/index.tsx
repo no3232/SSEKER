@@ -56,7 +56,7 @@ const TeamListPage = () => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `https://ssekerapi.site/projects/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
+      url: `http:/sseker.com:8000/projects/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
         setTeamData((prev: any) => {
@@ -83,7 +83,7 @@ const TeamListPage = () => {
     });
     axios({
       method: "GET",
-      url: `https://ssekerapi.site/projects/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
+      url: `http:/sseker.com:8000/projects/?count=${pageNum.page}&campus=${signupRegion}&part=${signupClass}&skills=${skills}`,
     }).then((response) => {
       if (response.status === 200) {
         setTeamData([]);
@@ -144,7 +144,7 @@ const TeamListPage = () => {
   useEffect(() => {
     // 스킬 오브젝트 불러오기
     axios
-      .get("https://ssekerapi.site/objects/skill-language")
+      .get("http:/sseker.com:8000/objects/skill-language")
       .then((res) => {
         const { data } = res;
 

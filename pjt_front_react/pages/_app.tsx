@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
       let key = "";
       axios({
         method: "GET",
-        url: "https://ssekerapi.site/dj-accounts/user/",
+        url: "http:/sseker.com:8000/dj-accounts/user/",
         headers: {
           Authorization: `Token ${getKeyCookies("key")}`,
         },
@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
         key = response.data.pk;
         axios({
           method: "GET",
-          url: `https://ssekerapi.site/accounts/${key}`,
+          url: `http:/sseker.com:8000/accounts/${key}`,
         }).then(async (response) => {
           localStorage.setItem("userinfo", JSON.stringify(response.data));
           // console.log(JSON.parse(localStorage.getItem("userinfo") || '{}'))

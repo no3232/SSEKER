@@ -26,7 +26,7 @@ const LoginMainPage = () => {
     event.preventDefault();
     const getKey = await axios({
       method: "POST",
-      url: "https://ssekerapi.site/dj-accounts/login/",
+      url: "http://sseker.com:8000/dj-accounts/login/",
       data: {
         username: loginEmail,
         password: loginPassword,

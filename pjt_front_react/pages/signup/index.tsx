@@ -25,7 +25,7 @@ const SignupPage = () => {
     event.preventDefault();
     const getKey = await axios({
       method: "POST",
-      url: "https://ssekerapi.site/dj-accounts/signup/",
+      url: "http:/sseker.com:8000/dj-accounts/signup/",
       data: {
         username: signupEmail,
         password1: signupPassword,
@@ -49,7 +49,7 @@ const SignupPage = () => {
       // console.log(getKeyCookies("key"))
       const pk = await axios({
         method: "GET",
-        url: `https://ssekerapi.site/dj-accounts/user/`,
+        url: `http:/sseker.com:8000/dj-accounts/user/`,
         headers: { Authorization: `Token ${getKeyCookies("key")}` },
       })
         .then((response) => {
@@ -63,7 +63,7 @@ const SignupPage = () => {
 
       await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${pk}`,
+        url: `http:/sseker.com:8000/accounts/${pk}`,
       })
         .then((response) => {
           if (localStorage.getItem("userinfo") === undefined) {

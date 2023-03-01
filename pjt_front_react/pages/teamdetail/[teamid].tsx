@@ -76,7 +76,7 @@ const Index = () => {
   useEffect(() => {
     if (router.query.teamid !== undefined) {
       axios
-        .get(`https://ssekerapi.site/projects/project/${router.query.teamid}`)
+        .get(`http:/sseker.com:8000/projects/project/${router.query.teamid}`)
         .then((res) => {
           const { data } = res;
           console.log(JSON.parse(localStorage.getItem("userinfo") || '{}').id)

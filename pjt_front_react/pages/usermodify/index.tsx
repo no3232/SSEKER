@@ -80,7 +80,7 @@ const Index = () => {
   // 로컬 스토리지에서 유저 데이터 불러옴
   useEffect(() => {
     axios
-      .get("https://ssekerapi.site/objects/skill-language")
+      .get("http:/sseker.com:8000/objects/skill-language")
       .then((res) => {
         const { data } = res;
 
@@ -376,7 +376,7 @@ const Index = () => {
   const sendData: MouseEventHandler<HTMLElement> = async () => {
     const putMethod = await axios({
       method: "PUT",
-      url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+      url: `http:/sseker.com:8000/accounts/${userInfo.id}`,
       headers: {
         Authorization: `Token ${getKeyCookies("key")}`,
       },
@@ -393,7 +393,7 @@ const Index = () => {
     if (putMethod === 200) {
       await axios({
         method: "GET",
-        url: `https://ssekerapi.site/accounts/${userInfo.id}`,
+        url: `http:/sseker.com:8000/accounts/${userInfo.id}`,
       })
         .then((res) => {
           const { data } = res;
